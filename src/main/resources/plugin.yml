@@ -1,0 +1,4 @@
+name: Hoarder
+version: '${version}'
+main: dev.jsinco.hoarder.Hoarder
+api-version: '1.20'

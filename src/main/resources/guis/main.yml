@@ -1,0 +1,11 @@
+title: 'The Hoarder'
+size: 45
+
+items:
+  stats:
+    slot: 0
+    material: BLAZE_POWDER
+    name: 'Stats'
+    lore: ['Click to view stats!']
+    enchanted: false
+    action: '[OPEN] guis/stats.yml'
