@@ -1,0 +1,10 @@
+
+
+# Specify your preferred storage type
+# Types of storage available: MySQL, SQLite, FlatFile
+storage:
+  type: SQLite
+  database: data
+  address: ''
+  username: ''
+  password: ''
