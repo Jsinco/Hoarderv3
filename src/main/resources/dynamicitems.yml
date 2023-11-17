@@ -1,0 +1,22 @@
+# This file contains the configurations for dynamic items.
+# Dynamic items are items that change depending on certain properties of the current Hoarder event
+
+# Not every part of dynamic items will be editable due to how they work.
+#
+
+items:
+  active_item:
+    slot: 31
+    action: '[SELL]'
+    name: 'Sell: %fill%'
+    lore: [ 'Click to sell to the hoarder!' ]
+    enchanted: true
+  clock:
+    slot: 36
+    material: CLOCK
+    name: 'Remaining time'
+    enchanted: false
+  treasure: # Represents each treasure item that the hoarder has to offer
+    lore: ['Chance: %fill%']
+  stats:
+

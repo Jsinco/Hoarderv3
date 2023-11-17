@@ -1,5 +1,6 @@
-package dev.jsinco.hoarder.gui;
+package dev.jsinco.hoarder.gui.enums;
 
+import dev.jsinco.hoarder.gui.GUICreator;
 import kotlin.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

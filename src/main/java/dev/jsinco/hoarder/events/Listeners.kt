@@ -1,9 +1,8 @@
 package dev.jsinco.hoarder.events
 
 import dev.jsinco.hoarder.Hoarder
-import dev.jsinco.hoarder.gui.Action
+import dev.jsinco.hoarder.gui.enums.Action
 import dev.jsinco.hoarder.gui.GUICreator
-import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
