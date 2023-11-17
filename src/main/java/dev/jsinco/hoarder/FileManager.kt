@@ -6,10 +6,11 @@ import java.io.IOException
 import java.nio.file.Files
 
 
-class FileManager(fileName: String) {
+class FileManager(val fileName: String) {
 
     companion object {
         val plugin: Hoarder = Hoarder.getInstance()
+        @JvmStatic
         fun generateFolder(folder: String) {
             if (!File(plugin.dataFolder, folder).exists()) {
                 File(plugin.dataFolder, folder).mkdir()
@@ -27,7 +28,7 @@ class FileManager(fileName: String) {
             if (!file.exists()) {
                 file.createNewFile()
 
-                val inputStream = plugin.getResource(file.name)
+                val inputStream = plugin.getResource(fileName)
                 val outputStream = Files.newOutputStream(file.toPath())
                 val buffer = ByteArray(1024)
                 var bytesRead: Int

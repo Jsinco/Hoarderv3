@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.9.20'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'dev.jsinco'
@@ -16,11 +17,16 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "iridiumdevelopment"
+        url = "https://nexus.iridiumdevelopment.net/repository/maven-releases/"
+    }
 }
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "com.iridium:IridiumColorAPI:1.0.6"
 }
 
 def targetJavaVersion = 17
@@ -48,3 +54,10 @@ processResources {
 kotlin {
     jvmToolchain(17)
 }
+shadowJar {
+    dependencies {
+        include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+        include(dependency("com.iridium:IridiumColorAPI:1.0.6"))
+    }
+}
+build.dependsOn shadowJar
