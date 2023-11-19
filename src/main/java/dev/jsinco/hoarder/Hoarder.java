@@ -3,12 +3,17 @@ package dev.jsinco.hoarder;
 import dev.jsinco.hoarder.commands.CommandManager;
 import dev.jsinco.hoarder.events.Listeners;
 import dev.jsinco.hoarder.manager.FileManager;
+import dev.jsinco.hoarder.manager.Settings;
+import dev.jsinco.hoarder.storage.DataManager;
+import dev.jsinco.hoarder.storage.StorageType;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Hoarder extends JavaPlugin {
 
     private static Hoarder plugin;
-    //SQLite sqLite = new SQLite(this);
+    DataManager dataManager;
 
 
     @Override
@@ -19,19 +24,25 @@ public final class Hoarder extends JavaPlugin {
         }
 
         FileManager.generateFolder("guis");
-        FileManager fileManager = new FileManager("guis/main.yml");
-        fileManager.generateFile();
+        FileManager fileManager = new FileManager("guis/treasure.yml");
+        fileManager.generateYamlFile();
 
         getCommand("hoardertwo").setExecutor(new CommandManager(this));
 
         getServer().getPluginManager().registerEvents(new Listeners(this), this);
 
 
+
+
+        this.dataManager = Settings.getDataManger();
+        //dataManager.addTreasureItem("paper", 30, new ItemStack(Material.PAPER));
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if (Settings.getStorageType() == StorageType.MYSQL || Settings.getStorageType() == StorageType.SQLITE) {
+            dataManager.closeConnection();
+        }
     }
 
     public static Hoarder getInstance() {

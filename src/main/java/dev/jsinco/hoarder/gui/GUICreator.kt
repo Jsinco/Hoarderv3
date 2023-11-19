@@ -1,29 +1,27 @@
 package dev.jsinco.hoarder.gui
 
-import dev.jsinco.hoarder.manager.FileManager
 import dev.jsinco.hoarder.Util
 import dev.jsinco.hoarder.gui.enums.GUIType
-import dev.jsinco.hoarder.objects.HoarderPlayer
+import dev.jsinco.hoarder.manager.FileManager
 import dev.jsinco.hoarder.manager.Settings
+import dev.jsinco.hoarder.objects.HoarderPlayer
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 class GUICreator (val path: String) : InventoryHolder {
 
     val file = FileManager(path).getFileYaml()
     val title: String = Util.fullColor(file.getString("title")!!)
     val size: Int = file.getInt("size")
-    val paginatedGUI: Optional<PaginatedGUI> = setGuiSpecifics()
 
-    private val gui: Inventory = Bukkit.createInventory(this, size, title)
-    private val itemsList: MutableList<GUIItem> = mutableListOf()
+    val gui: Inventory = Bukkit.createInventory(this, size, title)
+    val itemsList: MutableList<GUIItem> = mutableListOf()
 
-    private val guiType = GUIType.valueOf(file.getString("gui-type")?.uppercase() ?: "OTHER")
+    val guiType = GUIType.valueOf(file.getString("gui-type")?.uppercase() ?: "OTHER")
 
     init {
         val itemKeyPaths = file.getConfigurationSection("items")!!.getKeys(false)
@@ -33,8 +31,8 @@ class GUICreator (val path: String) : InventoryHolder {
 
         for (guiItem in itemsList) {
             if (guiItem.multiSlotted) {
-                for (i in 0..guiItem.getSlots().size) {
-                    gui.setItem(guiItem.getSlots()[i], guiItem.getItemStack())
+                for (slot in guiItem.getSlots()) {
+                    gui.setItem(slot, guiItem.getItemStack())
                 }
             } else {
                 gui.setItem(guiItem.getSlot(), guiItem.getItemStack())
@@ -43,21 +41,29 @@ class GUICreator (val path: String) : InventoryHolder {
     }
 
 
-    fun setGuiSpecifics(): Optional<PaginatedGUI> {
-        val dynamicItemsFile = FileManager("guis/dynamicitems.yml").generateFile()
+    override fun getInventory(): Inventory {
+        return gui
+    }
+
+    // Hopefully no exceptions
+    val paginatedGUI: PaginatedGUI? = setGuiSpecifics()
+
+    fun setGuiSpecifics(): PaginatedGUI? {
+        val dynamicItemsFile = FileManager("guis/dynamicitems.yml").generateYamlFile()
         when (guiType) {
             GUIType.MAIN -> { // FIXME: items need to set placeholders
                 // We can use our GuiItem class for these dynamic items
                 // TODO: Add runnable for clock!
-                val eventItem = GUIItem(dynamicItemsFile, "active_item")
-                val clock = GUIItem(dynamicItemsFile, "clock")
+
+                val eventItem = GUIItem(dynamicItemsFile, "items.active_item")
+                val clock = GUIItem(dynamicItemsFile, "items.clock")
 
                 gui.setItem(eventItem.getSlot(), eventItem.getItemStack())
                 gui.setItem(clock.getSlot(), clock.getItemStack())
             }
 
             GUIType.TREASURE -> {
-                val treasureItems = Settings.getDataManger().getAllTreasureItems() ?: return Optional.empty()
+                val treasureItems = Settings.getDataManger().getAllTreasureItems() ?: return null
 
                 val items: MutableList<ItemStack> = mutableListOf()
 
@@ -66,14 +72,15 @@ class GUICreator (val path: String) : InventoryHolder {
                     val meta = item.itemMeta!!
 
                     val lore = meta.lore ?: emptyList<String?>().toMutableList()
-                    for (string in dynamicItemsFile.getStringList("treasure.lore")) {
+                    for (string in dynamicItemsFile.getStringList("items.treasure.lore")) {
                         lore.add(Util.fullColor(string.replace("%chance%", treasureItem.weight.toString())))
                     }
                     meta.lore = lore
                     item.itemMeta = meta
                     items.add(item)
                 }
-                return Optional.of(PaginatedGUI(title, gui, items))
+
+                return PaginatedGUI(title, gui, items)
             }
 
             GUIType.STATS -> {
@@ -101,15 +108,13 @@ class GUICreator (val path: String) : InventoryHolder {
                     item.itemMeta = meta
                     playerHeads.add(GUIItem.setPlayerHead(item, uuid))
                 }
-                return Optional.of(PaginatedGUI(title, gui, playerHeads))
+                return PaginatedGUI(title, gui, playerHeads)
             }
-            else -> return Optional.empty()
+            else -> return null
         }
-        return Optional.empty()
+        return null
     }
 
-    override fun getInventory(): Inventory {
-        return gui
-    }
+
 
 }

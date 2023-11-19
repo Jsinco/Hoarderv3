@@ -23,7 +23,12 @@ class FileManager(val fileName: String) {
     private val yamlConfiguration: YamlConfiguration = YamlConfiguration.loadConfiguration(file)
 
 
-    fun generateFile(): YamlConfiguration {
+    fun generateYamlFile(): YamlConfiguration {
+        generateFile()
+        return getFileYaml()
+    }
+
+    fun generateFile() {
         try {
             if (!file.exists()) {
                 file.createNewFile()
@@ -43,10 +48,8 @@ class FileManager(val fileName: String) {
                 }
             }
         } catch (ex: IOException) {
-            plugin.logger.warning("Couldnt save file: ${file.name} \n $ex")
+            plugin.logger.warning("Could not generate file: ${file.name} \n $ex")
         }
-
-        return getFileYaml()
     }
 
     fun getFileYaml(): YamlConfiguration {

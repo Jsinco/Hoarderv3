@@ -2,7 +2,7 @@
 # Dynamic items are items that change depending on certain properties of the current Hoarder event
 
 # Not every part of dynamic items will be editable due to how they work.
-#
+# You cannot add any dynamic items. Only the ones listed below are available.
 
 items:
   # VALUES FOR ACTIVE_ITEM: %material% - The material of the item formatted
@@ -30,3 +30,8 @@ items:
     lore: ['%name% has %points% points!']
     enchanted: false
 
+  claim_prize:
+    string-matched-materials: 'CONCRETE_POWDER'
+    name: 'Claim Prize'
+    lore: ['Click to claim your prize!']
+    enchanted: true

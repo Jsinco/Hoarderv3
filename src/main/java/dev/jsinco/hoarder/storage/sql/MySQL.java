@@ -32,7 +32,7 @@ public class MySQL extends Database {
                 connection = DriverManager.getConnection(address, username, password);
             }
         } catch (SQLException e) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to connect to MySQL database!", e);
+            plugin.getLogger().log(Level.SEVERE, "Failed to connect to MySQL database! (Did you configure it correctly?)", e);
         }
         return connection;
     }

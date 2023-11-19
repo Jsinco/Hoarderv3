@@ -4,6 +4,7 @@ import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.Util
 import dev.jsinco.hoarder.commands.SubCommand
 import dev.jsinco.hoarder.gui.GUICreator
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.io.File
@@ -12,19 +13,24 @@ class OpenGUICommand : SubCommand {
     override fun execute(plugin: Hoarder, sender: CommandSender, args: Array<out String>) {
         sender as Player
         if (args.size < 2) return
-        val path = "guis/${args[1]}"
+        val path = "guis/${args[1]}.yml"
         val guiCreator = GUICreator(path)
 
         val paginated = guiCreator.setGuiSpecifics()
-        if (paginated.isPresent) {
-            sender.openInventory(paginated.get().getPage(0))
+        if (paginated != null) {
+            sender.openInventory(paginated.getPage(0))
+        } else {
+            sender.openInventory(guiCreator.inventory)
         }
-        sender.openInventory(guiCreator.inventory)
+
     }
 
     override fun tabComplete(plugin: Hoarder, sender: CommandSender, args: Array<out String>): MutableList<String>? {
-
-        return Util.listFilesForFolder(File(plugin.dataFolder, "guis")).map { it.name }.toMutableList()
+        val list =  Util.listFilesForFolder(File(plugin.dataFolder, "guis")).map { it.name
+            .replace(".yml", "")
+        }.toMutableList()
+        list.remove("dynamicitems")
+        return list
     }
 
     override fun permission(): String? {

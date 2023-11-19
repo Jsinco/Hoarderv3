@@ -10,9 +10,8 @@ import java.util.*
  * Hoarder representation of a player that can interact with the database
  * @param uuid The UUID of the player
  */
-class HoarderPlayer (
-    val uuid: String
-) {
+class HoarderPlayer (val uuid: String) {
+
     companion object {
         val dataManager: DataManager = Settings.getDataManger()
     }

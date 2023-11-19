@@ -25,7 +25,7 @@ public class SQLite extends Database {
             try {
                 dbFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                plugin.getLogger().log(Level.SEVERE, "Failed to create SQLite database file!", e);
             }
         }
 

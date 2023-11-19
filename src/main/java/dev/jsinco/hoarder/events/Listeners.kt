@@ -19,6 +19,8 @@ class Listeners(private val plugin: Hoarder) : Listener {
 
         val clickedItem = event.currentItem ?: return
         val actionString = clickedItem.itemMeta?.persistentDataContainer?.get(NamespacedKey(plugin, "action"), PersistentDataType.STRING) ?: return
+
+        if (actionString == "NONE") return
         val parsedAction = Action.parseStringAction(actionString)
 
         parsedAction.first.executeAction(parsedAction.second, event.whoClicked as Player)

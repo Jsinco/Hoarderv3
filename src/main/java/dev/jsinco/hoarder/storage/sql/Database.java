@@ -3,17 +3,20 @@ package dev.jsinco.hoarder.storage.sql;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import dev.jsinco.hoarder.Hoarder;
+import dev.jsinco.hoarder.manager.FileManager;
 import dev.jsinco.hoarder.objects.HoarderPlayer;
 import dev.jsinco.hoarder.objects.TreasureItem;
 import dev.jsinco.hoarder.storage.DataManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -356,12 +359,14 @@ public abstract class Database implements DataManager {
                 String columnName = resultSet.getMetaData().getColumnName(i);
                 PreparedStatement pS = getConnection().prepareStatement("SELECT * FROM " + prefix +"treasure_items WHERE " + columnName + ";");
                 ResultSet rs = pS.executeQuery();
-                statement.close();
 
-                String id = resultSet.getString("identifier");
-                int weight = resultSet.getInt("weight");
-                ItemStack itemStack = ItemStack.deserialize(gson.fromJson(resultSet.getString("itemstack"), Map.class));
+                if (!rs.next()) continue;
 
+                String id = rs.getString("identifier");
+                int weight = rs.getInt("weight");
+                ItemStack itemStack = ItemStack.deserialize(gson.fromJson(rs.getString("itemstack"), Map.class));
+
+                pS.close();
                 treasureItems.add(new TreasureItem(id, weight, itemStack));
             }
             statement.close();
@@ -372,6 +377,32 @@ public abstract class Database implements DataManager {
         }
     }
 
+    // SQL/File
 
+    @NotNull
+    @Override
+    public Connection getSQLConnection() {
+        return getConnection();
+    }
 
+    @Override
+    public void closeConnection() {
+        try {
+            getConnection().close();
+            plugin.getLogger().log(Level.INFO, "Successfully closed connection to database");
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to close connection to database", e);
+        }
+    }
+
+    @NotNull
+    @Override
+    public FileManager getFile() {
+        throw new UnsupportedOperationException("SQL does not support this method! It is meant for flatfile usage!");
+    }
+
+    @Override
+    public void saveFile() {
+        throw new UnsupportedOperationException("SQL does not support this method! It is meant for flatfile usage!");
+    }
 }

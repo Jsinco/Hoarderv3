@@ -18,16 +18,30 @@ repositories {
         url = "https://oss.sonatype.org/content/groups/public/"
     }
     maven {
+        name = "jitpack"
+        url = "https://jitpack.io"
+    }
+    maven {
         name = "iridiumdevelopment"
         url = "https://nexus.iridiumdevelopment.net/repository/maven-releases/"
+    }
+    maven {
+        name = "playerpoints"
+        url = 'https://repo.rosewooddev.io/repository/public/'
+    }
+    maven {
+        name = "placeholderapi"
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
 }
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT"
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+    compileOnly "org.black_ixx:playerpoints:3.2.5"
+    compileOnly "me.clip:placeholderapi:2.11.3"
 
     implementation("org.xerial:sqlite-jdbc:3.42.0.0")
-    implementation("org.json:json:20170516")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "com.iridium:IridiumColorAPI:1.0.6"
 }

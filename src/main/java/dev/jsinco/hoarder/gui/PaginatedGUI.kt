@@ -37,7 +37,7 @@ class PaginatedGUI (
     }
 
     private fun newPage(): Inventory {
-        val inventory: Inventory = Bukkit.createInventory(null, base.size, Util.fullColor(name))
+        val inventory: Inventory = Bukkit.createInventory(base.holder, base.size, Util.fullColor(name))
         for (i in 0 until base.size) {
             inventory.setItem(i, base.getItem(i))
         }

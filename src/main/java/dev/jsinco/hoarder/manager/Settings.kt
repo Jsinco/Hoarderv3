@@ -44,6 +44,10 @@ object Settings {
     }
 
     fun reloadDataManager() {
+        if (dataManager != null && (dataManager is MySQL || dataManager is SQLite)) {
+            dataManager?.closeConnection()
+        }
+
         dataManager = when (getStorageType()) {
             StorageType.MYSQL -> MySQL(plugin)
             StorageType.SQLITE -> SQLite(plugin)

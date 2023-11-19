@@ -1,0 +1,23 @@
+title: 'Example GUI'
+size: 27
+gui-type: OTHER
+
+# Example GUI. With Hoarder, you can make your own custom guis and have them be viewed by running [OPEN] guis/<your_gui>.yml
+# This gui has a type of 'OTHER' which means no dynamic items will be added to it, and it is just a standalone GUI
+# If you choose to make multiple types of other guis such as TREASURE or STATS, they will have their dynamic items added to them, attributes, etc.
+
+# As listed in Info.md, here are all the gui types:
+# MAIN - The main gui of Hoarder that shows the active material and remaining time
+# TREASURE - The gui that shows the treasure items
+# STATS - The gui that shows the stats of the players currently in the Hoarder event
+# CLAIM_TREASURE - The gui that shows claimable treasure items the player can click to claim
+# OTHER - Any other gui that you can open with [OPEN] guis/<your_gui>.yml
+
+items:
+  random_grass:
+    slot: 13
+    action: '[MESSAGE] You clicked a random grass block'
+    material: GRASS_BLOCK
+    name: 'Random Grass'
+    lore: ['Click to get a random grass block!']
+    enchanted: false

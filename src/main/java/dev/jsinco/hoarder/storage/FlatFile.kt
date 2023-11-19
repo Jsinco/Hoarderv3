@@ -6,6 +6,7 @@ import dev.jsinco.hoarder.objects.HoarderPlayer
 import dev.jsinco.hoarder.objects.TreasureItem
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import java.sql.Connection
 
 class FlatFile (val plugin: Hoarder) : DataManager {
     val fileManager = FileManager("${plugin.config.getString("storage.database") ?: "data"}.yml")
@@ -118,5 +119,23 @@ class FlatFile (val plugin: Hoarder) : DataManager {
             )
         }
         return treasureItems
+    }
+
+    // SQL / File
+
+    override fun getSQLConnection(): Connection {
+        throw UnsupportedOperationException("Flatfile does not support SQL! This method is meant for database calls!")
+    }
+
+    override fun closeConnection() {
+        throw UnsupportedOperationException("Flatfile does not support SQL! This method is meant for database calls!")
+    }
+
+    override fun getFile(): FileManager {
+        return fileManager
+    }
+
+    override fun saveFile() {
+        fileManager.saveFileYaml()
     }
 }

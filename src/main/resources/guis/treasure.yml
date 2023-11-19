@@ -1,0 +1,40 @@
+title: '<GRADIENT:fb7f4a>&lTreasure</GRADIENT:642ffd>'
+size: 54
+gui-type: TREASURE
+
+# Treasure gui-type ALWAYS includes the dynamic item 'treasure' which is used to display the treasure items
+# The dynamic item will fill any empty slots in the gui
+
+# Treasure gui-type is a paginated gui and thus has extra actions and item attributes
+# hide-if-page-not-available: If true, the item will not be shown if the next/previous page does not exist
+# [BACK_PAGE]: Goes to the previous page, if available
+# [NEXT_PAGE]: Goes to the next page, if available
+
+items:
+  border:
+    slot: [45, 46, 47, 51, 52, 53]
+    material: LIGHT_GRAY_STAINED_GLASS_PANE
+    name: ' '
+    lore: []
+    enchanted: false
+  back_arrow:
+    slot: 48
+    action: '[BACK_PAGE]'
+    material: ARROW
+    name: 'Previous Page'
+    lore: []
+    enchanted: false
+  next_arrow:
+    slot: 50
+    action: '[NEXT_PAGE]'
+    material: ARROW
+    name: 'Next Page'
+    lore: []
+    enchanted: false
+  return_chest:
+    slot: 49
+    action: '[OPEN] guis/main.yml'
+    material: CHEST
+    name: 'Return'
+    lore: ['Click to go back to the Hoarder']
+    enchanted: false

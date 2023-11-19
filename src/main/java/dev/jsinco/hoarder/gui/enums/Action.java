@@ -1,6 +1,7 @@
 package dev.jsinco.hoarder.gui.enums;
 
 import dev.jsinco.hoarder.gui.GUICreator;
+import dev.jsinco.hoarder.gui.PaginatedGUI;
 import kotlin.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -11,7 +12,9 @@ public enum Action {
     OPEN,
     COMMAND,
     CLOSE,
-    MESSAGE;
+    MESSAGE,
+    BACK_PAGE,
+    NEXT_PAGE;
 
     public boolean executeAction(String string, Player player) {
         switch (this) {
@@ -32,6 +35,24 @@ public enum Action {
             case CLOSE -> player.closeInventory();
 
             case MESSAGE -> player.sendMessage(string);
+
+            case BACK_PAGE -> {
+                GUICreator guiCreator = (GUICreator) player.getOpenInventory().getTopInventory().getHolder();
+                PaginatedGUI paginatedGUI = guiCreator.getPaginatedGUI();
+
+                if (paginatedGUI == null) return false;
+
+                player.openInventory(paginatedGUI.getPage(paginatedGUI.indexOf(player.getOpenInventory().getTopInventory()) - 1));
+            }
+
+            case NEXT_PAGE -> {
+                GUICreator guiCreator = (GUICreator) player.getOpenInventory().getTopInventory().getHolder();
+                PaginatedGUI paginatedGUI = guiCreator.getPaginatedGUI();
+
+                if (paginatedGUI == null) return false;
+
+                player.openInventory(paginatedGUI.getPage(paginatedGUI.indexOf(player.getOpenInventory().getTopInventory()) + 1));
+            }
 
             default -> {
                 return false;

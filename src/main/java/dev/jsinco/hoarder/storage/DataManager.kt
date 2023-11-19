@@ -1,9 +1,11 @@
 package dev.jsinco.hoarder.storage
 
+import dev.jsinco.hoarder.manager.FileManager
 import dev.jsinco.hoarder.objects.HoarderPlayer
 import dev.jsinco.hoarder.objects.TreasureItem
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import java.sql.Connection
 
 interface DataManager {
 
@@ -95,4 +97,14 @@ interface DataManager {
      * @return A list of all TreasureItem objects
      */
     fun getAllTreasureItems(): List<TreasureItem>?
+
+    // SQL / File
+
+    fun getSQLConnection(): Connection
+
+    fun getFile(): FileManager
+
+    fun closeConnection()
+
+    fun saveFile()
 }

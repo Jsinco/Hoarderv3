@@ -2,12 +2,6 @@ title: '&#fb7f4a&lT&#ea765e&lh&#d96d72&le &#c96486&lH&#b85b9a&lo&#a753ad&la&#964
 size: 45
 gui-type: MAIN
 
-gui-specifics:
-  active_item:
-    slot: 31
-  clock:
-    slot: 36
-
 items:
   stats:
     slot: 0
