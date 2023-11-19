@@ -2,11 +2,14 @@ package dev.jsinco.hoarder;
 
 import dev.jsinco.hoarder.commands.CommandManager;
 import dev.jsinco.hoarder.events.Listeners;
+import dev.jsinco.hoarder.manager.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Hoarder extends JavaPlugin {
 
     private static Hoarder plugin;
+    //SQLite sqLite = new SQLite(this);
+
 
     @Override
     public void onEnable() {
@@ -22,6 +25,8 @@ public final class Hoarder extends JavaPlugin {
         getCommand("hoardertwo").setExecutor(new CommandManager(this));
 
         getServer().getPluginManager().registerEvents(new Listeners(this), this);
+
+
     }
 
     @Override

@@ -29,13 +29,9 @@ public enum Action {
                 Bukkit.dispatchCommand(sender, string);
             }
 
-            case CLOSE -> {
-                player.closeInventory();
-            }
+            case CLOSE -> player.closeInventory();
 
-            case MESSAGE -> {
-                player.sendMessage(string);
-            }
+            case MESSAGE -> player.sendMessage(string);
 
             default -> {
                 return false;

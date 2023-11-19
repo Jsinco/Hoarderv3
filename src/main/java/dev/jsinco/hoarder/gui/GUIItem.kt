@@ -2,13 +2,16 @@ package dev.jsinco.hoarder.gui
 
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.Util
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataType
+import java.util.UUID
 
 class GUIItem (val file: YamlConfiguration, val key: String) {
 
@@ -28,7 +31,7 @@ class GUIItem (val file: YamlConfiguration, val key: String) {
     }
 
     fun getItemStack(): ItemStack {
-        val item = ItemStack(Material.valueOf(file.getString("items.$key.material")!!))
+        val item = ItemStack(Material.valueOf(file.getString("items.$key.material")!!.uppercase()))
         val meta = item.itemMeta!!
 
         meta.setDisplayName(Util.fullColor(file.getString("items.$key.name")!!))
@@ -39,5 +42,16 @@ class GUIItem (val file: YamlConfiguration, val key: String) {
 
         item.itemMeta = meta
         return item
+    }
+
+
+    companion object {
+        fun setPlayerHead(itemStack: ItemStack, uuid: String): ItemStack {
+            if (itemStack.type != Material.PLAYER_HEAD) return itemStack
+            val meta: SkullMeta = itemStack.itemMeta as SkullMeta
+            meta.owningPlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid))
+            itemStack.itemMeta = meta
+            return itemStack
+        }
     }
 }

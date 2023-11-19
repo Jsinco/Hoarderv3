@@ -5,10 +5,12 @@
 #
 
 items:
+  # VALUES FOR ACTIVE_ITEM: %material% - The material of the item formatted
+  # %sell_price% - The price that the hoarder will buy the item for if enabled
   active_item:
     slot: 31
     action: '[SELL]'
-    name: 'Sell: %fill%'
+    name: 'Sell: %material%'
     lore: [ 'Click to sell to the hoarder!' ]
     enchanted: true
   clock:
@@ -16,7 +18,15 @@ items:
     material: CLOCK
     name: 'Remaining time'
     enchanted: false
+
+  # VALUES FOR TREASURE: %chance% - the weighted chance of the item
   treasure: # Represents each treasure item that the hoarder has to offer
-    lore: ['Chance: %fill%']
+    lore: ['', 'Chance: %chance%']
+  # VALUES FOR STATS: %name% - The player's name
+  # %points% - The player's points
   stats:
+    material: PLAYER_HEAD
+    name: '%name%'
+    lore: ['%name% has %points% points!']
+    enchanted: false
 

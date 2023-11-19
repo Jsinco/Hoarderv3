@@ -2,11 +2,16 @@ package dev.jsinco.hoarder
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI
 import org.bukkit.ChatColor
+import org.bukkit.Material
 import java.io.File
 
 object Util {
 
     private const val WITH_DELIMITER = "((?<=%1\$s)|(?=%1\$s))"
+
+
+    // Text coloring
+
 
     /**
      * @param text The string of text to apply color/effects to
@@ -34,7 +39,6 @@ object Util {
         }
         return finalText.toString()
     }
-
     @JvmStatic
     fun colorcode(list: List<String>): List<String> {
         val coloredList: MutableList<String> = ArrayList()
@@ -43,7 +47,6 @@ object Util {
         }
         return coloredList
     }
-
     @JvmStatic
     fun fullColor(string: String): String {
         return IridiumColorAPI.process(colorcode(string))

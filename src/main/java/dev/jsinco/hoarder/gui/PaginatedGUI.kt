@@ -53,29 +53,4 @@ class PaginatedGUI (
     fun indexOf(page: Inventory): Int {
         return pages.indexOf(page)
     }
-
-
-    enum class PageItem {
-        TREASURE,
-        CLAIM_PRIZE,
-        STATISTIC;
-
-        fun getItems(): List<ItemStack> {
-            val items: List<ItemStack> = listOf()
-            when (this) {
-                TREASURE -> {
-                    // TODO: get all treasure items
-                }
-                CLAIM_PRIZE -> {
-                    // TODO
-                }
-                STATISTIC -> {
-                    //
-                }
-
-                else -> return emptyList()
-            }
-            return items
-        }
-    }
 }

@@ -1,5 +1,6 @@
-package dev.jsinco.hoarder
+package dev.jsinco.hoarder.manager
 
+import dev.jsinco.hoarder.Hoarder
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.io.IOException
@@ -22,29 +23,30 @@ class FileManager(val fileName: String) {
     private val yamlConfiguration: YamlConfiguration = YamlConfiguration.loadConfiguration(file)
 
 
-    fun generateFile(): Boolean {
-        var returnValue = false
+    fun generateFile(): YamlConfiguration {
         try {
             if (!file.exists()) {
                 file.createNewFile()
 
+
                 val inputStream = plugin.getResource(fileName)
-                val outputStream = Files.newOutputStream(file.toPath())
-                val buffer = ByteArray(1024)
-                var bytesRead: Int
-                while (inputStream!!.read(buffer).also { bytesRead = it } != -1) {
-                    outputStream.write(buffer, 0, bytesRead)
+                if (inputStream != null) {
+                    val outputStream = Files.newOutputStream(file.toPath())
+                    val buffer = ByteArray(1024)
+                    var bytesRead: Int
+                    while (inputStream!!.read(buffer).also { bytesRead = it } != -1) {
+                        outputStream.write(buffer, 0, bytesRead)
+                    }
+                    inputStream.close()
+                    outputStream.flush()
+                    outputStream.close()
                 }
-                inputStream.close()
-                outputStream.flush()
-                outputStream.close()
-                returnValue = true
             }
         } catch (ex: IOException) {
             plugin.logger.warning("Couldnt save file: ${file.name} \n $ex")
-            returnValue = false
         }
-        return returnValue
+
+        return getFileYaml()
     }
 
     fun getFileYaml(): YamlConfiguration {

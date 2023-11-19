@@ -1,6 +1,5 @@
 package dev.jsinco.hoarder.commands.subcommands
 
-import dev.jsinco.hoarder.FileManager
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.Util
 import dev.jsinco.hoarder.commands.SubCommand
@@ -15,6 +14,11 @@ class OpenGUICommand : SubCommand {
         if (args.size < 2) return
         val path = "guis/${args[1]}"
         val guiCreator = GUICreator(path)
+
+        val paginated = guiCreator.setGuiSpecifics()
+        if (paginated.isPresent) {
+            sender.openInventory(paginated.get().getPage(0))
+        }
         sender.openInventory(guiCreator.inventory)
     }
 

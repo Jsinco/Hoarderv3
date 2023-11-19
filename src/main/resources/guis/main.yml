@@ -5,16 +5,8 @@ gui-type: MAIN
 gui-specifics:
   active_item:
     slot: 31
-    action: '[SELL]'
-    name: 'Sell: %fill%'
-    lore: [ 'Click to sell to the hoarder!' ]
-    enchanted: true
   clock:
     slot: 36
-    material: CLOCK
-    name: 'Remaining time'
-    lore: ['%fill%']
-    enchanted: false
 
 items:
   stats:
