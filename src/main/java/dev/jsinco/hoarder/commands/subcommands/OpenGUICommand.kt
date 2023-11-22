@@ -16,13 +16,13 @@ class OpenGUICommand : SubCommand {
         val path = "guis/${args[1]}.yml"
         val guiCreator = GUICreator(path)
 
-        val paginated = guiCreator.setGuiSpecifics()
+        guiCreator.setGuiSpecifics()
+        val paginated = guiCreator.paginatedGUI
         if (paginated != null) {
             sender.openInventory(paginated.getPage(0))
         } else {
             sender.openInventory(guiCreator.inventory)
         }
-
     }
 
     override fun tabComplete(plugin: Hoarder, sender: CommandSender, args: Array<out String>): MutableList<String>? {

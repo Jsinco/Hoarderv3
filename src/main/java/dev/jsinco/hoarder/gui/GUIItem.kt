@@ -3,6 +3,7 @@ package dev.jsinco.hoarder.gui
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.Util
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.YamlConfiguration
@@ -34,9 +35,10 @@ class GUIItem (val file: YamlConfiguration, val key: String) {
         val item = ItemStack(Material.valueOf(file.getString("items.$key.material")!!.uppercase()))
         val meta = item.itemMeta!!
 
-        meta.setDisplayName(Util.fullColor(file.getString("items.$key.name")!!))
-        meta.lore = Util.fullColor(file.getStringList("items.$key.lore"))
+        if (file.get("items.$key.name") != null) meta.setDisplayName(Util.fullColor(file.getString("items.$key.name")!!))
+        if (file.get("items.$key.lore") != null) meta.lore = Util.fullColor(file.getStringList("items.$key.lore"))
         if (file.getBoolean("items.$key.enchanted")) meta.addEnchant(Enchantment.DURABILITY, 1, true)
+
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES)
         meta.persistentDataContainer.set(NamespacedKey(plugin, "action"), PersistentDataType.STRING, file.getString("items.$key.action") ?: "NONE")
 

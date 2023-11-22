@@ -6,6 +6,7 @@ import dev.jsinco.hoarder.storage.FlatFile
 import dev.jsinco.hoarder.storage.StorageType
 import dev.jsinco.hoarder.storage.sql.MySQL
 import dev.jsinco.hoarder.storage.sql.SQLite
+import org.bukkit.Bukkit
 
 
 object Settings {
@@ -32,6 +33,17 @@ object Settings {
     fun getStorageType(): StorageType {
         return StorageType.valueOf(plugin.config.getString("storage.type")?.uppercase() ?: "SQLITE")
     }
+
+    fun usingEconomy(): Boolean {
+        return plugin.config.getBoolean("economy.enabled")
+    }
+
+    fun getEconomyProvider(): PluginHooks.EconomyProviders {
+        return PluginHooks.EconomyProviders.valueOf(plugin.config.getString("economy.provider")?.uppercase() ?: "VAULT")
+    }
+
+
+
 
 
 

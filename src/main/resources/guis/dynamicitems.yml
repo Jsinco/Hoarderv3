@@ -5,12 +5,14 @@
 # You cannot add any dynamic items. Only the ones listed below are available.
 
 items:
-  # VALUES FOR ACTIVE_ITEM: %material% - The material of the item formatted
+  # VALUES FOR ACTIVE_ITEM: %material% - The enum constant of the material
+  # %material_formatted% - The formatted name of the material
   # %sell_price% - The price that the hoarder will buy the item for if enabled
   active_item:
     slot: 31
     action: '[SELL]'
-    name: 'Sell: %material%'
+    name: 'Sell: %material_formatted%'
+    material: '%material%'
     lore: [ 'Click to sell to the hoarder!' ]
     enchanted: true
   clock:

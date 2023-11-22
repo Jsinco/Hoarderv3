@@ -16,31 +16,31 @@ class FlatFile (val plugin: Hoarder) : DataManager {
     // Event data
 
     override fun setEventEndTime(time: Long) {
-        file.set("data.endtime", time)
+        file.set("data.main.endtime", time)
         fileManager.saveFileYaml()
     }
 
     override fun getEventEndTime(): Long {
-        return file.getLong("data.endtime")
+        return file.getLong("data.main.endtime")
     }
 
 
     override fun setEventMaterial(material: Material) {
-        file.set("data.material", material)
+        file.set("data.main.material", material)
         fileManager.saveFileYaml()
     }
 
     override fun getEventMaterial(): Material {
-        return Material.valueOf(file.getString("data.material") ?: "AIR")
+        return Material.valueOf(file.getString("data.main.material") ?: "AIR")
     }
 
     override fun setEventSellPrice(price: Double) {
-        file.set("data.sellprice", price)
+        file.set("data.main.sellprice", price)
         fileManager.saveFileYaml()
     }
 
     override fun getEventSellPrice(): Double {
-        return file.getDouble("data.sellprice")
+        return file.getDouble("data.main.sellprice")
     }
 
     // Hoarder Players

@@ -3,7 +3,10 @@ package dev.jsinco.hoarder
 import com.iridium.iridiumcolorapi.IridiumColorAPI
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 object Util {
 
@@ -69,5 +72,19 @@ object Util {
             }
         }
         return files
+    }
+
+    fun formatMaterialName(material: Material): String {
+        var name = material.toString().lowercase(Locale.getDefault()).replace("_", " ")
+        name = name.substring(0, 1).uppercase(Locale.getDefault()) + name.substring(1)
+        for (i in name.indices) {
+            if (name[i] == ' ') {
+                name =
+                    name.substring(0, i) + " " + name[i + 1].toString().uppercase(Locale.getDefault()) + name.substring(
+                        i + 2
+                    ) // Capitalize first letter of each word
+            }
+        }
+        return name
     }
 }

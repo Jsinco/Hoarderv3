@@ -1,5 +1,6 @@
 package dev.jsinco.hoarder.gui
 
+import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.Util
 import dev.jsinco.hoarder.gui.enums.GUIType
 import dev.jsinco.hoarder.manager.FileManager
@@ -7,12 +8,16 @@ import dev.jsinco.hoarder.manager.Settings
 import dev.jsinco.hoarder.objects.HoarderPlayer
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 
 class GUICreator (val path: String) : InventoryHolder {
+
+    private val plugin: Hoarder = Hoarder.getInstance()
 
     val file = FileManager(path).getFileYaml()
     val title: String = Util.fullColor(file.getString("title")!!)
@@ -46,24 +51,32 @@ class GUICreator (val path: String) : InventoryHolder {
     }
 
     // Hopefully no exceptions
-    val paginatedGUI: PaginatedGUI? = setGuiSpecifics()
+    var paginatedGUI: PaginatedGUI? = null
 
-    fun setGuiSpecifics(): PaginatedGUI? {
+
+
+
+    // FIXME: probably redo/edit this
+    fun setGuiSpecifics() {
         val dynamicItemsFile = FileManager("guis/dynamicitems.yml").generateYamlFile()
         when (guiType) {
             GUIType.MAIN -> { // FIXME: items need to set placeholders
                 // We can use our GuiItem class for these dynamic items
-                // TODO: Add runnable for clock!
+                // TODO: Add runnable for clock
 
-                val eventItem = GUIItem(dynamicItemsFile, "items.active_item")
-                val clock = GUIItem(dynamicItemsFile, "items.clock")
+                val activeItem = ItemStack(Material.valueOf(setMainGUIStrings(dynamicItemsFile.getString("items.active_item.material")!!)))
+                val activeMeta = activeItem.itemMeta!!
 
-                gui.setItem(eventItem.getSlot(), eventItem.getItemStack())
-                gui.setItem(clock.getSlot(), clock.getItemStack())
+                activeMeta.setDisplayName(setMainGUIStrings(dynamicItemsFile.getString("items.active_item.name")!!))
+                activeMeta.lore = setMainGUIStrings(dynamicItemsFile.getStringList("items.active_item.lore"))
+                if (dynamicItemsFile.getBoolean("items.active_item.enchanted")) activeMeta.addEnchant(Enchantment.DURABILITY, 1, true)
+                activeMeta.persistentDataContainer.set(NamespacedKey(plugin, "action") , PersistentDataType.STRING, dynamicItemsFile.getString("items.active_item.action") ?: "NONE")
+                activeItem.itemMeta = activeMeta
+                gui.setItem(dynamicItemsFile.getInt("items.active_item.slot"), activeItem)
             }
 
             GUIType.TREASURE -> {
-                val treasureItems = Settings.getDataManger().getAllTreasureItems() ?: return null
+                val treasureItems = Settings.getDataManger().getAllTreasureItems() ?: return
 
                 val items: MutableList<ItemStack> = mutableListOf()
 
@@ -80,7 +93,7 @@ class GUICreator (val path: String) : InventoryHolder {
                     items.add(item)
                 }
 
-                return PaginatedGUI(title, gui, items)
+                paginatedGUI = PaginatedGUI(title, gui, items)
             }
 
             GUIType.STATS -> {
@@ -108,13 +121,30 @@ class GUICreator (val path: String) : InventoryHolder {
                     item.itemMeta = meta
                     playerHeads.add(GUIItem.setPlayerHead(item, uuid))
                 }
-                return PaginatedGUI(title, gui, playerHeads)
+                paginatedGUI = PaginatedGUI(title, gui, playerHeads)
             }
-            else -> return null
+            else -> {}
         }
-        return null
     }
 
+    val material = Settings.getDataManger().getEventMaterial()
+    val sellprice = Settings.getDataManger().getEventSellPrice()
+    private fun setMainGUIStrings(string: String): String {
+        return Util.fullColor(
+            string.replace("%material%", material.toString())
+                .replace("%material_formatted%", Util.formatMaterialName(material))
+                .replace("%sell_price%", sellprice.toString())
+        )
+    }
 
+    private fun setMainGUIStrings(list: List<String>): List<String> {
+        return Util.fullColor(
+            list.map {
+                it.replace("%material%", material.toString())
+                    .replace("%material_formatted%", Util.formatMaterialName(material))
+                    .replace("%sell_price%", sellprice.toString())
+            }
+        )
+    }
 
 }

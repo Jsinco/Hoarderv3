@@ -19,7 +19,7 @@ class FileManager(val fileName: String) {
         }
     }
 
-    var file: File = File(plugin.dataFolder, fileName)
+    val file: File = File(plugin.dataFolder, fileName)
     private val yamlConfiguration: YamlConfiguration = YamlConfiguration.loadConfiguration(file)
 
 
@@ -33,13 +33,12 @@ class FileManager(val fileName: String) {
             if (!file.exists()) {
                 file.createNewFile()
 
-
                 val inputStream = plugin.getResource(fileName)
                 if (inputStream != null) {
                     val outputStream = Files.newOutputStream(file.toPath())
                     val buffer = ByteArray(1024)
                     var bytesRead: Int
-                    while (inputStream!!.read(buffer).also { bytesRead = it } != -1) {
+                    while (inputStream.read(buffer).also { bytesRead = it } != -1) {
                         outputStream.write(buffer, 0, bytesRead)
                     }
                     inputStream.close()

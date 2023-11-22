@@ -20,7 +20,13 @@ public enum Action {
         switch (this) {
             case OPEN -> {
                 GUICreator guiCreator = new GUICreator(string);
-                player.openInventory(guiCreator.getInventory());
+                guiCreator.setGuiSpecifics();
+
+                if (guiCreator.getPaginatedGUI() != null) {
+                    player.openInventory(guiCreator.getPaginatedGUI().getPage(0));
+                } else {
+                    player.openInventory(guiCreator.getInventory());
+                }
             }
 
             case COMMAND -> {

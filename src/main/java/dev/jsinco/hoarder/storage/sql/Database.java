@@ -7,6 +7,7 @@ import dev.jsinco.hoarder.manager.FileManager;
 import dev.jsinco.hoarder.objects.HoarderPlayer;
 import dev.jsinco.hoarder.objects.TreasureItem;
 import dev.jsinco.hoarder.storage.DataManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +24,7 @@ import java.util.logging.Level;
 public abstract class Database implements DataManager {
 
     private String prefix;
+    private boolean usingSQLite = false; // Why does SQLite change syntax lol
     private static final Hoarder plugin = Hoarder.getInstance();
 
     public Database() {}
@@ -35,12 +37,15 @@ public abstract class Database implements DataManager {
 
         List<String> initStatements = new ArrayList<>(List.of(
                 "USE " + plugin.getConfig().getString("storage.database") + ";",
-                "CREATE TABLE IF NOT EXISTS " + prefix + "data (endtime LONG, material VARCHAR(500), sellprice DECIMAL(15, 2));",
+                "CREATE TABLE IF NOT EXISTS " + prefix + "data (event VARCHAR(500) PRIMARY KEY, endtime LONG, material VARCHAR(500), sellprice DECIMAL(15, 2));",
                 "CREATE TABLE IF NOT EXISTS " + prefix + "treasure_items (identifier VARCHAR(3072) PRIMARY KEY, weight INT, itemstack VARCHAR(3072));",
-                "CREATE TABLE IF NOT EXISTS " + prefix + "players (uuid VARCHAR(36), points INT, claimabletreasures INT);"
+                "CREATE TABLE IF NOT EXISTS " + prefix + "players (uuid VARCHAR(36) PRIMARY KEY, points INT, claimabletreasures INT);"
         ));
 
-        if (usingSQLite) initStatements.remove(0);
+        if (usingSQLite) {
+            initStatements.remove(0);
+            this.usingSQLite = true;
+        }
         try {
             for (String statement : initStatements) {
                 PreparedStatement preparedStatement = getConnection().prepareStatement(statement);
@@ -60,8 +65,17 @@ public abstract class Database implements DataManager {
     @Override
     public void setEventEndTime(long time) {
         try {
-            PreparedStatement statement = getConnection().prepareStatement("UPDATE " + prefix + "data SET endtime = ?;");
-            statement.setLong(1, time);
+            PreparedStatement statement;
+            if (!usingSQLite) {
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "data (event, endtime) VALUES (?, ?) ON DUPLICATE KEY UPDATE endtime = VALUES(endtime);");
+                statement.setString(1, "main");
+                statement.setLong(2, time);
+            } else {
+                statement = getConnection().prepareStatement("UPDATE " + prefix + "data SET endtime = ?;");
+                statement.setLong(1, time);
+            }
+
+
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -73,7 +87,9 @@ public abstract class Database implements DataManager {
     @Override
     public long getEventEndTime() {
         try {
-            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM " + prefix +"data WHERE endtime;");
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM " + prefix +"data WHERE event = ?;");
+            statement.setString(1, "main");
+
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) return -1;
 
@@ -89,8 +105,15 @@ public abstract class Database implements DataManager {
     @Override
     public void setEventMaterial(@NotNull Material material) {
         try {
-            PreparedStatement statement = getConnection().prepareStatement("UPDATE " + prefix + "data SET material = ?;");
-            statement.setString(1, material.name());
+            PreparedStatement statement;
+            if (!usingSQLite) {
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "data (event, material) VALUES (?, ?) ON DUPLICATE KEY UPDATE material = VALUES(material);");
+            } else {
+                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "data (event, material) VALUES (?, ?);");
+            }
+            statement.setString(1, "main");
+            statement.setString(2, material.name());
+
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -101,8 +124,10 @@ public abstract class Database implements DataManager {
     @NotNull
     @Override
     public Material getEventMaterial() {
+        Bukkit.broadcastMessage("Starting SQL query!");
         try {
-            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM " + prefix + "data WHERE material;");
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM " + prefix + "data WHERE event = ?;");
+            statement.setString(1, "main");
             ResultSet resultSet = statement.executeQuery();
 
 
@@ -110,6 +135,7 @@ public abstract class Database implements DataManager {
 
             Material material = Material.valueOf(resultSet.getString("material"));
             statement.close();
+            Bukkit.broadcastMessage("SQL query finished!");
             return material;
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to get event material in database", e);
@@ -120,8 +146,17 @@ public abstract class Database implements DataManager {
     @Override
     public void setEventSellPrice(double price) {
         try {
-            PreparedStatement statement = getConnection().prepareStatement("UPDATE " + prefix + "data SET sellprice = ?;");
-            statement.setDouble(1, price);
+            PreparedStatement statement;
+            if (!usingSQLite) {
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "data (event, sellprice) VALUES (?, ?) ON DUPLICATE KEY UPDATE sellprice = VALUES(sellprice);");
+                statement.setString(1, "main");
+                statement.setDouble(2, price);
+            } else {
+                statement = getConnection().prepareStatement("UPDATE " + prefix + "data SET sellprice = ?;");
+                statement.setDouble(1, price);
+            }
+
+
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -152,12 +187,23 @@ public abstract class Database implements DataManager {
     // Hoarder players
 
 
-    @Override
+    @Override // FIXME
     public void addPoints(@NotNull String uuid, int amount) {
         try {
-            PreparedStatement statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = points + VALUES(points)");
-            statement.setString(1, uuid);
-            statement.setInt(2, amount);
+            PreparedStatement statement;
+            if (!usingSQLite) {
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = points + VALUES(points)");
+                statement.setString(1, uuid);
+                statement.setInt(2, amount);
+            } else {
+                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points) VALUES (?, COALESCE((SELECT points FROM " + prefix + "players WHERE uuid = ?), 0) + ?);");
+                statement.setString(1, uuid);
+                statement.setString(2, uuid);
+                statement.setInt(3, amount);
+            }
+
+
+
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -165,7 +211,7 @@ public abstract class Database implements DataManager {
         }
     }
 
-    @Override
+    @Override // FIXME
     public void removePoints(@NotNull String uuid, int amount) {
         try { // TODO: if we remove points from a player that hasnt been added to DB yet what will happen with this SQL statement?
             PreparedStatement statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = points - VALUES(points)");
@@ -199,7 +245,7 @@ public abstract class Database implements DataManager {
         }
     }
 
-    @Override
+    @Override // FIXME
     public void addClaimableTreasures(@NotNull String uuid, int amount) {
         try {
             PreparedStatement statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, ?) ON DUPLICATE KEY UPDATE claimabletreasures = claimabletreasures + VALUES(claimabletreasures)");
@@ -212,7 +258,7 @@ public abstract class Database implements DataManager {
         }
     }
 
-    @Override
+    @Override // FIXME
     public void removeClaimableTreasures(@NotNull String uuid, int amount) {
         try {
             PreparedStatement statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, ?) ON DUPLICATE KEY UPDATE claimabletreasures = claimabletreasures - VALUES(claimabletreasures)");
@@ -345,34 +391,28 @@ public abstract class Database implements DataManager {
         return null;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<TreasureItem> getAllTreasureItems() {
         try {
-            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM " + prefix + "treasure_items;");
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM "+prefix+"treasure_items;");
             ResultSet resultSet = statement.executeQuery();
 
             List<TreasureItem> treasureItems = new ArrayList<>();
             Gson gson = new Gson();
-
-            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                String columnName = resultSet.getMetaData().getColumnName(i);
-                PreparedStatement pS = getConnection().prepareStatement("SELECT * FROM " + prefix +"treasure_items WHERE " + columnName + ";");
-                ResultSet rs = pS.executeQuery();
-
-                if (!rs.next()) continue;
-
-                String id = rs.getString("identifier");
-                int weight = rs.getInt("weight");
-                ItemStack itemStack = ItemStack.deserialize(gson.fromJson(rs.getString("itemstack"), Map.class));
-
-                pS.close();
-                treasureItems.add(new TreasureItem(id, weight, itemStack));
+            while (resultSet.next()) {
+                // Adjust your logic here based on the column name retrieved
+                // For example, you might want to create a TreasureItem object with the column name as the identifier
+                String identifier = resultSet.getString("identifier");
+                int weight = resultSet.getInt("weight");  // Replace with the actual logic to get weight
+                ItemStack itemStack = ItemStack.deserialize(gson.fromJson(resultSet.getString("itemstack"), Map.class));
+                treasureItems.add(new TreasureItem(identifier, weight, itemStack));
             }
             statement.close();
             return treasureItems;
         } catch (SQLException e) {
-            // plugin.getLogger().log(Level.SEVERE, "Failed to get all treasure items from database", e);
+            // Handle the exception appropriately
+            e.printStackTrace();
             return Collections.emptyList();
         }
     }
@@ -405,4 +445,6 @@ public abstract class Database implements DataManager {
     public void saveFile() {
         throw new UnsupportedOperationException("SQL does not support this method! It is meant for flatfile usage!");
     }
+
+
 }
