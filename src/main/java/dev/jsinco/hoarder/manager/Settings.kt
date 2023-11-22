@@ -7,6 +7,7 @@ import dev.jsinco.hoarder.storage.StorageType
 import dev.jsinco.hoarder.storage.sql.MySQL
 import dev.jsinco.hoarder.storage.sql.SQLite
 import org.bukkit.Bukkit
+import org.bukkit.Material
 
 
 object Settings {
@@ -27,6 +28,10 @@ object Settings {
     @JvmStatic
     fun getTreasureAmountForWinnerSpot(spot: Int): Int {
         return plugin.config.getInt("event.winners.$spot")
+    }
+
+    fun getMaterialPrice(material: Material): Double {
+        return plugin.config.getDouble("materials.${material.name.lowercase()}")
     }
 
     @JvmStatic
