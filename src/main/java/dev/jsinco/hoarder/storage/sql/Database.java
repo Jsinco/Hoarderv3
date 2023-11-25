@@ -24,7 +24,7 @@ import java.util.logging.Level;
 public abstract class Database implements DataManager {
 
     private String prefix;
-    private boolean usingSQLite = false; // Why does SQLite change syntax lol
+    private boolean usingSQLite = false; // SQLite changes some syntax. TODO: Better method for this? I'm not that good with SQL at the time of writing this
     private static final Hoarder plugin = Hoarder.getInstance();
 
     public Database() {}
@@ -39,7 +39,7 @@ public abstract class Database implements DataManager {
                 "USE " + plugin.getConfig().getString("storage.database") + ";",
                 "CREATE TABLE IF NOT EXISTS " + prefix + "data (event VARCHAR(500) PRIMARY KEY, endtime LONG, material VARCHAR(500), sellprice DECIMAL(15, 2));",
                 "CREATE TABLE IF NOT EXISTS " + prefix + "treasure_items (identifier VARCHAR(3072) PRIMARY KEY, weight INT, itemstack VARCHAR(3072));",
-                "CREATE TABLE IF NOT EXISTS " + prefix + "players (uuid VARCHAR(36) PRIMARY KEY, points INT, claimabletreasures INT);"
+                "CREATE TABLE IF NOT EXISTS " + prefix + "players (uuid VARCHAR(36) PRIMARY KEY, points INT NOT NULL DEFAULT 0, claimabletreasures INT NOT NULL DEFAULT 0);"
         ));
 
         if (usingSQLite) {
@@ -193,14 +193,13 @@ public abstract class Database implements DataManager {
             PreparedStatement statement;
             if (!usingSQLite) {
                 statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = points + VALUES(points)");
-                statement.setString(1, uuid);
                 statement.setInt(2, amount);
             } else {
                 statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points) VALUES (?, COALESCE((SELECT points FROM " + prefix + "players WHERE uuid = ?), 0) + ?);");
-                statement.setString(1, uuid);
                 statement.setString(2, uuid);
                 statement.setInt(3, amount);
             }
+            statement.setString(1, uuid);
 
 
 
@@ -289,9 +288,52 @@ public abstract class Database implements DataManager {
         return 0;
     }
 
-    @NotNull
+
+    // Event necessities
     @Override
-    public List<String> getAllHoarderPlayersUUIDS() {
+    public void resetAllPoints() {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM "+prefix+"players;");
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                PreparedStatement statement2 = getConnection().prepareStatement("UPDATE "+prefix+"players SET points = 0 WHERE uuid = ?;");
+                statement2.setString(1, resultSet.getString("uuid"));
+                statement2.executeUpdate();
+                statement2.close();
+            }
+            statement.close();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to reset all points in database", e);
+        }
+    }
+
+    @Override
+    public @NotNull Map<String, Integer> getEventPlayers() {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM "+prefix+"players;");
+            ResultSet resultSet = statement.executeQuery();
+
+            Map<String, Integer> eventPlayers = new HashMap<>();
+
+            while (resultSet.next()) {
+                int points = resultSet.getInt("points");
+                if (points != 0) {
+                    eventPlayers.put(resultSet.getString("uuid"), points);
+                }
+            }
+            statement.close();
+            return eventPlayers;
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to get event players from database", e);
+        }
+        return Collections.emptyMap();
+    }
+
+
+
+    @Override
+    public @NotNull List<String> getAllHoarderPlayersUUIDS() {
         try {
             PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM " + prefix + "players;");
             ResultSet resultSet = statement.executeQuery();
@@ -355,6 +397,21 @@ public abstract class Database implements DataManager {
     }
 
     @Override
+    public void modifyTreasureItem(String identifier, int newWeight, String newidentifier) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("UPDATE " + prefix + "treasure_items SET identifier = ?, weight = ? WHERE identifier = ?;");
+            statement.setString(1, newidentifier);
+            statement.setInt(2, newWeight);
+            statement.setString(3, identifier);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to modify treasure item in database", e);
+        }
+    }
+
+
+    @Override
     public void removeTreasureItem(@NotNull String identifier) {
         try {
             PreparedStatement statement = getConnection().prepareStatement("DELETE FROM " + prefix + "treasure_items WHERE identifier = ?");
@@ -394,6 +451,7 @@ public abstract class Database implements DataManager {
     @NotNull
     @Override
     public List<TreasureItem> getAllTreasureItems() {
+        Bukkit.broadcastMessage("Call on getAllTreasureItems!");
         try {
             PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM "+prefix+"treasure_items;");
             ResultSet resultSet = statement.executeQuery();

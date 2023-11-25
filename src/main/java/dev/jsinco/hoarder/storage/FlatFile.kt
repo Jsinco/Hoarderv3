@@ -10,7 +10,8 @@ import java.sql.Connection
 
 class FlatFile (val plugin: Hoarder) : DataManager {
     val fileManager = FileManager("${plugin.config.getString("storage.database") ?: "data"}.yml")
-    val file = fileManager.getFileYaml()
+    val file = fileManager.generateYamlFile()
+
 
 
     // Event data
@@ -26,7 +27,7 @@ class FlatFile (val plugin: Hoarder) : DataManager {
 
 
     override fun setEventMaterial(material: Material) {
-        file.set("data.main.material", material)
+        file.set("data.main.material", material.name)
         fileManager.saveFileYaml()
     }
 
@@ -73,6 +74,27 @@ class FlatFile (val plugin: Hoarder) : DataManager {
         return file.getInt("players.$uuid.claimabletreasures")
     }
 
+    // Event necessities
+
+    override fun resetAllPoints() {
+        for (uuid in getAllHoarderPlayersUUIDS()) {
+            file.set("players.$uuid.points", 0)
+        }
+        fileManager.saveFileYaml()
+    }
+
+    override fun getEventPlayers(): Map<String, Int> {
+        val eventPlayers: MutableMap<String, Int> = mutableMapOf()
+        for (uuid in getAllHoarderPlayersUUIDS()) {
+            val points = file.getInt("players.$uuid.points")
+            if (points != 0) {
+                eventPlayers[uuid] = points
+            }
+        }
+        return eventPlayers
+    }
+
+
     override fun getAllHoarderPlayersUUIDS(): List<String> {
         return file.getConfigurationSection("players")?.getKeys(false)?.toList() ?: emptyList()
     }
@@ -91,6 +113,14 @@ class FlatFile (val plugin: Hoarder) : DataManager {
         println(file.root)
         file.set("treasure_items.${treasureItem.identifier}.weight", treasureItem.weight)
         file.set("treasure_items.${treasureItem.identifier}.itemstack", treasureItem.itemStack)
+        fileManager.saveFileYaml()
+    }
+
+    override fun modifyTreasureItem(identifier: String, newWeight: Int, newIdentifier: String) {
+        val itemStack = file.getItemStack("treasure_items.$identifier.itemstack") ?: return
+        file.set("treasure_items.$identifier", null)
+        file.set("treasure_items.$newIdentifier.weight", newWeight)
+        file.set("treasure_items.$newIdentifier.itemstack", itemStack)
         fileManager.saveFileYaml()
     }
 

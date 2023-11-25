@@ -1,6 +1,9 @@
 package dev.jsinco.hoarder
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI
+import dev.jsinco.hoarder.manager.FileManager
+import dev.jsinco.hoarder.manager.Settings
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -87,4 +90,27 @@ object Util {
         }
         return name
     }
+
+    fun generateItemIdentifier(itemStack: ItemStack): String {
+        val name: String =
+        if (itemStack.hasItemMeta() && itemStack.itemMeta!!.hasDisplayName()) {
+            ChatColor.stripColor(itemStack.itemMeta!!.displayName)!!.lowercase().replace(" ", "_")
+        } else {
+            itemStack.type.name.lowercase()
+        }
+
+        return "$name-${itemStack.amount}"
+    }
+
+    fun getMsTimeFromNow(minutes: Long): Long {
+        return System.currentTimeMillis() + (minutes * 60000)
+    }
+
+
+    fun getEventPlayersByTop(): Map<String, Int> {
+        val eventPlayers = Settings.getDataManger().getEventPlayers()
+        return eventPlayers.toList().sortedByDescending { (_, value) -> value }.toMap()
+    }
+
+
 }

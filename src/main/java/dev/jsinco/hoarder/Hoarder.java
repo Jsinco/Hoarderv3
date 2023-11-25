@@ -6,27 +6,19 @@ import dev.jsinco.hoarder.manager.FileManager;
 import dev.jsinco.hoarder.manager.Settings;
 import dev.jsinco.hoarder.storage.DataManager;
 import dev.jsinco.hoarder.storage.StorageType;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Hoarder extends JavaPlugin {
 
     private static Hoarder plugin;
-    DataManager dataManager;
+    private static String[] fileNames = new String[]{"config.yml", "messages.yml", "info.md", "guis/dynamicitems.yml", "guis/main.yml", "guis/treasure.yml", "guis/stats.yml", "guis/treasure_claim.yml", "guis/example.yml"};
+    private DataManager dataManager;
 
 
     @Override
     public void onEnable() {
         plugin = this;
-        if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdir();
-        }
-
-        FileManager.generateFolder("guis");
-        FileManager fileManager = new FileManager("guis/treasure.yml");
-        fileManager.generateYamlFile();
+        generateFiles();
 
         getCommand("hoardertwo").setExecutor(new CommandManager(this));
 
@@ -34,11 +26,6 @@ public final class Hoarder extends JavaPlugin {
 
 
         this.dataManager = Settings.getDataManger();
-        dataManager.setEventMaterial(Material.EMERALD_BLOCK);
-        System.out.println(dataManager.getEventMaterial());
-        dataManager.setEventEndTime(2000);
-
-        //dataManager.addTreasureItem("paper", 30, new ItemStack(Material.PAPER));
     }
 
     @Override
@@ -50,5 +37,15 @@ public final class Hoarder extends JavaPlugin {
 
     public static Hoarder getInstance() {
         return plugin;
+    }
+
+    private void generateFiles() {
+        if (!getDataFolder().exists()) {
+            getDataFolder().mkdir();
+        }
+        FileManager.generateFolder("guis");
+        for (String fileName : fileNames) {
+            new FileManager(fileName).generateFile();
+        }
     }
 }

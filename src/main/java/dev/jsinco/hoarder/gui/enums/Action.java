@@ -1,7 +1,10 @@
 package dev.jsinco.hoarder.gui.enums;
 
+import dev.jsinco.hoarder.Messages;
 import dev.jsinco.hoarder.gui.GUICreator;
 import dev.jsinco.hoarder.gui.PaginatedGUI;
+import dev.jsinco.hoarder.manager.SellingManager;
+import dev.jsinco.hoarder.objects.HoarderPlayer;
 import kotlin.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -14,7 +17,8 @@ public enum Action {
     CLOSE,
     MESSAGE,
     BACK_PAGE,
-    NEXT_PAGE;
+    NEXT_PAGE,
+    SELL;
 
     public boolean executeAction(String string, Player player) {
         switch (this) {
@@ -58,6 +62,18 @@ public enum Action {
                 if (paginatedGUI == null) return false;
 
                 player.openInventory(paginatedGUI.getPage(paginatedGUI.indexOf(player.getOpenInventory().getTopInventory()) + 1));
+            }
+
+            case SELL -> {
+                SellingManager sellingManager = new SellingManager(player, player.getInventory());
+                sellingManager.sellActiveItem();
+                sellingManager.payoutPlayer();
+
+                String msg = Messages.INSTANCE.getMessagesFile().getString("actions.sell");
+                if (msg != null) {
+                    msg = msg.replace("%amount%", String.valueOf(sellingManager.getAmountSold())).replace("%payout%", String.valueOf(sellingManager.getPayoutAmount()));
+                }
+                player.sendMessage(Messages.INSTANCE.getPrefix() + msg);
             }
 
             default -> {

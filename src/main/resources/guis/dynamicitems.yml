@@ -21,6 +21,11 @@ items:
     name: 'Remaining time'
     enchanted: false
 
+  empty-position:
+    material: WITHER_SKELETON_SKULL
+    name: '&cEmpty'
+    lore: ['&7Looks like no one is here']
+
   # VALUES FOR TREASURE: %chance% - the weighted chance of the item
   treasure: # Represents each treasure item that the hoarder has to offer
     lore: ['', 'Chance: %chance%']

@@ -3,6 +3,7 @@ package dev.jsinco.hoarder.objects
 import dev.jsinco.hoarder.storage.DataManager
 import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.Bukkit
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -53,6 +54,10 @@ class HoarderPlayer (val uuid: String) {
     fun getPlayer(): Player? {
         val offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid))
         return if (offlinePlayer.isOnline) offlinePlayer.player else null
+    }
+
+    fun getOfflinePlayer(): OfflinePlayer {
+        return Bukkit.getOfflinePlayer(UUID.fromString(uuid))
     }
 
     fun getName(): String {

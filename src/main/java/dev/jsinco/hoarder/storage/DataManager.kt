@@ -61,6 +61,10 @@ interface DataManager {
 
     fun getClaimableTreasures(uuid: String): Int
 
+    fun resetAllPoints()
+
+    fun getEventPlayers(): Map<String, Int>
+
     /**
      * @return A list of all HoarderPlayer objects
      */
@@ -82,6 +86,8 @@ interface DataManager {
      * @param itemStack The itemStack of the TreasureItem to remove from the database
      */
     fun addTreasureItem(identifier: String, weight: Int, itemStack: ItemStack)
+
+    fun modifyTreasureItem(identifier: String, newWeight: Int, newIdentifier: String)
 
     /**
      * @param identifier The identifier of the TreasureItem to remove from the database

@@ -1,0 +1,28 @@
+prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
+
+actions:
+  sell: 'You sold %amount% for %payout%!'
+
+
+hoarder-events:
+  start: ''
+  end:
+    - 'The Hoarder has collected the stash and given prizes to the winners!'
+    - ''
+
+# Lang for adding, editing, deleting treasures with /hoarder treasure
+treasure:
+  add:
+    missing-args: 'Missing arguments! Usage: /hoarder treasure add <weight!> <identifier?>'
+    missing-args-no-auto-identifier: 'Missing arguments! You have auto-identifier disabled in your config so you must specify an identifier! Usage: /hoarder treasure add <weight!> <identifier!>'
+    success: 'Added %identifier% with a weight of %weight%'
+  edit:
+    missing-args: 'Missing arguments! Usage: /hoarder treasure edit <identifier!> <new-weight!> <new-identifier?>'
+    success: 'Successfully changed %identifier% to %new-identifier% with a weight of %new-weight%'
+  delete:
+    missing-args: 'Missing arguments! Usage: /hoarder treasure delete <identifier!>'
+    success: 'Successfully deleted %identifier% from storage'
+# Lang for /hoarder reload
+reload:
+  start: 'Reloading...'
+  end: 'Successfully reloaded the plugin!'

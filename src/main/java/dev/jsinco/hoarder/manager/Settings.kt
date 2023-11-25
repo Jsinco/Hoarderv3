@@ -1,6 +1,7 @@
 package dev.jsinco.hoarder.manager
 
 import dev.jsinco.hoarder.Hoarder
+import dev.jsinco.hoarder.economy.ProviderType
 import dev.jsinco.hoarder.storage.DataManager
 import dev.jsinco.hoarder.storage.FlatFile
 import dev.jsinco.hoarder.storage.StorageType
@@ -15,42 +16,88 @@ object Settings {
     val plugin: Hoarder = Hoarder.getInstance()
     private var dataManager: DataManager? = null
 
-    @JvmStatic
-    fun getEventEndTime(): Long {
-        return plugin.config.getLong("event.timer-length")
-    }
 
-    @JvmStatic
+
+    // EVENT WINNERS
+
+
     fun getMaxWinnerAmount(): Int {
         return plugin.config.getConfigurationSection("event.winners")?.getKeys(false)?.size ?: 0
     }
 
-    @JvmStatic
+
     fun getTreasureAmountForWinnerSpot(spot: Int): Int {
         return plugin.config.getInt("event.winners.$spot")
     }
+
+
+    // EVENT MATERIALS
 
     fun getMaterialPrice(material: Material): Double {
         return plugin.config.getDouble("materials.${material.name.lowercase()}")
     }
 
-    @JvmStatic
-    fun getStorageType(): StorageType {
-        return StorageType.valueOf(plugin.config.getString("storage.type")?.uppercase() ?: "SQLITE")
+    fun getAllMaterials(): List<Material> {
+        val materials = mutableListOf<Material>()
+        plugin.config.getConfigurationSection("materials")?.getKeys(false)?.forEach {
+            materials.add(Material.valueOf(it.uppercase()))
+        }
+        return materials
     }
+
+    fun useWhiteListAsBlackList(): Boolean {
+        return plugin.config.getBoolean("materials.use-material-list-as-blacklist")
+    }
+
+
+    // ECONOMY
 
     fun usingEconomy(): Boolean {
         return plugin.config.getBoolean("economy.enabled")
     }
 
-    fun getEconomyProvider(): PluginHooks.EconomyProviders {
-        return PluginHooks.EconomyProviders.valueOf(plugin.config.getString("economy.provider")?.uppercase() ?: "VAULT")
+    fun useRandomPricing(): Boolean {
+        return plugin.config.getBoolean("economy.random-pricing.enabled")
+    }
+
+    fun randomPricingBounds(): Pair<Double, Double> {
+        val min = plugin.config.getDouble("economy.random-pricing.min")
+        val max = plugin.config.getDouble("economy.random-pricing.max")
+        return Pair(min, max)
+    }
+
+    fun getEconomyProvider(): ProviderType {
+        return ProviderType.valueOf(plugin.config.getString("economy.provider")?.uppercase() ?: "VAULT")
+    }
+
+    // EVENT TIMING
+
+
+    fun getEventTimerLength(): Long {
+        return plugin.config.getLong("event.timer-length")
+    }
+
+    fun getEndTimeInterval(): Long {
+        if (plugin.config.get("event.timer-check-interval") == null) {
+            plugin.config.set("event.timer-check-interval", 600)
+            plugin.saveConfig()
+        }
+        return plugin.config.getLong("event.timer-check-interval")
+    }
+
+    // TREASURE
+
+    fun autoIdentify(): Boolean {
+        return plugin.config.getBoolean("treasure-items.auto-identifier")
     }
 
 
+    // STORAGE
 
-
-
+    @JvmStatic
+    fun getStorageType(): StorageType {
+        return StorageType.valueOf(plugin.config.getString("storage.type")?.uppercase() ?: "SQLITE")
+    }
 
     @JvmStatic
     fun getDataManger(): DataManager {

@@ -6,7 +6,7 @@ gui-type: OTHER
 # This gui has a type of 'OTHER' which means no dynamic items will be added to it, and it is just a standalone GUI
 # If you choose to make multiple types of other guis such as TREASURE or STATS, they will have their dynamic items added to them, attributes, etc.
 
-# As listed in Info.md, here are all the gui types:
+# As listed in info.md, here are all the gui types:
 # MAIN - The main gui of Hoarder that shows the active material and remaining time
 # TREASURE - The gui that shows the treasure items
 # STATS - The gui that shows the stats of the players currently in the Hoarder event

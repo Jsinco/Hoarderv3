@@ -9,5 +9,13 @@ You can specify which items you want the Hoarder to pick from and if you want th
 The top players at the end of each Hoarder event will be rewarded with treasures (items)!
 
 ## Written with ❤️ by @Jsinco
-## Support discord: 
-```
+## Support discord:
+## Spigot page:
+
+
+# GUIS
+
+There are 5 types of GUIs
+MAIN, TREASURE, STATS, TREASURE_CLAIM, OTHER
+
+Each GUI has

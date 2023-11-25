@@ -20,7 +20,7 @@ class FileManager(val fileName: String) {
     }
 
     val file: File = File(plugin.dataFolder, fileName)
-    private val yamlConfiguration: YamlConfiguration = YamlConfiguration.loadConfiguration(file)
+    private var yamlConfiguration: YamlConfiguration? = null
 
 
     fun generateYamlFile(): YamlConfiguration {
@@ -52,15 +52,16 @@ class FileManager(val fileName: String) {
     }
 
     fun getFileYaml(): YamlConfiguration {
-        return yamlConfiguration
+        yamlConfiguration = YamlConfiguration.loadConfiguration(file)
+        return yamlConfiguration!!
     }
 
     fun saveFileYaml() {
-        yamlConfiguration.save(file)
+        yamlConfiguration?.save(file)
     }
 
     fun reloadFileYaml() {
-        yamlConfiguration.load(file)
+        yamlConfiguration?.load(file)
     }
 
 }

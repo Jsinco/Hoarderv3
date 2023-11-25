@@ -54,10 +54,14 @@ class GUICreator (val path: String) : InventoryHolder {
     var paginatedGUI: PaginatedGUI? = null
 
 
-
+    private lateinit var material: Material
+    private var sellPrice: Double = 0.0
 
     // FIXME: probably redo/edit this
     fun setGuiSpecifics() {
+        material = Settings.getDataManger().getEventMaterial()
+        sellPrice = Settings.getDataManger().getEventSellPrice()
+
         val dynamicItemsFile = FileManager("guis/dynamicitems.yml").generateYamlFile()
         when (guiType) {
             GUIType.MAIN -> { // FIXME: items need to set placeholders
@@ -127,13 +131,11 @@ class GUICreator (val path: String) : InventoryHolder {
         }
     }
 
-    val material = Settings.getDataManger().getEventMaterial()
-    val sellprice = Settings.getDataManger().getEventSellPrice()
     private fun setMainGUIStrings(string: String): String {
         return Util.fullColor(
             string.replace("%material%", material.toString())
                 .replace("%material_formatted%", Util.formatMaterialName(material))
-                .replace("%sell_price%", sellprice.toString())
+                .replace("%sell_price%", sellPrice.toString())
         )
     }
 
@@ -142,7 +144,7 @@ class GUICreator (val path: String) : InventoryHolder {
             list.map {
                 it.replace("%material%", material.toString())
                     .replace("%material_formatted%", Util.formatMaterialName(material))
-                    .replace("%sell_price%", sellprice.toString())
+                    .replace("%sell_price%", sellPrice.toString())
             }
         )
     }

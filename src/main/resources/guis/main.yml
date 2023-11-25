@@ -2,6 +2,9 @@ title: '&#fb7f4a&lT&#ea765e&lh&#d96d72&le &#c96486&lH&#b85b9a&lo&#a753ad&la&#964
 size: 45
 gui-type: MAIN
 
+# Main Hoarder GUI
+# Inherits the "active_item" and "clock" dynamic items.
+
 items:
   stats:
     slot: 0
@@ -12,7 +15,7 @@ items:
     enchanted: false
   treasure:
     slot: 44
-    action: '[OPEN] guis/stats.yml'
+    action: '[OPEN] guis/treasure.yml'
     material: CHEST
     name: '&#fb7f4a&lR&#e27268&le&#c96486&lw&#b057a4&la&#964ac1&lr&#7d3cdf&ld&#642ffd&ls'
     lore: [ '&#e17169S&#dd6f6ee&#d86d73e &#d46a78w&#d0687dh&#cc6682a&#c76487t &#c3618ct&#bf5f92h&#ba5d97e &#b65a9cH&#b258a1o&#ad56a6a&#a954abr&#a551b0d&#a04fb5e&#9c4dbbr &#984ac0h&#9348c5a&#8f46cas &#8b44cft&#8741d4o &#823fd9o&#7e3ddef&#7a3ae3f&#7538e9e&#7136eer&#6d34f3.&#6831f8.&#642ffd.' ]
@@ -23,4 +26,32 @@ items:
     material: ENDER_CHEST
     name: '&#fb7f4a&lC&#ed785a&ll&#e0706b&la&#d2697b&li&#c4628b&lm &#b65b9b&lR&#a953ac&le&#9b4cbc&lw&#8d45cc&la&#7f3edc&lr&#7236ed&ld&#642ffd&ls'
     lore: [ '&#fb7f4aC&#f47b53l&#ed775ba&#e57464i&#de706cm &#d76c75a&#d0687dv&#c96486a&#c1618ei&#ba5d97l&#b3599fa&#ac55a8b&#a551b0l&#9e4db9e &#964ac1r&#8f46cae&#8842d2w&#813edba&#7a3ae3r&#7237ecd&#6b33f4s&#642ffd!' ]
+    enchanted: false
+  top_spot_1:
+    slot: 4
+    material: PLAYER_HEAD
+    data: '%top_1_uuid%'
+    name: '&#fb7f4a&l#1 %top_1_name%'
+    lore: [ '&#fb7f4a%top_1_name%: %top_1_points% points' ]
+    enchanted: false
+  top_spot_2:
+    slot: 12
+    material: PLAYER_HEAD
+    data: '%top_2_uuid%'
+    name: '&#fb7f4a&l#1 %top_2_name%'
+    lore: [ '&#fb7f4a%top_2_name%: %top_2_points% points' ]
+    enchanted: false
+  top_spot_3:
+    slot: 13
+    material: PLAYER_HEAD
+    data: '%top_3_uuid%'
+    name: '&#fb7f4a&l#1 %top_3_name%'
+    lore: [ '&#fb7f4a%top_3_name%: %top_3_points% points' ]
+    enchanted: false
+  top_spot_4:
+    slot: 14
+    material: PLAYER_HEAD
+    data: '%top_4_uuid%'
+    name: '&#fb7f4a&l#1 %top_3_name%'
+    lore: [ '&#fb7f4a%top_4_name%: %top_4_points% points' ]
     enchanted: false

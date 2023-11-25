@@ -14,11 +14,18 @@ storage:
 economy:
   enabled: true
   provider: Vault
+  random-pricing:
+    enabled: false
+    min: 1.20
+    max: 3.70
 
-#
+
 event:
-  # The amount of time, in minutes, the Hoarder event should last for
+  # The amount of time, in minutes, the Hoarder event should last for, set to 0 or lower to have Hoarder events only be started manually
   timer-length: 240
+  # How often, in ticks, should Hoarder check to see if it has reached the specified timer-length
+  # 20 ticks = 1 second. Changing this shouldn't be necessary. Recommended to leave at above at least 20 ticks (1 second)
+  timer-check-interval: 600
 
   # The amount of winners and the amount of treasures given to them upon the Hoarder event ending.
   # Want to add more winners? Just add the spot that should win and the amount of treasures that should be given to them upon winning
@@ -29,7 +36,6 @@ event:
     4: 1
 
 
-
 use-material-list-as-blacklist: false
 
 # Materials that the Hoarder can pick from and the price that they will pay for them
@@ -37,3 +43,13 @@ materials:
   diamond: 5
   white_wool: 4.72
   iron_ingot: 3.5
+
+
+treasure-items:
+  # All treasure items must have an identifier that correlates to their item and their % chance in our database
+  # Change this value if you would like to ALWAYS set your identifiers manually and never have Hoarder automatically make identifiers.
+  # Identifiers that are made by Hoarder will have this format: <Item_DisplayName>-<Amount>
+  # Changing this to false will require you to specify your identifier when doing /hoarder treasure add <chance/weight> <identifier>
+
+  # If you don't understand, then just leave this value to true
+  auto-identifier: true
