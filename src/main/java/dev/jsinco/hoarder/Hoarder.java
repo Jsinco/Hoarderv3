@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class Hoarder extends JavaPlugin {
 
     private static Hoarder plugin;
-    private static String[] fileNames = new String[]{"config.yml", "messages.yml", "info.md", "guis/dynamicitems.yml", "guis/main.yml", "guis/treasure.yml", "guis/stats.yml", "guis/treasure_claim.yml", "guis/example.yml"};
+    private static final String[] fileNames = new String[]{"config.yml", "messages.yml", "info.md", "guis/dynamicitems.yml", "guis/main.yml", "guis/treasure.yml", "guis/stats.yml", "guis/treasure_claim.yml", "guis/example.yml"};
     private DataManager dataManager;
 
 
@@ -39,9 +39,9 @@ public final class Hoarder extends JavaPlugin {
         return plugin;
     }
 
-    private void generateFiles() {
-        if (!getDataFolder().exists()) {
-            getDataFolder().mkdir();
+    public static void generateFiles() {
+        if (!plugin.getDataFolder().exists()) {
+            plugin.getDataFolder().mkdir();
         }
         FileManager.generateFolder("guis");
         for (String fileName : fileNames) {

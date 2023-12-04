@@ -20,9 +20,13 @@ object Settings {
 
     // EVENT WINNERS
 
-
-    fun getMaxWinnerAmount(): Int {
-        return plugin.config.getConfigurationSection("event.winners")?.getKeys(false)?.size ?: 0
+    // <spot, amount>
+    fun getWinners(): Map<Int, Int> {
+        val winners = mutableMapOf<Int, Int>()
+        plugin.config.getConfigurationSection("event.winners")?.getKeys(false)?.forEach {
+            winners[it.toInt()] = plugin.config.getInt("event.winners.$it")
+        }
+        return winners
     }
 
 

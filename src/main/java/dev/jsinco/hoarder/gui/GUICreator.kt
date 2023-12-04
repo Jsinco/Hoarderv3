@@ -69,6 +69,7 @@ class GUICreator (val path: String) : InventoryHolder {
                 // TODO: Add runnable for clock
 
                 val activeItem = ItemStack(Material.valueOf(setMainGUIStrings(dynamicItemsFile.getString("items.active_item.material")!!)))
+                println(dynamicItemsFile.getString("items.active_item.material")!!)
                 val activeMeta = activeItem.itemMeta!!
 
                 activeMeta.setDisplayName(setMainGUIStrings(dynamicItemsFile.getString("items.active_item.name")!!))
@@ -101,12 +102,12 @@ class GUICreator (val path: String) : InventoryHolder {
             }
 
             GUIType.STATS -> {
-                val hoarderPlayerUUIDS = Settings.getDataManger().getAllHoarderPlayersUUIDS()
+                val hoarderPlayerUUIDS = Util.getEventPlayersByTop()
 
                 val playerHeads: MutableList<ItemStack> = mutableListOf()
 
                 for (uuid in hoarderPlayerUUIDS) {
-                    val hoarderPlayer = HoarderPlayer(uuid)
+                    val hoarderPlayer = HoarderPlayer(uuid.key)
 
                     val item = ItemStack(Material.valueOf(dynamicItemsFile.getString("items.stats.material")!!.uppercase()))
                     val meta = item.itemMeta!!
@@ -123,7 +124,7 @@ class GUICreator (val path: String) : InventoryHolder {
                     if (dynamicItemsFile.getBoolean("items.stats.enchanted")) meta.addEnchant(Enchantment.DURABILITY, 1, true)
 
                     item.itemMeta = meta
-                    playerHeads.add(GUIItem.setPlayerHead(item, uuid))
+                    playerHeads.add(GUIItem.setPlayerHead(item, uuid.key))
                 }
                 paginatedGUI = PaginatedGUI(title, gui, playerHeads)
             }

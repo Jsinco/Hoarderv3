@@ -19,6 +19,8 @@ economy:
     min: 1.20
     max: 3.70
 
+command-aliases:
+  - hoarder
 
 event:
   # The amount of time, in minutes, the Hoarder event should last for, set to 0 or lower to have Hoarder events only be started manually
@@ -36,6 +38,16 @@ event:
     4: 1
 
 
+treasure-items:
+  # All treasure items must have an identifier that correlates to their item and their % chance in our database
+  # Change this value if you would like to ALWAYS set your identifiers manually and never have Hoarder automatically make identifiers.
+  # Identifiers that are made by Hoarder will have this format: <Item_DisplayName>-<Amount>
+  # Changing this to false will require you to specify your identifier when doing /hoarder treasure add <chance/weight> <identifier>
+
+  # If you don't understand, then just leave this value to true
+  auto-identifier: true
+
+
 use-material-list-as-blacklist: false
 
 # Materials that the Hoarder can pick from and the price that they will pay for them
@@ -45,11 +57,3 @@ materials:
   iron_ingot: 3.5
 
 
-treasure-items:
-  # All treasure items must have an identifier that correlates to their item and their % chance in our database
-  # Change this value if you would like to ALWAYS set your identifiers manually and never have Hoarder automatically make identifiers.
-  # Identifiers that are made by Hoarder will have this format: <Item_DisplayName>-<Amount>
-  # Changing this to false will require you to specify your identifier when doing /hoarder treasure add <chance/weight> <identifier>
-
-  # If you don't understand, then just leave this value to true
-  auto-identifier: true

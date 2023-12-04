@@ -11,6 +11,7 @@ class ReloadCommand : SubCommand {
         plugin.logger.info(getMsgConsoleSender("reload.start"))
         plugin.reloadConfig()
         Settings.reloadDataManager()
+        Hoarder.generateFiles()
         // TODO: reload etc
         plugin.logger.info(getMsgConsoleSender("reload.end"))
     }

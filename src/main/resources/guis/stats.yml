@@ -1,11 +1,32 @@
 title: '&#fb7f4a&lT&#ea765e&lh&#d96d72&le &#c96486&lH&#b85b9a&lo&#a753ad&la&#964ac1&lr&#8641d5&ld&#7538e9&le&#642ffd&lr'
 size: 36
+gui-type: STATS
 
 items:
   border:
-    slot: [27, 28, 29, 30, 31, 32, 33, 34, 35]
+    slot: [27, 28, 29, 33, 34, 35]
     material: LIGHT_GRAY_STAINED_GLASS_PANE
     name: ' '
     lore: []
     enchanted: false
-
+  back_arrow:
+    slot: 30
+    action: '[BACK_PAGE]'
+    material: ARROW
+    name: 'Previous Page'
+    lore: []
+    enchanted: false
+  next_arrow:
+    slot: 32
+    action: '[NEXT_PAGE]'
+    material: ARROW
+    name: 'Next Page'
+    lore: []
+    enchanted: false
+  return_chest:
+    slot: 31
+    action: '[OPEN] guis/main.yml'
+    material: CHEST
+    name: 'Return'
+    lore: ['Click to go back to the Hoarder']
+    enchanted: false

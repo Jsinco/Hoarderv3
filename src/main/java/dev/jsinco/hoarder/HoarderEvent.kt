@@ -4,7 +4,6 @@ import dev.jsinco.hoarder.Messages.getMsg
 import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.scheduler.BukkitRunnable
 import kotlin.random.Random
 
 /**
