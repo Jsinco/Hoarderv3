@@ -110,7 +110,6 @@ class FlatFile (val plugin: Hoarder) : DataManager {
     // Treasure Items
 
     override fun addTreasureItem(treasureItem: TreasureItem) {
-        println(file.root)
         file.set("treasure_items.${treasureItem.identifier}.weight", treasureItem.weight)
         file.set("treasure_items.${treasureItem.identifier}.itemstack", treasureItem.itemStack)
         fileManager.saveFileYaml()

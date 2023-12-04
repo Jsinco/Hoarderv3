@@ -19,19 +19,13 @@ object Settings {
 
 
     // EVENT WINNERS
-
-    // <spot, amount>
+    // position, num of prizes
     fun getWinners(): Map<Int, Int> {
-        val winners = mutableMapOf<Int, Int>()
-        plugin.config.getConfigurationSection("event.winners")?.getKeys(false)?.forEach {
-            winners[it.toInt()] = plugin.config.getInt("event.winners.$it")
+        val winners: MutableMap<Int, Int> = mutableMapOf()
+        for (position in plugin.config.getConfigurationSection("event.winners")?.getKeys(false)!!) {
+            winners[position.toInt()] = plugin.config.getInt("event.winners.$position")
         }
         return winners
-    }
-
-
-    fun getTreasureAmountForWinnerSpot(spot: Int): Int {
-        return plugin.config.getInt("event.winners.$spot")
     }
 
 
@@ -93,6 +87,10 @@ object Settings {
 
     fun autoIdentify(): Boolean {
         return plugin.config.getBoolean("treasure-items.auto-identifier")
+    }
+
+    fun treasureBoundInt(): Int {
+        return plugin.config.getInt("treasure-items.bound-int")
     }
 
 

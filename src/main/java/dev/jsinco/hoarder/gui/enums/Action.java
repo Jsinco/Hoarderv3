@@ -67,7 +67,6 @@ public enum Action {
             case SELL -> {
                 SellingManager sellingManager = new SellingManager(player, player.getInventory());
                 sellingManager.sellActiveItem();
-                sellingManager.payoutPlayer();
 
                 String msg = Messages.INSTANCE.getMessagesFile().getString("actions.sell");
                 if (msg != null) {

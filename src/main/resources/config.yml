@@ -47,6 +47,16 @@ treasure-items:
   # If you don't understand, then just leave this value to true
   auto-identifier: true
 
+  # When determining a random item to give to a player upon claiming a treasure item, Hoarder uses
+  # a weight system. Weights for each item are set when adding it to the treasure pool.
+  # When giving a player an item, Hoarder creates a random number between 0 - <bound-int> and if
+  # the random number is equal to or less than the weight of the item, then the item is given to the player.
+  # Else, we move onto a different item and repeat the process.
+
+  # This value is the bound integer that represents the highest number the random num could be.
+  # Use this if you want to scale your weights to be higher or lower
+  # Example: I want to scale my weights to be 0 - 1000 instead of 0 - 100
+  bound-int: 100
 
 use-material-list-as-blacklist: false
 

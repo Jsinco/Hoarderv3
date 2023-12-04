@@ -69,7 +69,7 @@ class GUICreator (val path: String) : InventoryHolder {
                 // TODO: Add runnable for clock
 
                 val activeItem = ItemStack(Material.valueOf(setMainGUIStrings(dynamicItemsFile.getString("items.active_item.material")!!)))
-                println(dynamicItemsFile.getString("items.active_item.material")!!)
+
                 val activeMeta = activeItem.itemMeta!!
 
                 activeMeta.setDisplayName(setMainGUIStrings(dynamicItemsFile.getString("items.active_item.name")!!))

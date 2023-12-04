@@ -1,11 +1,14 @@
 package dev.jsinco.hoarder.objects
 
+import dev.jsinco.hoarder.Util
 import dev.jsinco.hoarder.storage.DataManager
 import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import java.util.*
+import kotlin.random.Random
 
 /**
  * Hoarder representation of a player that can interact with the database
@@ -62,5 +65,27 @@ class HoarderPlayer (val uuid: String) {
 
     fun getName(): String {
         return Bukkit.getOfflinePlayer(UUID.fromString(uuid)).name ?: "Unknown"
+    }
+
+    fun claimReward() {
+        val player = getPlayer() ?: return
+        val claimable = getClaimableTreasures()
+        if (claimable <= 0) return
+
+        val treasures = dataManager.getAllTreasureItems() ?: return
+
+        var item: ItemStack? = null
+        while (item == null) {
+            val random = Random.nextInt(Settings.treasureBoundInt())
+
+            val treasureItem = treasures.random()
+
+            if (treasureItem.weight <= random) {
+                item = treasureItem.itemStack
+            }
+        }
+        player.inventory.addItem(item)
+
+
     }
 }

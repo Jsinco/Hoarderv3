@@ -1,6 +1,7 @@
 package dev.jsinco.hoarder
 
 import dev.jsinco.hoarder.Messages.getMsg
+import dev.jsinco.hoarder.api.HoarderEndEvent
 import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -20,44 +21,46 @@ class HoarderEvent(val plugin: Hoarder) {
         var runnable: Int = -1
     }
 
+    val dataManager = Settings.getDataManger()
+
     /**
      * Reload the event
      */
     fun reloadHoarderEvent() {
-        activeMaterial = Settings.getDataManger().getEventMaterial()
-        activeSellPrice = if (Settings.usingEconomy()) Settings.getDataManger().getEventSellPrice() else 0.0
-        endTime = Settings.getDataManger().getEventEndTime()
+        activeMaterial = dataManager.getEventMaterial()
+        activeSellPrice = if (Settings.usingEconomy()) dataManager.getEventSellPrice() else 0.0
+        endTime = dataManager.getEventEndTime()
 
         if (runnable != -1) Bukkit.getScheduler().cancelTask(runnable)
-        startEventRunnable()
+        //startEventRunnable()
     }
 
     /**
      * Start the event
      */
-    private fun restartHoarderEvent(timerLength: Long) {
-        val dM = Settings.getDataManger()
+    fun restartHoarderEvent(timerLength: Long) {
+
 
         if (timerLength <= 0) {
-            dM.setEventMaterial(Material.AIR)
-            dM.setEventSellPrice(0.0)
-            dM.setEventEndTime(0)
+            dataManager.setEventMaterial(Material.AIR)
+            dataManager.setEventSellPrice(0.0)
+            dataManager.setEventEndTime(0)
             return
         }
 
         // set material
         activeMaterial = determineEventMaterial()
-        dM.setEventMaterial(activeMaterial)
-
+        dataManager.setEventMaterial(activeMaterial)
+        println(activeMaterial.name)
         // set sell price
         if (Settings.usingEconomy()) {
             activeSellPrice = determineEventPrice()
-            dM.setEventSellPrice(activeSellPrice)
+            dataManager.setEventSellPrice(activeSellPrice)
         }
 
         // set end time
         endTime = Util.getMsTimeFromNow(timerLength)
-        dM.setEventEndTime(endTime)
+        dataManager.setEventEndTime(endTime)
 
         val msg = getMsg("event.start")
         if (msg.isBlank()) return
@@ -73,10 +76,17 @@ class HoarderEvent(val plugin: Hoarder) {
      * End the event
      */
     fun endHoarderEvent() {
+        val winnerPositions = Settings.getWinners()
+        val eventPlayers = Util.getEventPlayersByTop().keys.toList()
+
+        for (position in winnerPositions.keys) {
+            if (eventPlayers.size < position) break
+
+            dataManager.addClaimableTreasures(eventPlayers[position - 1], winnerPositions[position]!!)
+        }
 
 
     }
-
 
     /**
      * Runnable for the event
@@ -85,7 +95,13 @@ class HoarderEvent(val plugin: Hoarder) {
         runnable =
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, {
             if (System.currentTimeMillis() >= endTime) {
-                endHoarderEvent()
+
+                val endEvent = HoarderEndEvent()
+                Bukkit.getPluginManager().callEvent(endEvent)
+                if (!endEvent.isCancelled){
+                    endHoarderEvent()
+                }
+
                 restartHoarderEvent(Settings.getEventTimerLength())
                 reloadHoarderEvent()
             }
