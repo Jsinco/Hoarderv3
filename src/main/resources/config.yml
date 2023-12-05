@@ -19,8 +19,10 @@ economy:
     min: 1.20
     max: 3.70
 
-command-aliases:
-  - hoard
+commands:
+  default-command-action: '[OPEN] guis/main.yml'
+  command-aliases:
+    - hoard
 
 event:
   # The amount of time, in minutes, the Hoarder event should last for, set to 0 or lower to have Hoarder events only be started manually

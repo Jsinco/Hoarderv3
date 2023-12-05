@@ -19,5 +19,5 @@ items:
     action: '[MESSAGE] You clicked a random grass block'
     material: GRASS_BLOCK
     name: 'Random Grass'
-    lore: ['Click to get a random grass block!']
+    lore: ['Click me!']
     enchanted: false

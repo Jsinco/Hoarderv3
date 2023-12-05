@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack
  * @param weight The weight of the item
  * @param itemStack The itemStack of the item
  */
-class TreasureItem (
+data class TreasureItem (
     val identifier: String,
     val weight: Int,
     val itemStack: ItemStack

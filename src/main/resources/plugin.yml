@@ -2,6 +2,8 @@ name: Hoarder
 version: '${version}'
 main: dev.jsinco.hoarder.Hoarder
 api-version: '1.20'
+author: 'Jsinco'
+description: 'Allows players to compete in Hoarding competitions and earn rewards!'
 softdepend:
   - Vault
   - PlayerPoints
@@ -15,5 +17,6 @@ permissions:
     default: op
 commands:
   hoarder:
+    usage: '/hoarder <subcommand>?'
     description: 'Hoarder command'
 

@@ -9,9 +9,9 @@ interface EconomyHandler {
 
     fun getBalance(player: OfflinePlayer): Double
 
-    fun addBalance(amount: Double, player: OfflinePlayer)
+    fun addBalance(amount: Double, player: OfflinePlayer): Any
 
-    fun addBalance(amount: Double, hoarderPlayer: HoarderPlayer)
+    fun addBalance(amount: Double, hoarderPlayer: HoarderPlayer): Any
 
     fun takeBalance(amount: Double, player: OfflinePlayer)
 }

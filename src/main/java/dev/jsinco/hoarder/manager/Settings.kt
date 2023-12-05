@@ -95,7 +95,7 @@ object Settings {
     // MISC
 
     @JvmStatic fun commandAliases(): List<String> {
-        return plugin.config.getStringList("command-aliases")
+        return plugin.config.getStringList("commands.command-aliases")
     }
 
 

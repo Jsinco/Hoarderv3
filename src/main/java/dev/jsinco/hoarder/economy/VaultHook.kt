@@ -21,12 +21,14 @@ class VaultHook : EconomyHandler {
         return economy?.getBalance(player) ?: -1.0
     }
 
-    override fun addBalance(amount: Double, player: OfflinePlayer) {
+    override fun addBalance(amount: Double, player: OfflinePlayer): Any {
         economy?.depositPlayer(player, amount)
+        return amount
     }
 
-    override fun addBalance(amount: Double, hoarderPlayer: HoarderPlayer) {
+    override fun addBalance(amount: Double, hoarderPlayer: HoarderPlayer): Any {
         economy?.depositPlayer(hoarderPlayer.getOfflinePlayer(), amount)
+        return amount
     }
 
     override fun takeBalance(amount: Double, player: OfflinePlayer) {

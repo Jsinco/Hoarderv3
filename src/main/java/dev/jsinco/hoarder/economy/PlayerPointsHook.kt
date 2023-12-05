@@ -23,12 +23,16 @@ class PlayerPointsHook : EconomyHandler {
         return playerPoints?.look(player.uniqueId)?.toDouble() ?: -1.0
     }
 
-    override fun addBalance(amount: Double, player: OfflinePlayer) {
-        playerPoints?.give(player.uniqueId, amount.toInt())
+    override fun addBalance(amount: Double, player: OfflinePlayer): Any {
+        val amt = amount.toInt()
+        playerPoints?.give(player.uniqueId, amt)
+        return amt
     }
 
-    override fun addBalance(amount: Double, hoarderPlayer: HoarderPlayer) {
-        playerPoints?.give(UUID.fromString(hoarderPlayer.uuid), amount.toInt())
+    override fun addBalance(amount: Double, hoarderPlayer: HoarderPlayer): Any {
+        val amt = amount.toInt()
+        playerPoints?.give(UUID.fromString(hoarderPlayer.uuid), amt)
+        return amt
     }
 
     override fun takeBalance(amount: Double, player: OfflinePlayer) {

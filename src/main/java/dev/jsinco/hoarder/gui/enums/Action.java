@@ -71,7 +71,7 @@ public enum Action {
 
                 String msg = Messages.INSTANCE.getMessagesFile().getString("actions.sell");
                 if (msg != null) {
-                    msg = msg.replace("%amount%", String.valueOf(sellingManager.getAmountSold())).replace("%payout%", String.valueOf(sellingManager.getPayoutAmount()));
+                    msg = msg.replace("%amount%", String.valueOf(sellingManager.getAmountSold())).replace("%payout%", sellingManager.getPayoutString());
                 }
                 if (player.getOpenInventory().getTopInventory().getHolder() instanceof GUICreator) {
                     new GUIUpdater((GUICreator) player.getOpenInventory().getTopInventory().getHolder());

@@ -14,6 +14,7 @@ class SellingManager(val player: Player, val inventory: Inventory) {
 
     var amountSold = 0
     var payoutAmount = 0.0
+    var payoutString = "No Econ"
 
     fun sellActiveItem() {
         val activeMaterial = HoarderEvent.activeMaterial
@@ -38,7 +39,7 @@ class SellingManager(val player: Player, val inventory: Inventory) {
             ProviderType.PLAYERPOINTS -> PlayerPointsHook()
         }
 
-        econHandler.addBalance(payoutAmount, player)
+        payoutString = econHandler.addBalance(payoutAmount, player).toString()
 
         Bukkit.getPluginManager().callEvent(HoarderSellEvent(player, amountSold, sellPrice))
     }
