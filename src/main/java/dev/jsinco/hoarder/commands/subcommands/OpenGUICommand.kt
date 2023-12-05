@@ -3,6 +3,7 @@ package dev.jsinco.hoarder.commands.subcommands
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.Util
 import dev.jsinco.hoarder.commands.SubCommand
+import dev.jsinco.hoarder.gui.DynamicItems
 import dev.jsinco.hoarder.gui.GUICreator
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
@@ -16,7 +17,7 @@ class OpenGUICommand : SubCommand {
         val path = "guis/${args[1]}.yml"
         val guiCreator = GUICreator(path)
 
-        guiCreator.setGuiSpecifics()
+        DynamicItems(guiCreator).setGuiSpecifics()
         val paginated = guiCreator.paginatedGUI
         if (paginated != null) {
             sender.openInventory(paginated.getPage(0))

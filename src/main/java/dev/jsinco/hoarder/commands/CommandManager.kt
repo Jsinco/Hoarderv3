@@ -16,6 +16,7 @@ class CommandManager(val plugin: Hoarder) : CommandExecutor, TabCompleter {
         subCommands["gui"] = OpenGUICommand()
         subCommands["reload"] = ReloadCommand()
         subCommands["treasure"] = TreasureCommand()
+        subCommands["claim"] = ClaimTreasureCommand()
         subCommands["debug"] = DebugCommand()
     }
 

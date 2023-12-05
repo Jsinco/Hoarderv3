@@ -67,25 +67,24 @@ class HoarderPlayer (val uuid: String) {
         return Bukkit.getOfflinePlayer(UUID.fromString(uuid)).name ?: "Unknown"
     }
 
-    fun claimReward() {
-        val player = getPlayer() ?: return
+    fun claimTreasure(amount: Int) {
+        val player = getOfflinePlayer().player ?: return
         val claimable = getClaimableTreasures()
-        if (claimable <= 0) return
-
         val treasures = dataManager.getAllTreasureItems() ?: return
+        for (i in 0 until amount) {
+            if (claimable <= 0) return
 
-        var item: ItemStack? = null
-        while (item == null) {
-            val random = Random.nextInt(Settings.treasureBoundInt())
+            var item: ItemStack? = null
+            while (item == null) {
+                val random = Random.nextInt(Settings.treasureBoundInt())
 
-            val treasureItem = treasures.random()
+                val treasureItem = treasures.random()
 
-            if (treasureItem.weight <= random) {
-                item = treasureItem.itemStack
+                if (treasureItem.weight <= random) {
+                    item = treasureItem.itemStack
+                }
             }
+            Util.giveItem(player, item)
         }
-        player.inventory.addItem(item)
-
-
     }
 }

@@ -6,6 +6,7 @@ import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.io.File
 import java.util.*
@@ -62,6 +63,17 @@ object Util {
         return colorcode(list).map { IridiumColorAPI.process(it) }
     }
 
+
+    fun giveItem(player: Player, item: ItemStack) {
+        for (i in 0..35) {
+            if (player.inventory.getItem(i) == null || player.inventory.getItem(i)!!.isSimilar(item)) {
+                player.inventory.addItem(item)
+                break
+            } else if (i == 35) {
+                player.world.dropItem(player.location, item)
+            }
+        }
+    }
 
     fun listFilesForFolder(folder: File): List<File> {
         if (!folder.exists() || !folder.isDirectory) return listOf()

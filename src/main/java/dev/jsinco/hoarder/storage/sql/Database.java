@@ -275,15 +275,16 @@ public abstract class Database implements DataManager {
     @Override // FIXME
     public void removeClaimableTreasures(@NotNull String uuid, int amount) {
         try {
-            PreparedStatement statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, ?) ON DUPLICATE KEY UPDATE claimabletreasures = claimabletreasures - VALUES(claimabletreasures)");
-            statement.setString(1, uuid);
-            statement.setInt(2, amount);
-
-            if (usingSQLite) {
+            PreparedStatement statement;
+            if (!usingSQLite) {
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, ?) ON DUPLICATE KEY UPDATE claimabletreasures = claimabletreasures - VALUES(claimabletreasures)");
+                statement.setInt(2, amount);
+            } else {
                 statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, COALESCE((SELECT claimabletreasures FROM " + prefix + "players WHERE uuid = ?), 0) - ?);");
                 statement.setString(2, uuid);
                 statement.setInt(3, amount);
             }
+            statement.setString(1, uuid);
 
             statement.executeUpdate();
             statement.close();

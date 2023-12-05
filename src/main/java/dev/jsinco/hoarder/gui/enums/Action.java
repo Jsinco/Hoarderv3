@@ -1,6 +1,7 @@
 package dev.jsinco.hoarder.gui.enums;
 
 import dev.jsinco.hoarder.Messages;
+import dev.jsinco.hoarder.gui.DynamicItems;
 import dev.jsinco.hoarder.gui.GUICreator;
 import dev.jsinco.hoarder.gui.PaginatedGUI;
 import dev.jsinco.hoarder.manager.SellingManager;
@@ -24,7 +25,7 @@ public enum Action {
         switch (this) {
             case OPEN -> {
                 GUICreator guiCreator = new GUICreator(string);
-                guiCreator.setGuiSpecifics();
+                new DynamicItems(guiCreator).setGuiSpecifics();
 
                 if (guiCreator.getPaginatedGUI() != null) {
                     player.openInventory(guiCreator.getPaginatedGUI().getPage(0));

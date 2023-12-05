@@ -19,6 +19,8 @@ public final class Hoarder extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         generateFiles();
+        HoarderEvent hoarderEvent = new HoarderEvent(this);
+        hoarderEvent.reloadHoarderEvent();
 
         getCommand("hoardertwo").setExecutor(new CommandManager(this));
 
