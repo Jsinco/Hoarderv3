@@ -10,8 +10,10 @@ import dev.jsinco.hoarder.objects.HoarderPlayer
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.scheduler.BukkitRunnable
 
 class DynamicItems(val guiCreator: GUICreator) {
 
@@ -22,10 +24,11 @@ class DynamicItems(val guiCreator: GUICreator) {
     private val material: Material = HoarderEvent.activeMaterial
     private val sellPrice: Double = HoarderEvent.activeSellPrice
     private val gui = guiCreator.gui
+    private val dynamicItemsFile = FileManager("guis/dynamicitems.yml").generateYamlFile()
 
     // FIXME: probably redo/edit this
     fun setGuiSpecifics() {
-        val dynamicItemsFile = FileManager("guis/dynamicitems.yml").generateYamlFile()
+
         when (guiCreator.guiType) {
             GUIType.MAIN -> { // FIXME: items need to set placeholders
                 // We can use our GuiItem class for these dynamic items
@@ -37,10 +40,14 @@ class DynamicItems(val guiCreator: GUICreator) {
 
                 activeMeta.setDisplayName(setMainGUIStrings(dynamicItemsFile.getString("items.active_item.name")!!))
                 activeMeta.lore = setMainGUIStrings(dynamicItemsFile.getStringList("items.active_item.lore"))
-                if (dynamicItemsFile.getBoolean("items.active_item.enchanted")) activeMeta.addEnchant(Enchantment.DURABILITY, 1, true)
+                if (dynamicItemsFile.getBoolean("items.active_item.enchanted")) {
+                    activeMeta.addEnchant(Enchantment.DURABILITY, 1, true)
+                    activeMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES)
+                }
                 activeMeta.persistentDataContainer.set(NamespacedKey(plugin, "action") , PersistentDataType.STRING, dynamicItemsFile.getString("items.active_item.action") ?: "NONE")
                 activeItem.itemMeta = activeMeta
                 gui.setItem(dynamicItemsFile.getInt("items.active_item.slot"), activeItem)
+                startClockRunnable() // FIXME
             }
 
             GUIType.TREASURE -> {
@@ -92,8 +99,30 @@ class DynamicItems(val guiCreator: GUICreator) {
                 }
                 guiCreator.paginatedGUI = PaginatedGUI(guiCreator.title, gui, playerHeads)
             }
-            else -> {}
+            GUIType.TREASURE_CLAIM -> {
+
+            }
+            GUIType.OTHER -> {}
         }
+    }
+
+    /**
+     * Start the clock runnable for main GUI
+     * Expire time 5m
+     */
+    private fun startClockRunnable() {
+        val item = ItemStack(Material.CLOCK)
+        val meta = item.itemMeta!!
+
+        guiCreator.guiRunnable = object : BukkitRunnable() {
+            override fun run() {
+                meta.lore = listOf(Util.getHumanReadableEndTime())
+                item.itemMeta = meta
+                gui.setItem(36, item)
+
+                plugin.logger.info("running a gui task")
+            }
+        }.runTaskTimer(plugin, 0, 20).taskId
     }
 
 

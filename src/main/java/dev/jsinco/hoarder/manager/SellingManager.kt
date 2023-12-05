@@ -1,5 +1,6 @@
 package dev.jsinco.hoarder.manager
 
+import dev.jsinco.hoarder.HoarderEvent
 import dev.jsinco.hoarder.api.HoarderSellEvent
 import dev.jsinco.hoarder.economy.EconomyHandler
 import dev.jsinco.hoarder.economy.PlayerPointsHook
@@ -15,7 +16,7 @@ class SellingManager(val player: Player, val inventory: Inventory) {
     var payoutAmount = 0.0
 
     fun sellActiveItem() {
-        val activeMaterial = Settings.getDataManger().getEventMaterial()
+        val activeMaterial = HoarderEvent.activeMaterial
 
         for (item in inventory.contents) {
             if (item != null && item.type == activeMaterial) {
@@ -28,7 +29,7 @@ class SellingManager(val player: Player, val inventory: Inventory) {
         val usingEcon = Settings.usingEconomy()
 
         if (!usingEcon || amountSold == 0) return
-        val sellPrice = Settings.getDataManger().getEventSellPrice()
+        val sellPrice = HoarderEvent.activeSellPrice
 
         payoutAmount = sellPrice * amountSold
 

@@ -3,9 +3,9 @@ package dev.jsinco.hoarder.gui.enums;
 import dev.jsinco.hoarder.Messages;
 import dev.jsinco.hoarder.gui.DynamicItems;
 import dev.jsinco.hoarder.gui.GUICreator;
+import dev.jsinco.hoarder.gui.GUIUpdater;
 import dev.jsinco.hoarder.gui.PaginatedGUI;
 import dev.jsinco.hoarder.manager.SellingManager;
-import dev.jsinco.hoarder.objects.HoarderPlayer;
 import kotlin.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -73,6 +73,10 @@ public enum Action {
                 if (msg != null) {
                     msg = msg.replace("%amount%", String.valueOf(sellingManager.getAmountSold())).replace("%payout%", String.valueOf(sellingManager.getPayoutAmount()));
                 }
+                if (player.getOpenInventory().getTopInventory().getHolder() instanceof GUICreator) {
+                    new GUIUpdater((GUICreator) player.getOpenInventory().getTopInventory().getHolder());
+                }
+
                 player.sendMessage(Messages.INSTANCE.getPrefix() + msg);
             }
 

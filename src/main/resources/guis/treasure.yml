@@ -6,7 +6,7 @@ gui-type: TREASURE
 # The dynamic item will fill any empty slots in the gui
 
 # Treasure gui-type is a paginated gui and thus has extra actions and item attributes
-# hide-if-page-not-available: If true, the item will not be shown if the next/previous page does not exist
+# TODO: hide-if-page-not-available: If true, the item will not be shown if the next/previous page does not exist
 # [BACK_PAGE]: Goes to the previous page, if available
 # [NEXT_PAGE]: Goes to the next page, if available
 

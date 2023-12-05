@@ -84,7 +84,7 @@ class HoarderEvent(val plugin: Hoarder) {
 
             dataManager.addClaimableTreasures(eventPlayers[position - 1], winnerPositions[position]!!)
         }
-
+        dataManager.resetAllPoints()
 
     }
 

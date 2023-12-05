@@ -6,6 +6,7 @@ import dev.jsinco.hoarder.commands.SubCommand
 import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
 class DebugCommand : SubCommand {
     override fun execute(plugin: Hoarder, sender: CommandSender, args: Array<out String>) {
@@ -18,6 +19,9 @@ class DebugCommand : SubCommand {
             sender.sendMessage("ending")
             HoarderEvent(plugin).endHoarderEvent()
             HoarderEvent(plugin).restartHoarderEvent(10000)
+            return
+        } else if (args.size >= 2 && args[1] == "addt") {
+            Settings.getDataManger().addClaimableTreasures((sender as Player).uniqueId.toString(), 1)
             return
         }
 

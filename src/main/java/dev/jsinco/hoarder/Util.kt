@@ -1,16 +1,13 @@
 package dev.jsinco.hoarder
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI
-import dev.jsinco.hoarder.manager.FileManager
 import dev.jsinco.hoarder.manager.Settings
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 object Util {
 
@@ -114,8 +111,26 @@ object Util {
         return "$name-${itemStack.amount}"
     }
 
+
+    // General event stuff?
+
+
+
     fun getMsTimeFromNow(minutes: Long): Long {
         return System.currentTimeMillis() + (minutes * 60000)
+    }
+
+
+    fun getHumanReadableEndTime(): String {
+        val remainingTime: Long = getMsTimeFromNow(HoarderEvent.endTime)
+
+        val calendar = Calendar.getInstance()
+        calendar.setTimeInMillis(remainingTime)
+
+        val hours = if (remainingTime / 3600000 < 0) 0 else remainingTime / 3600000
+        val mins = calendar[Calendar.MINUTE]
+        val secs = calendar[Calendar.SECOND]
+        return String.format("%02d:%02d:%02d", hours, mins, secs)
     }
 
 

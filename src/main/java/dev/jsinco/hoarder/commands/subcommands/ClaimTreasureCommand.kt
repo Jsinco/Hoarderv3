@@ -1,6 +1,7 @@
-package dev.jsinco.hoarder.commands
+package dev.jsinco.hoarder.commands.subcommands
 
 import dev.jsinco.hoarder.Hoarder
+import dev.jsinco.hoarder.commands.SubCommand
 import dev.jsinco.hoarder.objects.HoarderPlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

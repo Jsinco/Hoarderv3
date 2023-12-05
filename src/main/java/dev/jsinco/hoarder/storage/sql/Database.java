@@ -192,12 +192,13 @@ public abstract class Database implements DataManager {
         try {
             PreparedStatement statement;
             if (!usingSQLite) {
-                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = points + VALUES(points)");
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = points + VALUES(points);");
                 statement.setInt(2, amount);
             } else {
-                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points) VALUES (?, COALESCE((SELECT points FROM " + prefix + "players WHERE uuid = ?), 0) + ?);");
+                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points, claimabletreasures) VALUES (?, COALESCE((SELECT points FROM " + prefix + "players WHERE uuid = ?), 0) + ?, COALESCE((SELECT claimabletreasures FROM " + prefix + "players WHERE uuid = ?), 0));");
                 statement.setString(2, uuid);
                 statement.setInt(3, amount);
+                statement.setString(4, uuid);
             }
             statement.setString(1, uuid);
 
@@ -213,15 +214,18 @@ public abstract class Database implements DataManager {
     @Override
     public void removePoints(@NotNull String uuid, int amount) {
         try { // TODO: if we remove points from a player that hasnt been added to DB yet what will happen with this SQL statement?
-            PreparedStatement statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = points - VALUES(points)");
+            PreparedStatement statement;
 
-            statement.setString(1, uuid);
-            statement.setInt(2, amount);
             if (usingSQLite) {
-                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points) VALUES (?, COALESCE((SELECT points FROM " + prefix + "players WHERE uuid = ?), 0) - ?);");
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = points - VALUES(points);");
+                statement.setInt(2, amount);
+            } else {
+                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points, claimabletreasures) VALUES (?, COALESCE((SELECT points FROM " + prefix + "players WHERE uuid = ?), 0) - ?, COALESCE((SELECT claimabletreasures FROM " + prefix + "players WHERE uuid = ?), 0));");
                 statement.setString(2, uuid);
                 statement.setInt(3, amount);
+                statement.setString(4, uuid);
             }
+            statement.setString(1, uuid);
 
             statement.executeUpdate();
             statement.close();
@@ -256,12 +260,13 @@ public abstract class Database implements DataManager {
         try {
             PreparedStatement statement;
             if (!usingSQLite) {
-                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, ?) ON DUPLICATE KEY UPDATE claimabletreasures = claimabletreasures + VALUES(claimabletreasures)");
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, ?) ON DUPLICATE KEY UPDATE claimabletreasures = claimabletreasures + VALUES(claimabletreasures);");
                 statement.setInt(2, amount);
             } else {
-                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, COALESCE((SELECT claimabletreasures FROM " + prefix + "players WHERE uuid = ?), 0) + ?);");
+                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points, claimabletreasures) VALUES (?, COALESCE((SELECT points FROM " + prefix + "players WHERE uuid = ?), 0), COALESCE((SELECT claimabletreasures FROM " + prefix + "players WHERE uuid = ?), 0) + ?);");
                 statement.setString(2, uuid);
-                statement.setInt(3, amount);
+                statement.setString(3, uuid);
+                statement.setInt(4, amount);
             }
             statement.setString(1, uuid);
 
@@ -277,12 +282,13 @@ public abstract class Database implements DataManager {
         try {
             PreparedStatement statement;
             if (!usingSQLite) {
-                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, ?) ON DUPLICATE KEY UPDATE claimabletreasures = claimabletreasures - VALUES(claimabletreasures)");
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, ?) ON DUPLICATE KEY UPDATE claimabletreasures = claimabletreasures - VALUES(claimabletreasures);");
                 statement.setInt(2, amount);
             } else {
-                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, COALESCE((SELECT claimabletreasures FROM " + prefix + "players WHERE uuid = ?), 0) - ?);");
+                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points, claimabletreasures) VALUES (?, COALESCE((SELECT points FROM " + prefix + "players WHERE uuid = ?), 0), COALESCE((SELECT claimabletreasures FROM " + prefix + "players WHERE uuid = ?), 0) - ?);");
                 statement.setString(2, uuid);
-                statement.setInt(3, amount);
+                statement.setString(3, uuid);
+                statement.setInt(4, amount);
             }
             statement.setString(1, uuid);
 

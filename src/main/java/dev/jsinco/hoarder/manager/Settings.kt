@@ -7,7 +7,6 @@ import dev.jsinco.hoarder.storage.FlatFile
 import dev.jsinco.hoarder.storage.StorageType
 import dev.jsinco.hoarder.storage.sql.MySQL
 import dev.jsinco.hoarder.storage.sql.SQLite
-import org.bukkit.Bukkit
 import org.bukkit.Material
 
 
@@ -91,6 +90,12 @@ object Settings {
 
     fun treasureBoundInt(): Int {
         return plugin.config.getInt("treasure-items.bound-int")
+    }
+
+    // MISC
+
+    @JvmStatic fun commandAliases(): List<String> {
+        return plugin.config.getStringList("command-aliases")
     }
 
 

@@ -6,7 +6,13 @@ import dev.jsinco.hoarder.manager.FileManager;
 import dev.jsinco.hoarder.manager.Settings;
 import dev.jsinco.hoarder.storage.DataManager;
 import dev.jsinco.hoarder.storage.StorageType;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Field;
+import java.util.logging.Level;
 
 public final class Hoarder extends JavaPlugin {
 
@@ -22,7 +28,8 @@ public final class Hoarder extends JavaPlugin {
         HoarderEvent hoarderEvent = new HoarderEvent(this);
         hoarderEvent.reloadHoarderEvent();
 
-        getCommand("hoardertwo").setExecutor(new CommandManager(this));
+        getCommand("hoarder").setExecutor(new CommandManager(this));
+        registerCommandAliases();
 
         getServer().getPluginManager().registerEvents(new Listeners(this), this);
 
@@ -48,6 +55,22 @@ public final class Hoarder extends JavaPlugin {
         FileManager.generateFolder("guis");
         for (String fileName : fileNames) {
             new FileManager(fileName).generateFile();
+        }
+    }
+
+    private void registerCommandAliases() {
+        try {
+            final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            bukkitCommandMap.setAccessible(true);
+
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+            PluginCommand pluginCommand = getCommand("hoarder");
+
+            for (String alias : Settings.commandAliases()) {
+                commandMap.register(alias.toLowerCase(), "hoarder", pluginCommand);
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            getLogger().log(Level.SEVERE, "Failed to register command aliases!", e);
         }
     }
 }

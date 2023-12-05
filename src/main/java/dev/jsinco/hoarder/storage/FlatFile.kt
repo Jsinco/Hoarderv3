@@ -77,6 +77,7 @@ class FlatFile (val plugin: Hoarder) : DataManager {
     // Event necessities
 
     override fun resetAllPoints() {
+        println(getAllHoarderPlayersUUIDS())
         for (uuid in getAllHoarderPlayersUUIDS()) {
             file.set("players.$uuid.points", 0)
         }
