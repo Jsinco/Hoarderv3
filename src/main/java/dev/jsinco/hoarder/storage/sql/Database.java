@@ -39,7 +39,8 @@ public abstract class Database implements DataManager {
                 "USE " + plugin.getConfig().getString("storage.database") + ";",
                 "CREATE TABLE IF NOT EXISTS " + prefix + "data (event VARCHAR(500) PRIMARY KEY, endtime LONG, material VARCHAR(500), sellprice DECIMAL(15, 2));",
                 "CREATE TABLE IF NOT EXISTS " + prefix + "treasure_items (identifier VARCHAR(3072) PRIMARY KEY, weight INT, itemstack VARCHAR(3072));",
-                "CREATE TABLE IF NOT EXISTS " + prefix + "players (uuid VARCHAR(36) PRIMARY KEY, points INT NOT NULL DEFAULT 0, claimabletreasures INT NOT NULL DEFAULT 0);"
+                "CREATE TABLE IF NOT EXISTS " + prefix + "players (uuid VARCHAR(36) PRIMARY KEY, points INT NOT NULL DEFAULT 0, claimabletreasures INT NOT NULL DEFAULT 0);",
+                "CREATE TABLE IF NOT EXISTS " + prefix + "cache (uuid VARCHAR(36) PRIMARY KEY, position INT);"
         ));
 
         if (usingSQLite) {
@@ -502,6 +503,62 @@ public abstract class Database implements DataManager {
             e.printStackTrace();
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public void addMsgQueuedPlayer(@NotNull String uuid, int position) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("INSERT INTO " + prefix + "cache (uuid, position) VALUES (?, ?);");
+            statement.setString(1, uuid);
+            statement.setInt(2, position);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to add player to msg queue cache", e);
+        }
+    }
+
+    @Override
+    public void removeMsgQueuedPlayer(@NotNull String uuid) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("DELETE FROM " + prefix + "cache WHERE uuid = ?;");
+            statement.setString(1, uuid);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to remove player from msg queue cache", e);
+        }
+    }
+
+
+    @Override
+    public boolean isMsgQueuedPlayer(@NotNull String uuid) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM " + prefix + "cache WHERE uuid = ?;");
+            statement.setString(1, uuid);
+            ResultSet resultSet = statement.executeQuery();
+            boolean isMsgQueued = resultSet.next();
+            statement.close();
+            return isMsgQueued;
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to check if player is in msg queue cache", e);
+            return false;
+        }
+    }
+
+    @Override
+    public int getMsgQueuedPlayerPosition(@NotNull String uuid) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM " + prefix + "cache WHERE uuid = ?;");
+            statement.setString(1, uuid);
+            ResultSet resultSet = statement.executeQuery();
+            int position = resultSet.getInt("position");
+            statement.close();
+            return position;
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to get player position in msg queue cache", e);
+        }
+        return -1;
     }
 
     // SQL/File

@@ -98,6 +98,10 @@ object Settings {
         return plugin.config.getStringList("commands.command-aliases")
     }
 
+    fun defaultCommandAction(): String {
+        return plugin.config.getString("commands.default-command-action") ?: "NONE"
+    }
+
 
     // STORAGE
 

@@ -11,6 +11,11 @@ object Messages {
     }
 
     @JvmStatic
+    fun getMsgList(path: String): List<String> {
+        return Util.fullColor(messagesFile.getStringList(path).map { getPrefix() + it })
+    }
+
+    @JvmStatic
     fun getMsg(path: String): String {
         return Util.fullColor((getPrefix() + messagesFile.getString(path)))
     }

@@ -104,6 +104,16 @@ interface DataManager {
      */
     fun getAllTreasureItems(): List<TreasureItem>?
 
+
+    // Message Queued Players
+    fun addMsgQueuedPlayer(uuid: String, position: Int)
+
+    fun removeMsgQueuedPlayer(uuid: String)
+
+    fun isMsgQueuedPlayer(uuid: String): Boolean
+
+    fun getMsgQueuedPlayerPosition(uuid: String): Int
+
     // SQL / File
 
     fun getSQLConnection(): Connection

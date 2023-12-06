@@ -1,6 +1,7 @@
 package dev.jsinco.hoarder.gui.enums;
 
 import dev.jsinco.hoarder.Messages;
+import dev.jsinco.hoarder.Util;
 import dev.jsinco.hoarder.gui.DynamicItems;
 import dev.jsinco.hoarder.gui.GUICreator;
 import dev.jsinco.hoarder.gui.GUIUpdater;
@@ -45,7 +46,7 @@ public enum Action {
 
             case CLOSE -> player.closeInventory();
 
-            case MESSAGE -> player.sendMessage(string);
+            case MESSAGE -> player.sendMessage(Util.fullColor(string));
 
             case BACK_PAGE -> {
                 GUICreator guiCreator = (GUICreator) player.getOpenInventory().getTopInventory().getHolder();

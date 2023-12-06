@@ -76,11 +76,9 @@ class HoarderPlayer (val uuid: String) {
 
             var item: ItemStack? = null
             while (item == null) {
-                val random = Random.nextInt(Settings.treasureBoundInt())
-
                 val treasureItem = treasures.random()
 
-                if (treasureItem.weight <= random) {
+                if (treasureItem.weight <= Random.nextInt(Settings.treasureBoundInt())) {
                     item = treasureItem.itemStack
                 }
             }

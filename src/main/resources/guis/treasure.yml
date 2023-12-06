@@ -21,20 +21,20 @@ items:
     slot: 48
     action: '[BACK_PAGE]'
     material: ARROW
-    name: 'Previous Page'
+    name: '<GRADIENT:fb7f4a>Previous Page</GRADIENT:642ffd>'
     lore: []
     enchanted: false
   next_arrow:
     slot: 50
     action: '[NEXT_PAGE]'
     material: ARROW
-    name: 'Next Page'
+    name: '<GRADIENT:fb7f4a>Next Page</GRADIENT:642ffd>'
     lore: []
     enchanted: false
   return_chest:
     slot: 49
     action: '[OPEN] guis/main.yml'
     material: CHEST
-    name: 'Return'
-    lore: ['Click to go back to the Hoarder']
+    name: '<GRADIENT:fb7f4a>&lReturn</GRADIENT:642ffd>'
+    lore: ['<GRADIENT:fb7f4a>Click to go back to the Hoarder</GRADIENT:642ffd>']
     enchanted: false

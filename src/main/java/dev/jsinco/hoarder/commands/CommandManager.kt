@@ -2,6 +2,8 @@ package dev.jsinco.hoarder.commands
 
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.commands.subcommands.*
+import dev.jsinco.hoarder.gui.enums.Action
+import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -23,7 +25,11 @@ class CommandManager(val plugin: Hoarder) : CommandExecutor, TabCompleter {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (args.isEmpty()) {
-            sender.sendMessage("no args")
+            val actionString = Settings.defaultCommandAction()
+            if (actionString != "NONE" && sender is Player) {
+                val parsedAction = Action.parseStringAction(actionString)
+                parsedAction.first.executeAction(parsedAction.second, sender)
+            }
             return true
         }
         val subCommand = subCommands[args[0]] ?: return true

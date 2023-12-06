@@ -2,6 +2,7 @@ package dev.jsinco.hoarder.gui
 
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.Util
+import dev.jsinco.hoarder.Util.replaceTopPlaceholders
 import dev.jsinco.hoarder.manager.FileManager
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -65,26 +66,15 @@ class GUIItem (val file: YamlConfiguration, val key: String) {
         val eventPlayers = Util.getEventPlayersByTop()
         val dmFile = FileManager("guis/dynamicitems.yml").getFileYaml()
 
-        meta.setDisplayName(Util.fullColor(replaceTopPlaceholders(meta.displayName, eventPlayers) ?: dmFile.getString("items.empty-position.name")!!))
+        meta.setDisplayName(Util.fullColor(replaceTopPlaceholders(meta.displayName, eventPlayers) ?: dmFile.getString("items.empty_position.name")!!))
         var wasNull = false
         meta.lore = meta.lore!!.map { Util.fullColor(replaceTopPlaceholders(it, eventPlayers) ?:  run { wasNull = true; "" }) }
-        if (wasNull) meta.lore = Util.fullColor(dmFile.getStringList("items.empty-position.lore"))
+        if (wasNull) meta.lore = Util.fullColor(dmFile.getStringList("items.empty_position.lore"))
 
-        val uuid = replaceTopPlaceholders(data, eventPlayers) ?: run { item.type = Material.valueOf(dmFile.getString("items.empty-position.material")!!); "" }
+        val uuid = replaceTopPlaceholders(data, eventPlayers) ?: run { item.type = Material.valueOf(dmFile.getString("items.empty_position.material")!!); "" }
         item.itemMeta = meta
         item = setPlayerHead(itemStack, uuid)
         return item
-    }
-
-    // FIXME
-    private fun replaceTopPlaceholders(string: String, eventPlayers: Map<String, Int>): String? {
-        val num = string.substring(string.indexOf("%top_") + 5, string.indexOf("%top_") + 6).toIntOrNull() ?: return string
-        if (eventPlayers.size < num) return null
-        val uuid = eventPlayers.keys.toList()[num - 1]
-
-        return string.replace("%top_${num}_name%", Bukkit.getOfflinePlayer(UUID.fromString(uuid)).name ?: "Unknown")
-            .replace("%top_${num}_points%", eventPlayers.values.toList()[num - 1].toString())
-            .replace("%top_${num}_uuid%", uuid)
     }
 
     companion object {

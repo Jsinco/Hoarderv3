@@ -1,4 +1,4 @@
-title: 'Example GUI'
+title: '&f&lExample GUI'
 size: 27
 gui-type: OTHER
 
@@ -18,6 +18,6 @@ items:
     slot: 13
     action: '[MESSAGE] You clicked a random grass block'
     material: GRASS_BLOCK
-    name: 'Random Grass'
+    name: '&2Random Grass'
     lore: ['Click me!']
-    enchanted: false
+    enchanted: true

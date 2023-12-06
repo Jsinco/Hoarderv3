@@ -2,6 +2,7 @@ package dev.jsinco.hoarder
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI
 import dev.jsinco.hoarder.manager.Settings
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -114,6 +115,16 @@ object Util {
 
     // General event stuff?
 
+
+    fun replaceTopPlaceholders(string: String, eventPlayers: Map<String, Int>): String? {
+        val num = string.substring(string.indexOf("%top_") + 5, string.indexOf("%top_") + 6).toIntOrNull() ?: return string
+        if (eventPlayers.size < num) return null
+        val uuid = eventPlayers.keys.toList()[num - 1]
+
+        return string.replace("%top_${num}_name%", Bukkit.getOfflinePlayer(UUID.fromString(uuid)).name ?: "Unknown")
+            .replace("%top_${num}_points%", eventPlayers.values.toList()[num - 1].toString())
+            .replace("%top_${num}_uuid%", uuid)
+    }
 
 
     fun getMsTimeFromNow(minutes: Long): Long {

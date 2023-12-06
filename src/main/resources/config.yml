@@ -31,6 +31,8 @@ event:
   # 20 ticks = 1 second. Changing this shouldn't be necessary. Recommended to leave at above at least 20 ticks (1 second)
   timer-check-interval: 600
 
+  # Notify players if they won a
+  notify-on-join: true
   # The amount of winners and the amount of treasures given to them upon the Hoarder event ending.
   # Want to add more winners? Just add the spot that should win and the amount of treasures that should be given to them upon winning
   winners:
@@ -63,6 +65,7 @@ treasure-items:
 use-material-list-as-blacklist: false
 
 # Materials that the Hoarder can pick from and the price that they will pay for them
+# If economy is disabled, then the price will be ignored
 materials:
   diamond: 5
   white_wool: 4.72

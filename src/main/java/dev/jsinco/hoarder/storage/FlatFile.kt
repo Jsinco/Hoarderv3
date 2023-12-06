@@ -151,6 +151,24 @@ class FlatFile (val plugin: Hoarder) : DataManager {
         return treasureItems
     }
 
+    override fun addMsgQueuedPlayer(uuid: String, position: Int) {
+        file.set("cache.$uuid.position", position)
+        fileManager.saveFileYaml()
+    }
+
+    override fun removeMsgQueuedPlayer(uuid: String) {
+        file.set("cache.$uuid", null)
+        fileManager.saveFileYaml()
+    }
+
+    override fun isMsgQueuedPlayer(uuid: String): Boolean {
+        return file.getConfigurationSection("cache")?.getKeys(false)?.contains(uuid) ?: false
+    }
+
+    override fun getMsgQueuedPlayerPosition(uuid: String): Int {
+        return file.getInt("cache.$uuid.position")
+    }
+
     // SQL / File
 
     override fun getSQLConnection(): Connection {

@@ -61,7 +61,7 @@ class DynamicItems(val guiCreator: GUICreator) {
 
                     val lore = meta.lore ?: emptyList<String?>().toMutableList()
                     for (string in dynamicItemsFile.getStringList("items.treasure.lore")) {
-                        lore.add(Util.fullColor(string.replace("%chance%", treasureItem.weight.toString())))
+                        lore.add(Util.fullColor(string.replace("%weight%", treasureItem.weight.toString())))
                     }
                     meta.lore = lore
                     item.itemMeta = meta
@@ -72,12 +72,12 @@ class DynamicItems(val guiCreator: GUICreator) {
             }
 
             GUIType.STATS -> {
-                val hoarderPlayerUUIDS = Util.getEventPlayersByTop()
+                val hoarderPlayerUUIDS = Util.getEventPlayersByTop().keys
 
                 val playerHeads: MutableList<ItemStack> = mutableListOf()
 
                 for (uuid in hoarderPlayerUUIDS) {
-                    val hoarderPlayer = HoarderPlayer(uuid.key)
+                    val hoarderPlayer = HoarderPlayer(uuid)
 
                     val item = ItemStack(Material.valueOf(dynamicItemsFile.getString("items.stats.material")!!.uppercase()))
                     val meta = item.itemMeta!!
@@ -86,16 +86,18 @@ class DynamicItems(val guiCreator: GUICreator) {
                         Util.fullColor(dynamicItemsFile.getString("items.stats.name")!!
                         .replace("%name%", hoarderPlayer.getName()))
                         .replace("%points%", hoarderPlayer.getPoints().toString())
+                        .replace("%position%", (hoarderPlayerUUIDS.indexOf(uuid) + 1).toString())
                     )
 
                     meta.lore = Util.fullColor(dynamicItemsFile.getStringList("items.stats.lore").map {
                         it.replace("%name%", hoarderPlayer.getName())
                             .replace("%points%", hoarderPlayer.getPoints().toString())
+                            .replace("%position%", (hoarderPlayerUUIDS.indexOf(uuid) + 1).toString())
                     })
                     if (dynamicItemsFile.getBoolean("items.stats.enchanted")) meta.addEnchant(Enchantment.DURABILITY, 1, true)
 
                     item.itemMeta = meta
-                    playerHeads.add(GUIItem.setPlayerHead(item, uuid.key))
+                    playerHeads.add(GUIItem.setPlayerHead(item, uuid))
                 }
                 guiCreator.paginatedGUI = PaginatedGUI(guiCreator.title, gui, playerHeads)
             }

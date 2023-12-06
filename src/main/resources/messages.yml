@@ -4,11 +4,15 @@ actions:
   sell: 'You sold %amount% for %payout%!'
 
 
-hoarder-events:
-  start: ''
+notifications:
   end:
     - 'The Hoarder has collected the stash and given prizes to the winners!'
-    - ''
+    - '#1 %top_1_name% - %top_1_points%'
+    - '#2 %top_2_name% - %top_2_points%'
+    - '#3 %top_3_name% - %top_3_points%'
+    - '#4 %top_4_name% - %top_4_points%'
+  win: 'You placed #%position% last Hoarder event! /hoarder claim to claim your treasures!'
+  claimable-treasures: 'You have %amount% claimable treasures! /hoarder claim to claim them!'
 
 # Lang for adding, editing, deleting treasures with /hoarder treasure
 treasure:
@@ -26,3 +30,5 @@ treasure:
 reload:
   start: 'Reloading...'
   end: 'Successfully reloaded the plugin!'
+
+empty-position: 'Looks like no one''s here...'

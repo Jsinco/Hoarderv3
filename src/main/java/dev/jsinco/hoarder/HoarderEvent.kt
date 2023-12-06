@@ -61,14 +61,6 @@ class HoarderEvent(val plugin: Hoarder) {
         // set end time
         endTime = Util.getMsTimeFromNow(timerLength)
         dataManager.setEventEndTime(endTime)
-
-        val msg = getMsg("event.start")
-        if (msg.isBlank()) return
-        for (player in Bukkit.getOnlinePlayers()) {
-            if (player.hasPermission("hoarder.notify")) {
-                player.sendMessage(msg)
-            }
-        }
     }
 
 
@@ -83,9 +75,18 @@ class HoarderEvent(val plugin: Hoarder) {
             if (eventPlayers.size < position) break
 
             dataManager.addClaimableTreasures(eventPlayers[position - 1], winnerPositions[position]!!)
+            dataManager.addMsgQueuedPlayer(eventPlayers[position - 1], position)
         }
-        dataManager.resetAllPoints()
 
+
+        val eventPlayersMap = Util.getEventPlayersByTop()
+        for (msg in Messages.getMsgList("notifications.end")) {
+            val setMsg: String = Util.replaceTopPlaceholders(msg, eventPlayersMap) ?: getMsg("empty-position")
+            Bukkit.broadcastMessage(setMsg)
+        }
+
+
+        dataManager.resetAllPoints()
     }
 
     /**

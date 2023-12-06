@@ -15,6 +15,9 @@ permissions:
   hoarder.command.reload:
     description: 'Allows usage of /hoarder reload. Used for reloading the plugin''s config and storage'
     default: op
+  hoarder.command.gui:
+    description: 'Allows usage of /hoarder gui. Used for opening Hoarder GUIs'
+    default: op
 commands:
   hoarder:
     usage: '/hoarder <subcommand>?'

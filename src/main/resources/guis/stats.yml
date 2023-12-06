@@ -1,4 +1,4 @@
-title: '&#fb7f4a&lT&#ea765e&lh&#d96d72&le &#c96486&lH&#b85b9a&lo&#a753ad&la&#964ac1&lr&#8641d5&ld&#7538e9&le&#642ffd&lr'
+title: '<GRADIENT:fb7f4a>&lStats</GRADIENT:642ffd>'
 size: 36
 gui-type: STATS
 
@@ -13,20 +13,20 @@ items:
     slot: 30
     action: '[BACK_PAGE]'
     material: ARROW
-    name: 'Previous Page'
+    name: '<GRADIENT:fb7f4a>Previous Page</GRADIENT:642ffd>'
     lore: []
     enchanted: false
   next_arrow:
     slot: 32
     action: '[NEXT_PAGE]'
     material: ARROW
-    name: 'Next Page'
+    name: '<GRADIENT:fb7f4a>Next Page</GRADIENT:642ffd>'
     lore: []
     enchanted: false
   return_chest:
     slot: 31
     action: '[OPEN] guis/main.yml'
     material: CHEST
-    name: 'Return'
-    lore: ['Click to go back to the Hoarder']
+    name: '<GRADIENT:fb7f4a>&lReturn</GRADIENT:642ffd>'
+    lore: ['<GRADIENT:fb7f4a>Click to go back to the Hoarder</GRADIENT:642ffd>']
     enchanted: false

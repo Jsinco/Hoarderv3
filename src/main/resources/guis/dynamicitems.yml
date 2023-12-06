@@ -5,35 +5,47 @@
 # You cannot add any dynamic items. Only the ones listed below are available.
 
 items:
+  # The Hoarder's active item. This item's materials and sell price will change depending on
+  # the current active material in the Hoarder event. Linked to MAIN gui type
+  
   # VALUES FOR ACTIVE_ITEM: %material% - The enum constant of the material
   # %material_formatted% - The formatted name of the material
   # %sell_price% - The price that the hoarder will buy the item for if enabled
   active_item:
     slot: 31
     action: '[SELL]'
-    name: 'Sell: %material_formatted%'
+    name: '<GRADIENT:fb7f4a>&lSell: %material_formatted%</GRADIENT:642ffd>'
     material: '%material%'
-    lore: [ 'Click to sell to the hoarder!' ]
+    lore: [ '<GRADIENT:fb7f4a>Click to sell for 1 point and %sell_price%!</GRADIENT:642ffd>' ]
     enchanted: true
+  
+  # Shows the remaining time of the Hoarder event. Linked to MAIN gui type
+  
+  # VALUES FOR CLOCK: %hours% - The amount of hours remaining
+  # %minutes% - The amount of minutes remaining
+  # %seconds% - The amount of seconds remaining
   clock:
     slot: 36
     material: CLOCK
-    name: 'Remaining time'
+    name: '<GRADIENT:fb7f4a>&lRemaining time</GRADIENT:642ffd>'
+    lore: [ '<GRADIENT:fb7f4a>%hours%h %minutes%m %seconds%s</GRADIENT:642ffd>' ]
     enchanted: false
+  
+  # Represents each treasure item that the hoarder has to offer
+  # Linked to TREASURE gui type
+  
+  # VALUES FOR TREASURE: %weight% - the weighted chance of the item
+  treasure:
+    lore: ['', '<GRADIENT:fb7f4a>• Chance/Weight: %weight%</GRADIENT:642ffd>']
 
-  empty-position:
-    material: WITHER_SKELETON_SKULL
-    name: '&cEmpty'
-    lore: ['&7Looks like no one is here']
-
-  # VALUES FOR TREASURE: %chance% - the weighted chance of the item
-  treasure: # Represents each treasure item that the hoarder has to offer
-    lore: ['', 'Chance: %chance%']
+  # Represents each stat item. Linked to STATS gui type
+  
   # VALUES FOR STATS: %name% - The player's name
   # %points% - The player's points
+  # %position% - The player's position number
   stats:
     material: PLAYER_HEAD
-    name: '%name%'
+    name: '<GRADIENT:fb7f4a>&l#%position% %name%</GRADIENT:642ffd>'
     lore: ['%name% has %points% points!']
     enchanted: false
 
@@ -42,3 +54,8 @@ items:
     name: 'Claim Prize'
     lore: ['Click to claim your prize!']
     enchanted: true
+  
+  empty_position:
+    material: WITHER_SKELETON_SKULL
+    name: '&cEmpty'
+    lore: [ '&7Looks like no one is here' ]

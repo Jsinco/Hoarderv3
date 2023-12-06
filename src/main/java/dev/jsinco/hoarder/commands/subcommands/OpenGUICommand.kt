@@ -34,8 +34,8 @@ class OpenGUICommand : SubCommand {
         return list
     }
 
-    override fun permission(): String? {
-        return null
+    override fun permission(): String {
+        return "hoarder.command.gui"
     }
 
     override fun playerOnly(): Boolean {
