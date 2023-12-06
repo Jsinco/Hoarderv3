@@ -55,9 +55,6 @@ class SellingManager(val player: Player, val inventory: Inventory) {
             msg = msg.replace("%amount%", amountSold.toString())
                 .replace("%payout%", payoutString)
         }
-        if (player.openInventory.topInventory.holder is GUICreator) {
-            GUIUpdater((player.openInventory.topInventory.holder as GUICreator?)!!)
-        }
 
         player.sendMessage(getPrefix() + msg)
     }

@@ -8,6 +8,7 @@ import dev.jsinco.hoarder.utilities.Messages
 import dev.jsinco.hoarder.utilities.Util
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import java.util.*
 import kotlin.random.Random
 
 /**
@@ -92,9 +93,12 @@ class HoarderEvent(val plugin: Hoarder) {
 
         for (position in winnerPositions.keys) {
             if (eventPlayers.size < position) break
+            val uuid = eventPlayers[position - 1]
 
-            dataManager.addClaimableTreasures(eventPlayers[position - 1], winnerPositions[position]!!)
-            dataManager.addMsgQueuedPlayer(eventPlayers[position - 1], position)
+            dataManager.addClaimableTreasures(uuid, winnerPositions[position]!!)
+            if (!Bukkit.getOfflinePlayer(UUID.fromString(uuid)).isOnline) {
+                dataManager.addMsgQueuedPlayer(uuid, position)
+            }
         }
 
 

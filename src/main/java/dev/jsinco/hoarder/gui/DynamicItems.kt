@@ -85,9 +85,9 @@ class DynamicItems(val guiCreator: GUICreator) {
 
                     meta.setDisplayName(
                         Util.fullColor(dItemsFile.getString("items.stats.name")!!
-                        .replace("%name%", hoarderPlayer.getName()))
+                        .replace("%name%", hoarderPlayer.getName())
                         .replace("%points%", hoarderPlayer.getPoints().toString())
-                        .replace("%position%", (hoarderPlayerUUIDS.indexOf(uuid) + 1).toString())
+                        .replace("%position%", (hoarderPlayerUUIDS.indexOf(uuid) + 1).toString()))
                     )
 
                     meta.lore = Util.fullColor(dItemsFile.getStringList("items.stats.lore").map {

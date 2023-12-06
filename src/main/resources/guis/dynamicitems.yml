@@ -27,8 +27,9 @@ items:
   clock:
     slot: 36
     material: CLOCK
-    name: '<GRADIENT:fb7f4a>&lRemaining time</GRADIENT:642ffd>'
+    name: '<GRADIENT:fb7f4a>&lRemaining Time</GRADIENT:642ffd>'
     lore: [ '<GRADIENT:fb7f4a>%hours%h %minutes%m %seconds%s</GRADIENT:642ffd>' ]
+    enchanted: false
   
   # Represents each treasure item that the hoarder has to offer
   # Linked to TREASURE gui type
@@ -50,6 +51,7 @@ items:
 
   claim_prize:
     string-matched-materials: 'CONCRETE_POWDER'
+    action: '[CLAIM]'
     name: 'Claim Prize'
     lore: ['Click to claim your prize!']
     enchanted: true

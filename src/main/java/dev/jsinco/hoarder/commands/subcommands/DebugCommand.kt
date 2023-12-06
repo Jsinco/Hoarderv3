@@ -18,7 +18,7 @@ class DebugCommand : SubCommand {
         } else if (args.size >= 2 && args[1] == "end") {
             sender.sendMessage("ending")
             HoarderEvent(plugin).endHoarderEvent()
-            HoarderEvent(plugin).startHoarderEvent(10000)
+            HoarderEvent(plugin).startHoarderEvent(Settings.getEventTimerLength())
             return
         } else if (args.size >= 2 && args[1] == "addt") {
             Settings.getDataManger().addClaimableTreasures((sender as Player).uniqueId.toString(), 1)

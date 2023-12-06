@@ -1,5 +1,6 @@
 package dev.jsinco.hoarder.gui.enums;
 
+import dev.jsinco.hoarder.objects.HoarderPlayer;
 import dev.jsinco.hoarder.utilities.Messages;
 import dev.jsinco.hoarder.utilities.Util;
 import dev.jsinco.hoarder.gui.DynamicItems;
@@ -20,7 +21,8 @@ public enum Action {
     MESSAGE,
     BACK_PAGE,
     NEXT_PAGE,
-    SELL;
+    SELL,
+    CLAIM;
 
     public boolean executeAction(String string, Player player) {
         switch (this) {
@@ -69,10 +71,15 @@ public enum Action {
             case SELL -> {
                 SellingManager sellingManager = new SellingManager(player, player.getInventory());
                 sellingManager.sellActiveItem();
-
-
+                if (player.getOpenInventory().getTopInventory().getHolder() instanceof GUICreator) {
+                    new GUIUpdater((GUICreator) player.getOpenInventory().getTopInventory().getHolder());
+                }
             }
 
+            case CLAIM -> {
+                HoarderPlayer hoarderPlayer = new HoarderPlayer(player.getUniqueId().toString());
+                hoarderPlayer.claimTreasure(1);
+            }
             default -> {
                 return false;
             }

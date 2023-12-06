@@ -1,0 +1,32 @@
+title: '<GRADIENT:fb7f4a>&lTreasure Claim</GRADIENT:642ffd>'
+size: 54
+gui-type: TREASURE_CLAIM
+
+items:
+  border:
+    slot: [45, 46, 47, 51, 52, 53]
+    material: LIGHT_GRAY_STAINED_GLASS_PANE
+    name: ' '
+    lore: []
+    enchanted: false
+  back_arrow:
+    slot: 48
+    action: '[BACK_PAGE]'
+    material: ARROW
+    name: '<GRADIENT:fb7f4a>Previous Page</GRADIENT:642ffd>'
+    lore: []
+    enchanted: false
+  next_arrow:
+    slot: 50
+    action: '[NEXT_PAGE]'
+    material: ARROW
+    name: '<GRADIENT:fb7f4a>Next Page</GRADIENT:642ffd>'
+    lore: []
+    enchanted: false
+  return_chest:
+    slot: 49
+    action: '[OPEN] guis/main.yml'
+    material: CHEST
+    name: '<GRADIENT:fb7f4a>&lReturn</GRADIENT:642ffd>'
+    lore: ['<GRADIENT:fb7f4a>Click to go back to the Hoarder</GRADIENT:642ffd>']
+    enchanted: false
