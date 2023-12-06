@@ -28,7 +28,7 @@ class Listeners(private val plugin: Hoarder) : Listener {
         if (actionString == "NONE") return
         val parsedAction = Action.parseStringAction(actionString)
 
-        parsedAction.first.executeAction(parsedAction.second, event.whoClicked as Player)
+        parsedAction.first.executeAction(parsedAction.second, event.whoClicked as Player, clickedItem)
     }
 
 

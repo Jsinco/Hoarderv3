@@ -16,7 +16,7 @@ class OpenGUICommand : SubCommand {
         val path = "guis/${args[1]}.yml"
         val guiCreator = GUICreator(path)
 
-        DynamicItems(guiCreator).setGuiSpecifics()
+        DynamicItems(guiCreator).setGuiSpecifics(sender)
         val paginated = guiCreator.paginatedGUI
         if (paginated != null) {
             sender.openInventory(paginated.getPage(0))

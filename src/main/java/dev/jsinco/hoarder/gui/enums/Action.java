@@ -10,8 +10,11 @@ import dev.jsinco.hoarder.gui.PaginatedGUI;
 import dev.jsinco.hoarder.manager.SellingManager;
 import kotlin.Pair;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public enum Action {
 
@@ -24,11 +27,11 @@ public enum Action {
     SELL,
     CLAIM;
 
-    public boolean executeAction(String string, Player player) {
+    public boolean executeAction(String string, Player player, @Nullable ItemStack itemStack) {
         switch (this) {
             case OPEN -> {
                 GUICreator guiCreator = new GUICreator(string);
-                new DynamicItems(guiCreator).setGuiSpecifics();
+                new DynamicItems(guiCreator).setGuiSpecifics(player);
 
                 if (guiCreator.getPaginatedGUI() != null) {
                     player.openInventory(guiCreator.getPaginatedGUI().getPage(0));
@@ -79,6 +82,7 @@ public enum Action {
             case CLAIM -> {
                 HoarderPlayer hoarderPlayer = new HoarderPlayer(player.getUniqueId().toString());
                 hoarderPlayer.claimTreasure(1);
+                if (itemStack != null) itemStack.setType(Material.AIR);
             }
             default -> {
                 return false;

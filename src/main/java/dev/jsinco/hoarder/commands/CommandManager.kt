@@ -28,7 +28,7 @@ class CommandManager(val plugin: Hoarder) : CommandExecutor, TabCompleter {
             val actionString = Settings.defaultCommandAction()
             if (actionString != "NONE" && sender is Player) {
                 val parsedAction = Action.parseStringAction(actionString)
-                parsedAction.first.executeAction(parsedAction.second, sender)
+                parsedAction.first.executeAction(parsedAction.second, sender, null)
             }
             return true
         }

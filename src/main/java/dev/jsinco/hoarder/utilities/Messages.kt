@@ -1,6 +1,7 @@
 package dev.jsinco.hoarder.utilities
 
 import dev.jsinco.hoarder.manager.FileManager
+import org.bukkit.entity.Player
 
 object Messages {
 
@@ -23,5 +24,9 @@ object Messages {
     @JvmStatic
     fun getMsgConsoleSender(path: String): String {
         return messagesFile.getString(path) ?: ""
+    }
+
+    fun sendLangMessage(player: Player, path: String) {
+
     }
 }

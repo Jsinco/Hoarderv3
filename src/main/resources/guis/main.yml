@@ -20,9 +20,9 @@ items:
     name: '&#fb7f4a&lR&#e27268&le&#c96486&lw&#b057a4&la&#964ac1&lr&#7d3cdf&ld&#642ffd&ls'
     lore: [ '&#e17169S&#dd6f6ee&#d86d73e &#d46a78w&#d0687dh&#cc6682a&#c76487t &#c3618ct&#bf5f92h&#ba5d97e &#b65a9cH&#b258a1o&#ad56a6a&#a954abr&#a551b0d&#a04fb5e&#9c4dbbr &#984ac0h&#9348c5a&#8f46cas &#8b44cft&#8741d4o &#823fd9o&#7e3ddef&#7a3ae3f&#7538e9e&#7136eer&#6d34f3.&#6831f8.&#642ffd.' ]
     enchanted: false
-  rewards:
+  treasure_claim:
     slot: 8
-    action: '[OPEN] guis/rewards.yml'
+    action: '[OPEN] guis/treasure_claim.yml'
     material: ENDER_CHEST
     name: '&#fb7f4a&lC&#ed785a&ll&#e0706b&la&#d2697b&li&#c4628b&lm &#b65b9b&lR&#a953ac&le&#9b4cbc&lw&#8d45cc&la&#7f3edc&lr&#7236ed&ld&#642ffd&ls'
     lore: [ '&#fb7f4aC&#f47b53l&#ed775ba&#e57464i&#de706cm &#d76c75a&#d0687dv&#c96486a&#c1618ei&#ba5d97l&#b3599fa&#ac55a8b&#a551b0l&#9e4db9e &#964ac1r&#8f46cae&#8842d2w&#813edba&#7a3ae3r&#7237ecd&#6b33f4s&#642ffd!' ]

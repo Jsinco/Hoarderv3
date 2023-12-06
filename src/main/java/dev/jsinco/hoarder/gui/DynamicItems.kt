@@ -11,6 +11,7 @@ import dev.jsinco.hoarder.objects.Time
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -28,7 +29,7 @@ class DynamicItems(val guiCreator: GUICreator) {
     private val dItemsFile = FileManager("guis/dynamicitems.yml").generateYamlFile()
 
     // FIXME: probably redo/edit this
-    fun setGuiSpecifics() {
+    fun setGuiSpecifics(player: Player) {
 
         when (guiCreator.guiType) {
             GUIType.MAIN -> { // FIXME: items need to set placeholders
@@ -103,11 +104,42 @@ class DynamicItems(val guiCreator: GUICreator) {
                 guiCreator.paginatedGUI = PaginatedGUI(guiCreator.title, gui, playerHeads)
             }
             GUIType.TREASURE_CLAIM -> {
+                val materialMatchString = dItemsFile.getString("items.treasure.string-matched-materials") ?: "CONCRETE_POWDER"
+                val materials: MutableList<Material> = mutableListOf()
 
+                for (material in Material.entries) {
+                    if (material.name.contains(materialMatchString)) materials.add(material)
+                }
+
+                val amt = Settings.getDataManger().getClaimableTreasures(player.uniqueId.toString())
+
+                val items: MutableList<ItemStack> = mutableListOf()
+                println(dItemsFile.getString("items.treasure.action"))
+                for (i in 0..amt) {
+                    val item = createItem(materials.random(), dItemsFile.getString("items.treasure_claim.name") ?: "", dItemsFile.getStringList("items.treasure_claim.lore"), dItemsFile.getBoolean("items.treasure_claim.enchanted"), dItemsFile.getString("items.treasure.action") ?: "NONE")
+                    items.add(item)
+                }
+                guiCreator.paginatedGUI = PaginatedGUI(guiCreator.title, gui, items)
             }
             GUIType.OTHER -> {}
         }
     }
+
+    fun createItem(material: Material, name: String, lore: List<String>, enchanted: Boolean, action:String): ItemStack {
+        val item = ItemStack(material)
+        val meta = item.itemMeta!!
+
+        meta.setDisplayName(Util.fullColor(name))
+        meta.lore = Util.fullColor(lore)
+        if (enchanted) meta.addEnchant(Enchantment.DURABILITY, 1, true)
+
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES)
+        meta.persistentDataContainer.set(NamespacedKey(plugin, "action"), PersistentDataType.STRING, action)
+
+        item.itemMeta = meta
+        return item
+    }
+
 
     /**
      * Start the clock runnable for main GUI
