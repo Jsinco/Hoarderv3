@@ -1,6 +1,6 @@
 package dev.jsinco.hoarder.objects
 
-import dev.jsinco.hoarder.Util
+import dev.jsinco.hoarder.utilities.Util
 import dev.jsinco.hoarder.storage.DataManager
 import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.Bukkit

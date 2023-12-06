@@ -1,8 +1,11 @@
 package dev.jsinco.hoarder
 
-import dev.jsinco.hoarder.Messages.getMsg
+import dev.jsinco.hoarder.utilities.Messages.getMsg
 import dev.jsinco.hoarder.api.HoarderEndEvent
+import dev.jsinco.hoarder.api.HoarderStartEvent
 import dev.jsinco.hoarder.manager.Settings
+import dev.jsinco.hoarder.utilities.Messages
+import dev.jsinco.hoarder.utilities.Util
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import kotlin.random.Random
@@ -21,7 +24,7 @@ class HoarderEvent(val plugin: Hoarder) {
         var runnable: Int = -1
     }
 
-    val dataManager = Settings.getDataManger()
+    private val dataManager = Settings.getDataManger()
 
     /**
      * Reload the event
@@ -32,13 +35,29 @@ class HoarderEvent(val plugin: Hoarder) {
         endTime = dataManager.getEventEndTime()
 
         if (runnable != -1) Bukkit.getScheduler().cancelTask(runnable)
-        //startEventRunnable()
+        runnable = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, {
+            if (System.currentTimeMillis() < endTime) return@scheduleSyncRepeatingTask
+
+            val hoarderEndEvent = HoarderEndEvent() // API
+            val hoarderStartEvent = HoarderStartEvent()
+            Bukkit.getPluginManager().callEvent(hoarderEndEvent)
+            Bukkit.getPluginManager().callEvent(hoarderStartEvent)
+
+            if (!hoarderEndEvent.isCancelled){
+                endHoarderEvent()
+            }
+            if (!hoarderStartEvent.isCancelled) {
+                startHoarderEvent(Settings.getEventTimerLength())
+            }
+            //reloadHoarderEvent()
+        },0, Settings.getEndTimeInterval())
     }
+
 
     /**
      * Start the event
      */
-    fun restartHoarderEvent(timerLength: Long) {
+    fun startHoarderEvent(timerLength: Long) {
 
 
         if (timerLength <= 0) {
@@ -51,7 +70,7 @@ class HoarderEvent(val plugin: Hoarder) {
         // set material
         activeMaterial = determineEventMaterial()
         dataManager.setEventMaterial(activeMaterial)
-        println(activeMaterial.name)
+
         // set sell price
         if (Settings.usingEconomy()) {
             activeSellPrice = determineEventPrice()
@@ -59,7 +78,7 @@ class HoarderEvent(val plugin: Hoarder) {
         }
 
         // set end time
-        endTime = Util.getMsTimeFromNow(timerLength)
+        endTime = System.currentTimeMillis() + (timerLength * 60000)
         dataManager.setEventEndTime(endTime)
     }
 
@@ -89,25 +108,7 @@ class HoarderEvent(val plugin: Hoarder) {
         dataManager.resetAllPoints()
     }
 
-    /**
-     * Runnable for the event
-     */
-    private fun startEventRunnable() {
-        runnable =
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, {
-            if (System.currentTimeMillis() >= endTime) {
 
-                val endEvent = HoarderEndEvent()
-                Bukkit.getPluginManager().callEvent(endEvent)
-                if (!endEvent.isCancelled){
-                    endHoarderEvent()
-                }
-
-                restartHoarderEvent(Settings.getEventTimerLength())
-                reloadHoarderEvent()
-            }
-        },0, Settings.getEndTimeInterval())
-    }
 
     // Helper functions to determine event details TODO: Package and separate class?
 

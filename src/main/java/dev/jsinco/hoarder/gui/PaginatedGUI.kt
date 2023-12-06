@@ -1,6 +1,6 @@
 package dev.jsinco.hoarder.gui
 
-import dev.jsinco.hoarder.Util
+import dev.jsinco.hoarder.utilities.Util
 import org.bukkit.Bukkit
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack

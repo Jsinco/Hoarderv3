@@ -55,7 +55,7 @@ public abstract class Database implements DataManager {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, "Failed to initialize database", e);
         }
     }
 
@@ -125,7 +125,6 @@ public abstract class Database implements DataManager {
     @NotNull
     @Override
     public Material getEventMaterial() {
-        Bukkit.broadcastMessage("Starting SQL query!");
         try {
             PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM " + prefix + "data WHERE event = ?;");
             statement.setString(1, "main");
@@ -136,7 +135,6 @@ public abstract class Database implements DataManager {
 
             Material material = Material.valueOf(resultSet.getString("material"));
             statement.close();
-            Bukkit.broadcastMessage("SQL query finished!");
             return material;
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to get event material in database", e);
@@ -472,7 +470,6 @@ public abstract class Database implements DataManager {
             statement.close();
             return new TreasureItem(id, weight, itemStack);
         } catch (SQLException e) {
-            e.printStackTrace();
             plugin.getLogger().log(Level.SEVERE, "Failed to get treasure item from database", e);
         }
         return null;
@@ -481,7 +478,6 @@ public abstract class Database implements DataManager {
     @NotNull
     @Override
     public List<TreasureItem> getAllTreasureItems() {
-        Bukkit.broadcastMessage("Call on getAllTreasureItems!");
         try {
             PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM "+prefix+"treasure_items;");
             ResultSet resultSet = statement.executeQuery();
@@ -489,18 +485,15 @@ public abstract class Database implements DataManager {
             List<TreasureItem> treasureItems = new ArrayList<>();
             Gson gson = new Gson();
             while (resultSet.next()) {
-                // Adjust your logic here based on the column name retrieved
-                // For example, you might want to create a TreasureItem object with the column name as the identifier
                 String identifier = resultSet.getString("identifier");
-                int weight = resultSet.getInt("weight");  // Replace with the actual logic to get weight
+                int weight = resultSet.getInt("weight");
                 ItemStack itemStack = ItemStack.deserialize(gson.fromJson(resultSet.getString("itemstack"), Map.class));
                 treasureItems.add(new TreasureItem(identifier, weight, itemStack));
             }
             statement.close();
             return treasureItems;
         } catch (SQLException e) {
-            // Handle the exception appropriately
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, "Failed to get all treasure items from database", e);
             return Collections.emptyList();
         }
     }

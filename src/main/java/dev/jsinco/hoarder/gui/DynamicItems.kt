@@ -2,11 +2,12 @@ package dev.jsinco.hoarder.gui
 
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.HoarderEvent
-import dev.jsinco.hoarder.Util
+import dev.jsinco.hoarder.utilities.Util
 import dev.jsinco.hoarder.gui.enums.GUIType
 import dev.jsinco.hoarder.manager.FileManager
 import dev.jsinco.hoarder.manager.Settings
 import dev.jsinco.hoarder.objects.HoarderPlayer
+import dev.jsinco.hoarder.objects.Time
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
@@ -24,7 +25,7 @@ class DynamicItems(val guiCreator: GUICreator) {
     private val material: Material = HoarderEvent.activeMaterial
     private val sellPrice: Double = HoarderEvent.activeSellPrice
     private val gui = guiCreator.gui
-    private val dynamicItemsFile = FileManager("guis/dynamicitems.yml").generateYamlFile()
+    private val dItemsFile = FileManager("guis/dynamicitems.yml").generateYamlFile()
 
     // FIXME: probably redo/edit this
     fun setGuiSpecifics() {
@@ -34,19 +35,19 @@ class DynamicItems(val guiCreator: GUICreator) {
                 // We can use our GuiItem class for these dynamic items
                 // TODO: Add runnable for clock
 
-                val activeItem = ItemStack(Material.valueOf(setMainGUIStrings(dynamicItemsFile.getString("items.active_item.material")!!)))
+                val activeItem = ItemStack(Material.valueOf(setMainGUIStrings(dItemsFile.getString("items.active_item.material")!!)))
 
                 val activeMeta = activeItem.itemMeta!!
 
-                activeMeta.setDisplayName(setMainGUIStrings(dynamicItemsFile.getString("items.active_item.name")!!))
-                activeMeta.lore = setMainGUIStrings(dynamicItemsFile.getStringList("items.active_item.lore"))
-                if (dynamicItemsFile.getBoolean("items.active_item.enchanted")) {
+                activeMeta.setDisplayName(setMainGUIStrings(dItemsFile.getString("items.active_item.name")!!))
+                activeMeta.lore = setMainGUIStrings(dItemsFile.getStringList("items.active_item.lore"))
+                if (dItemsFile.getBoolean("items.active_item.enchanted")) {
                     activeMeta.addEnchant(Enchantment.DURABILITY, 1, true)
                     activeMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES)
                 }
-                activeMeta.persistentDataContainer.set(NamespacedKey(plugin, "action") , PersistentDataType.STRING, dynamicItemsFile.getString("items.active_item.action") ?: "NONE")
+                activeMeta.persistentDataContainer.set(NamespacedKey(plugin, "action") , PersistentDataType.STRING, dItemsFile.getString("items.active_item.action") ?: "NONE")
                 activeItem.itemMeta = activeMeta
-                gui.setItem(dynamicItemsFile.getInt("items.active_item.slot"), activeItem)
+                gui.setItem(dItemsFile.getInt("items.active_item.slot"), activeItem)
                 startClockRunnable() // FIXME
             }
 
@@ -60,7 +61,7 @@ class DynamicItems(val guiCreator: GUICreator) {
                     val meta = item.itemMeta!!
 
                     val lore = meta.lore ?: emptyList<String?>().toMutableList()
-                    for (string in dynamicItemsFile.getStringList("items.treasure.lore")) {
+                    for (string in dItemsFile.getStringList("items.treasure.lore")) {
                         lore.add(Util.fullColor(string.replace("%weight%", treasureItem.weight.toString())))
                     }
                     meta.lore = lore
@@ -79,22 +80,22 @@ class DynamicItems(val guiCreator: GUICreator) {
                 for (uuid in hoarderPlayerUUIDS) {
                     val hoarderPlayer = HoarderPlayer(uuid)
 
-                    val item = ItemStack(Material.valueOf(dynamicItemsFile.getString("items.stats.material")!!.uppercase()))
+                    val item = ItemStack(Material.valueOf(dItemsFile.getString("items.stats.material")!!.uppercase()))
                     val meta = item.itemMeta!!
 
                     meta.setDisplayName(
-                        Util.fullColor(dynamicItemsFile.getString("items.stats.name")!!
+                        Util.fullColor(dItemsFile.getString("items.stats.name")!!
                         .replace("%name%", hoarderPlayer.getName()))
                         .replace("%points%", hoarderPlayer.getPoints().toString())
                         .replace("%position%", (hoarderPlayerUUIDS.indexOf(uuid) + 1).toString())
                     )
 
-                    meta.lore = Util.fullColor(dynamicItemsFile.getStringList("items.stats.lore").map {
+                    meta.lore = Util.fullColor(dItemsFile.getStringList("items.stats.lore").map {
                         it.replace("%name%", hoarderPlayer.getName())
                             .replace("%points%", hoarderPlayer.getPoints().toString())
                             .replace("%position%", (hoarderPlayerUUIDS.indexOf(uuid) + 1).toString())
                     })
-                    if (dynamicItemsFile.getBoolean("items.stats.enchanted")) meta.addEnchant(Enchantment.DURABILITY, 1, true)
+                    if (dItemsFile.getBoolean("items.stats.enchanted")) meta.addEnchant(Enchantment.DURABILITY, 1, true)
 
                     item.itemMeta = meta
                     playerHeads.add(GUIItem.setPlayerHead(item, uuid))
@@ -113,18 +114,28 @@ class DynamicItems(val guiCreator: GUICreator) {
      * Expire time 5m
      */
     private fun startClockRunnable() {
-        val item = ItemStack(Material.CLOCK)
+        val item = ItemStack(Material.valueOf(dItemsFile.getString("items.clock.material") ?: "CLOCK"))
         val meta = item.itemMeta!!
 
         guiCreator.guiRunnable = object : BukkitRunnable() {
             override fun run() {
-                meta.lore = listOf(Util.getHumanReadableEndTime())
-                item.itemMeta = meta
-                gui.setItem(36, item)
+                meta.setDisplayName(setMainGUIStrings(dItemsFile.getString("items.clock.name") ?: ""))
 
-                plugin.logger.info("running a gui task")
+                meta.lore = dItemsFile.getStringList("items.clock.lore").map { setClockStrings(it) }
+                item.itemMeta = meta
+                gui.setItem(dItemsFile.getInt("items.clock.slot"), item)
+
             }
         }.runTaskTimer(plugin, 0, 20).taskId
+    }
+
+    private fun setClockStrings(string: String): String {
+        val time = Time()
+        return Util.fullColor(
+            string.replace("%hours%", time.hours.toString())
+                .replace("%minutes%", time.mins.toString())
+                .replace("%seconds%", time.secs.toString())
+        )
     }
 
 

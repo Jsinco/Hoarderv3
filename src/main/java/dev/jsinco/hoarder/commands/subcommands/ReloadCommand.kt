@@ -2,7 +2,7 @@ package dev.jsinco.hoarder.commands.subcommands
 
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.HoarderEvent
-import dev.jsinco.hoarder.Messages.getMsgConsoleSender
+import dev.jsinco.hoarder.utilities.Messages.getMsgConsoleSender
 import dev.jsinco.hoarder.commands.SubCommand
 import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.command.CommandSender

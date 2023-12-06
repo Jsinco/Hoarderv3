@@ -1,6 +1,7 @@
-package dev.jsinco.hoarder
+package dev.jsinco.hoarder.utilities
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI
+import dev.jsinco.hoarder.HoarderEvent
 import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -133,12 +134,12 @@ object Util {
 
 
     fun getHumanReadableEndTime(): String {
-        val remainingTime: Long = getMsTimeFromNow(HoarderEvent.endTime)
+        val remainingTime: Long = HoarderEvent.endTime - System.currentTimeMillis()
 
         val calendar = Calendar.getInstance()
         calendar.setTimeInMillis(remainingTime)
 
-        val hours = if (remainingTime / 3600000 < 0) 0 else remainingTime / 3600000
+        val hours = remainingTime / 3600000
         val mins = calendar[Calendar.MINUTE]
         val secs = calendar[Calendar.SECOND]
         return String.format("%02d:%02d:%02d", hours, mins, secs)

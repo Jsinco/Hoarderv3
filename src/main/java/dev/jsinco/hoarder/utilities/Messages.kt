@@ -1,4 +1,4 @@
-package dev.jsinco.hoarder
+package dev.jsinco.hoarder.utilities
 
 import dev.jsinco.hoarder.manager.FileManager
 
@@ -7,7 +7,7 @@ object Messages {
     val messagesFile = FileManager("messages.yml").generateYamlFile()
 
     fun getPrefix(): String {
-        return Util.fullColor(messagesFile.getString("prefix")?: "")
+        return Util.fullColor(messagesFile.getString("prefix") ?: "")
     }
 
     @JvmStatic

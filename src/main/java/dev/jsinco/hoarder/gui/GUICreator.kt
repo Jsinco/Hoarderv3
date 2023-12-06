@@ -1,6 +1,6 @@
 package dev.jsinco.hoarder.gui
 
-import dev.jsinco.hoarder.Util
+import dev.jsinco.hoarder.utilities.Util
 import dev.jsinco.hoarder.gui.enums.GUIType
 import dev.jsinco.hoarder.manager.FileManager
 import org.bukkit.Bukkit

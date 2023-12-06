@@ -1,8 +1,8 @@
 package dev.jsinco.hoarder.gui
 
 import dev.jsinco.hoarder.Hoarder
-import dev.jsinco.hoarder.Util
-import dev.jsinco.hoarder.Util.replaceTopPlaceholders
+import dev.jsinco.hoarder.utilities.Util
+import dev.jsinco.hoarder.utilities.Util.replaceTopPlaceholders
 import dev.jsinco.hoarder.manager.FileManager
 import org.bukkit.Bukkit
 import org.bukkit.Material

@@ -1,7 +1,7 @@
 package dev.jsinco.hoarder.events
 
 import dev.jsinco.hoarder.Hoarder
-import dev.jsinco.hoarder.Messages
+import dev.jsinco.hoarder.utilities.Messages
 import dev.jsinco.hoarder.gui.GUICreator
 import dev.jsinco.hoarder.gui.enums.Action
 import dev.jsinco.hoarder.manager.Settings
@@ -37,6 +37,7 @@ class Listeners(private val plugin: Hoarder) : Listener {
         if (event.inventory.holder !is GUICreator) return
         val player = event.player as Player
 
+        // TODO: precheck doesnt work
         var preCheck = false
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, {
             if (player.openInventory.topInventory.holder is GUICreator) preCheck = true

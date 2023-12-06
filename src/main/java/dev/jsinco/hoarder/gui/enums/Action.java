@@ -1,7 +1,7 @@
 package dev.jsinco.hoarder.gui.enums;
 
-import dev.jsinco.hoarder.Messages;
-import dev.jsinco.hoarder.Util;
+import dev.jsinco.hoarder.utilities.Messages;
+import dev.jsinco.hoarder.utilities.Util;
 import dev.jsinco.hoarder.gui.DynamicItems;
 import dev.jsinco.hoarder.gui.GUICreator;
 import dev.jsinco.hoarder.gui.GUIUpdater;
@@ -70,15 +70,7 @@ public enum Action {
                 SellingManager sellingManager = new SellingManager(player, player.getInventory());
                 sellingManager.sellActiveItem();
 
-                String msg = Messages.INSTANCE.getMessagesFile().getString("actions.sell");
-                if (msg != null) {
-                    msg = msg.replace("%amount%", String.valueOf(sellingManager.getAmountSold())).replace("%payout%", sellingManager.getPayoutString());
-                }
-                if (player.getOpenInventory().getTopInventory().getHolder() instanceof GUICreator) {
-                    new GUIUpdater((GUICreator) player.getOpenInventory().getTopInventory().getHolder());
-                }
 
-                player.sendMessage(Messages.INSTANCE.getPrefix() + msg);
             }
 
             default -> {

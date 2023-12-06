@@ -6,6 +6,10 @@ import dev.jsinco.hoarder.economy.EconomyHandler
 import dev.jsinco.hoarder.economy.PlayerPointsHook
 import dev.jsinco.hoarder.economy.ProviderType
 import dev.jsinco.hoarder.economy.VaultHook
+import dev.jsinco.hoarder.gui.GUICreator
+import dev.jsinco.hoarder.gui.GUIUpdater
+import dev.jsinco.hoarder.utilities.Messages.getPrefix
+import dev.jsinco.hoarder.utilities.Messages.messagesFile
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -27,20 +31,34 @@ class SellingManager(val player: Player, val inventory: Inventory) {
         }
         Settings.getDataManger().addPoints(player.uniqueId.toString(), amountSold)
 
-        val usingEcon = Settings.usingEconomy()
+        var sellPrice: Double = 0.0
 
-        if (!usingEcon || amountSold == 0) return
-        val sellPrice = HoarderEvent.activeSellPrice
+        if (Settings.usingEconomy() && amountSold > 0) {
+            sellPrice = HoarderEvent.activeSellPrice
 
-        payoutAmount = sellPrice * amountSold
+            payoutAmount = sellPrice * amountSold
 
-        val econHandler: EconomyHandler = when (Settings.getEconomyProvider()) {
-            ProviderType.VAULT -> VaultHook()
-            ProviderType.PLAYERPOINTS -> PlayerPointsHook()
+            val econHandler: EconomyHandler = when (Settings.getEconomyProvider()) {
+                ProviderType.VAULT -> VaultHook()
+                ProviderType.PLAYERPOINTS -> PlayerPointsHook()
+            }
+
+            payoutString = econHandler.addBalance(payoutAmount, player).toString()
         }
 
-        payoutString = econHandler.addBalance(payoutAmount, player).toString()
 
         Bukkit.getPluginManager().callEvent(HoarderSellEvent(player, amountSold, sellPrice))
+
+
+        var msg = if (amountSold > 0) messagesFile.getString("actions.sell") else messagesFile.getString("actions.sell-none")
+        if (msg != null) {
+            msg = msg.replace("%amount%", amountSold.toString())
+                .replace("%payout%", payoutString)
+        }
+        if (player.openInventory.topInventory.holder is GUICreator) {
+            GUIUpdater((player.openInventory.topInventory.holder as GUICreator?)!!)
+        }
+
+        player.sendMessage(getPrefix() + msg)
     }
 }
