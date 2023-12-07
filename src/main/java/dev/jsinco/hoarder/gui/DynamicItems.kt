@@ -114,9 +114,9 @@ class DynamicItems(val guiCreator: GUICreator) {
                 val amt = Settings.getDataManger().getClaimableTreasures(player.uniqueId.toString())
 
                 val items: MutableList<ItemStack> = mutableListOf()
-                println(dItemsFile.getString("items.treasure.action"))
-                for (i in 0..amt) {
-                    val item = createItem(materials.random(), dItemsFile.getString("items.treasure_claim.name") ?: "", dItemsFile.getStringList("items.treasure_claim.lore"), dItemsFile.getBoolean("items.treasure_claim.enchanted"), dItemsFile.getString("items.treasure.action") ?: "NONE")
+
+                for (i in 0 until amt) {
+                    val item = createItem(materials.random(), dItemsFile.getString("items.treasure_claim.name") ?: "", dItemsFile.getStringList("items.treasure_claim.lore"), dItemsFile.getBoolean("items.treasure_claim.enchanted"), dItemsFile.getString("items.treasure_claim.action") ?: "NONE")
                     items.add(item)
                 }
                 guiCreator.paginatedGUI = PaginatedGUI(guiCreator.title, gui, items)

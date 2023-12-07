@@ -7,9 +7,9 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 public class HoarderSellEvent extends Event implements Cancellable {
-    private Player seller;
-    private int amountSold;
-    private double price;
+    private final Player seller;
+    private final int amountSold;
+    private final double price;
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private boolean isCancelled;
 

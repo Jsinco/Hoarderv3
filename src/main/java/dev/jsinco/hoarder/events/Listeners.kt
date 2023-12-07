@@ -1,14 +1,15 @@
 package dev.jsinco.hoarder.events
 
 import dev.jsinco.hoarder.Hoarder
-import dev.jsinco.hoarder.utilities.Messages
 import dev.jsinco.hoarder.gui.GUICreator
 import dev.jsinco.hoarder.gui.enums.Action
 import dev.jsinco.hoarder.manager.Settings
+import dev.jsinco.hoarder.objects.Msg
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -28,11 +29,11 @@ class Listeners(private val plugin: Hoarder) : Listener {
         if (actionString == "NONE") return
         val parsedAction = Action.parseStringAction(actionString)
 
-        parsedAction.first.executeAction(parsedAction.second, event.whoClicked as Player, clickedItem)
+        parsedAction.first.executeAction(parsedAction.second, event.whoClicked as Player, event)
     }
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onInventoryClose(event: InventoryCloseEvent) {
         if (event.inventory.holder !is GUICreator) return
         val player = event.player as Player
@@ -51,13 +52,14 @@ class Listeners(private val plugin: Hoarder) : Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
         val dataManager = Settings.getDataManger()
         if (dataManager.isMsgQueuedPlayer(player.uniqueId.toString())) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, {
-                player.sendMessage(Messages.getMsg("notifications.win").replace("%position%", dataManager.getMsgQueuedPlayerPosition(player.uniqueId.toString()).toString()))
+                if (!player.isOnline) return@scheduleSyncDelayedTask
+                player.sendMessage(Msg("notifications.win").getMsgSendSound(player).replace("%position%", dataManager.getMsgQueuedPlayerPosition(player.uniqueId.toString()).toString()))
                 dataManager.removeMsgQueuedPlayer(player.uniqueId.toString())
             }, 25)
             return
@@ -66,7 +68,8 @@ class Listeners(private val plugin: Hoarder) : Listener {
         val claimableTreasures = dataManager.getClaimableTreasures(player.uniqueId.toString())
         if (claimableTreasures > 0) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, {
-                player.sendMessage(Messages.getMsg("notifications.claimable-treasures").replace("%amount%", claimableTreasures.toString()))
+                if (!player.isOnline) return@scheduleSyncDelayedTask
+                player.sendMessage(Msg("notifications.claimable-treasures").getMsgSendSound(player).replace("%amount%", claimableTreasures.toString()))
             }, 25)
         }
      }

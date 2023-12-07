@@ -1,17 +1,28 @@
+# Messages file for Hoarder. See info.md for usages.
+# Currently only the notifications.end message supports multiple lines :(
+
 prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
 
+empty-position: 'Looks like no one''s here...'
 actions:
   sell: 'You sold %amount% for %payout%!'
   sell-none: 'You have nothing to sell'
+  treasure-claim:
+    message: 'You claimed a treasure!'
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
 
 
 notifications:
   end:
-    - 'The Hoarder has collected the stash and given prizes to the winners!'
-    - '#1 %top_1_name% - %top_1_points%'
-    - '#2 %top_2_name% - %top_2_points%'
-    - '#3 %top_3_name% - %top_3_points%'
-    - '#4 %top_4_name% - %top_4_points%'
+    message:
+      - 'The Hoarder has collected the stash and given prizes to the winners!'
+      - '#1 %top_1_name% - %top_1_points%'
+      - '#2 %top_2_name% - %top_2_points%'
+      - '#3 %top_3_name% - %top_3_points%'
+      - '#4 %top_4_name% - %top_4_points%'
+    sound: ENTITY_EVOKER_PREPARE_WOLOLO
+    volume: 1.0
+    pitch: 4.2
   win: 'You placed #%position% last Hoarder event! /hoarder claim to claim your treasures!'
   claimable-treasures: 'You have %amount% claimable treasures! /hoarder claim to claim them!'
 
@@ -31,5 +42,3 @@ treasure:
 reload:
   start: 'Reloading...'
   end: 'Successfully reloaded the plugin!'
-
-empty-position: 'Looks like no one''s here...'

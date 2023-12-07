@@ -10,7 +10,7 @@ gui-type: OTHER
 # MAIN - The main gui of Hoarder that shows the active material and remaining time
 # TREASURE - The gui that shows the treasure items
 # STATS - The gui that shows the stats of the players currently in the Hoarder event
-# CLAIM_TREASURE - The gui that shows claimable treasure items the player can click to claim
+# TREASURE_CLAIM - The gui that shows claimable treasure items the player can click to claim
 # OTHER - Any other gui that you can open with [OPEN] guis/<your_gui>.yml
 
 items:

@@ -1,6 +1,7 @@
 package dev.jsinco.hoarder.utilities
 
 import dev.jsinco.hoarder.manager.FileManager
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 
 object Messages {
@@ -26,7 +27,16 @@ object Messages {
         return messagesFile.getString(path) ?: ""
     }
 
-    fun sendLangMessage(player: Player, path: String) {
 
+
+    // new
+
+    //fun parseSound: Triple<Sound, Float, Float>? {
+    //    if (messagesFile.getString(path) != null) re
+    //}
+
+
+    fun sendLangMessage(player: Player, path: String) {
+        //player.sendMessage(getMsg(path))
     }
 }

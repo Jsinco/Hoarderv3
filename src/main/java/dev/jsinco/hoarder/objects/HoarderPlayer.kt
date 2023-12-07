@@ -71,6 +71,8 @@ class HoarderPlayer (val uuid: String) {
         val player = getOfflinePlayer().player ?: return
         val claimable = getClaimableTreasures()
         val treasures = dataManager.getAllTreasureItems() ?: return
+
+        dataManager.removeClaimableTreasures(uuid, amount)
         for (i in 0 until amount) {
             if (claimable <= 0) return
 

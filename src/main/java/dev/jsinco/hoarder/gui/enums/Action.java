@@ -1,19 +1,17 @@
 package dev.jsinco.hoarder.gui.enums;
 
-import dev.jsinco.hoarder.objects.HoarderPlayer;
-import dev.jsinco.hoarder.utilities.Messages;
-import dev.jsinco.hoarder.utilities.Util;
 import dev.jsinco.hoarder.gui.DynamicItems;
 import dev.jsinco.hoarder.gui.GUICreator;
 import dev.jsinco.hoarder.gui.GUIUpdater;
 import dev.jsinco.hoarder.gui.PaginatedGUI;
 import dev.jsinco.hoarder.manager.SellingManager;
+import dev.jsinco.hoarder.objects.HoarderPlayer;
+import dev.jsinco.hoarder.utilities.Util;
 import kotlin.Pair;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.Nullable;
 
 public enum Action {
@@ -27,7 +25,7 @@ public enum Action {
     SELL,
     CLAIM;
 
-    public boolean executeAction(String string, Player player, @Nullable ItemStack itemStack) {
+    public boolean executeAction(String string, Player player, @Nullable InventoryClickEvent inventoryClickEvent) {
         switch (this) {
             case OPEN -> {
                 GUICreator guiCreator = new GUICreator(string);
@@ -46,7 +44,7 @@ public enum Action {
                     string = string.replace("-p", "").trim();
                     sender = player;
                 }
-                Bukkit.dispatchCommand(sender, string);
+                Bukkit.dispatchCommand(sender, string.replace("%player%", player.getName()));
             }
 
             case CLOSE -> player.closeInventory();
@@ -82,7 +80,9 @@ public enum Action {
             case CLAIM -> {
                 HoarderPlayer hoarderPlayer = new HoarderPlayer(player.getUniqueId().toString());
                 hoarderPlayer.claimTreasure(1);
-                if (itemStack != null) itemStack.setType(Material.AIR);
+                if (inventoryClickEvent != null) {
+                    inventoryClickEvent.getInventory().setItem(inventoryClickEvent.getSlot(), null);
+                }
             }
             default -> {
                 return false;

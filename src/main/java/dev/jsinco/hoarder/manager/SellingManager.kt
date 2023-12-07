@@ -8,6 +8,7 @@ import dev.jsinco.hoarder.economy.ProviderType
 import dev.jsinco.hoarder.economy.VaultHook
 import dev.jsinco.hoarder.gui.GUICreator
 import dev.jsinco.hoarder.gui.GUIUpdater
+import dev.jsinco.hoarder.objects.Msg
 import dev.jsinco.hoarder.utilities.Messages.getPrefix
 import dev.jsinco.hoarder.utilities.Messages.messagesFile
 import org.bukkit.Bukkit
@@ -50,12 +51,10 @@ class SellingManager(val player: Player, val inventory: Inventory) {
         Bukkit.getPluginManager().callEvent(HoarderSellEvent(player, amountSold, sellPrice))
 
 
-        var msg = if (amountSold > 0) messagesFile.getString("actions.sell") else messagesFile.getString("actions.sell-none")
-        if (msg != null) {
-            msg = msg.replace("%amount%", amountSold.toString())
-                .replace("%payout%", payoutString)
-        }
+        var msg = if (amountSold > 0) Msg("actions.sell").getMsgSendSound(player) else Msg("actions.sell-none").getMsgSendSound(player)
+        msg = msg.replace("%amount%", amountSold.toString())
+            .replace("%payout%", payoutString)
 
-        player.sendMessage(getPrefix() + msg)
+        player.sendMessage(msg)
     }
 }

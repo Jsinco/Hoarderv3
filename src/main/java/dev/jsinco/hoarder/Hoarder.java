@@ -20,6 +20,17 @@ public final class Hoarder extends JavaPlugin {
     private static final String[] fileNames = new String[]{"config.yml", "messages.yml", "info.md", "guis/dynamicitems.yml", "guis/main.yml", "guis/treasure.yml", "guis/stats.yml", "guis/treasure_claim.yml", "guis/example.yml"};
     private DataManager dataManager;
 
+    /*
+    TODO: What's left to do 12/6/2023
+    - Fix paginated gui index out of bounds
+    - Allow pagination arrows to be hidden or force hide them
+    - Fix Gradients and namings on everything and double check
+    - Add config updater
+    - Debug and test everything
+    - Add PAPI support
+    - Add commands
+    - Discord integration via DiscordSRV or save for v1.1.0
+     */
 
     @Override
     public void onEnable() {
