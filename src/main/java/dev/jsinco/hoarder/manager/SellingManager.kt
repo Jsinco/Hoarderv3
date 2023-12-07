@@ -6,11 +6,7 @@ import dev.jsinco.hoarder.economy.EconomyHandler
 import dev.jsinco.hoarder.economy.PlayerPointsHook
 import dev.jsinco.hoarder.economy.ProviderType
 import dev.jsinco.hoarder.economy.VaultHook
-import dev.jsinco.hoarder.gui.GUICreator
-import dev.jsinco.hoarder.gui.GUIUpdater
 import dev.jsinco.hoarder.objects.Msg
-import dev.jsinco.hoarder.utilities.Messages.getPrefix
-import dev.jsinco.hoarder.utilities.Messages.messagesFile
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory

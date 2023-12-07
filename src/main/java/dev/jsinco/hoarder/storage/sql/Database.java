@@ -7,7 +7,6 @@ import dev.jsinco.hoarder.manager.FileManager;
 import dev.jsinco.hoarder.objects.HoarderPlayer;
 import dev.jsinco.hoarder.objects.TreasureItem;
 import dev.jsinco.hoarder.storage.DataManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
