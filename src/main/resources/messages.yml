@@ -26,19 +26,29 @@ notifications:
   win: 'You placed #%position% last Hoarder event! /hoarder claim to claim your treasures!'
   claimable-treasures: 'You have %amount% claimable treasures! /hoarder claim to claim them!'
 
-# Lang for adding, editing, deleting treasures with /hoarder treasure
-treasure:
-  add:
-    missing-args: 'Missing arguments! Usage: /hoarder treasure add <weight!> <identifier?>'
-    missing-args-no-auto-identifier: 'Missing arguments! You have auto-identifier disabled in your config so you must specify an identifier! Usage: /hoarder treasure add <weight!> <identifier!>'
-    success: 'Added %identifier% with a weight of %weight%'
-  edit:
-    missing-args: 'Missing arguments! Usage: /hoarder treasure edit <identifier!> <new-weight!> <new-identifier?>'
-    success: 'Successfully changed %identifier% to %new-identifier% with a weight of %new-weight%'
-  delete:
-    missing-args: 'Missing arguments! Usage: /hoarder treasure delete <identifier!>'
-    success: 'Successfully deleted %identifier% from storage'
-# Lang for /hoarder reload
-reload:
-  start: 'Reloading...'
-  end: 'Successfully reloaded the plugin!'
+# Commands use the fill placeholder "%s" to fill in arguments
+commands:
+  # /hoarder event
+  event:
+    restart: 'Restarted the Hoarder event!'
+    material: 'Changed the active material to %s'
+    price: 'Changed the active sell price to $%s'
+    time: 'The active Hoarder event will now end in %s minutes!'
+  # /hoarder treasure
+  treasure:
+    add:
+      missing-args: 'Missing arguments! Usage: /hoarder treasure add <weight!> <identifier?>'
+      missing-args-no-auto-identifier: 'Missing arguments! You have auto-identifier disabled in your config so you must specify an identifier! Usage: /hoarder treasure add <weight!> <identifier!>'
+      success: 'Added %s with a weight of %s'
+    edit:
+      missing-args: 'Missing arguments! Usage: /hoarder treasure edit <identifier!> <new-weight!> <new-identifier?>'
+      success: 'Successfully changed %s to %s with a weight of %s'
+    delete:
+      missing-args: 'Missing arguments! Usage: /hoarder treasure delete <identifier!>'
+      success: 'Successfully deleted %s from storage'
+  # /hoarder claim
+  claim:
+      no-treasures: 'You have no claimable treasures!'
+      success: 'You claimed %s treasure!'
+  # /hoarder reload
+  reload: 'Reloaded! Took: %sms'

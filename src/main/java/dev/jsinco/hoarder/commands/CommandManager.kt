@@ -4,6 +4,7 @@ import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.commands.subcommands.*
 import dev.jsinco.hoarder.gui.enums.Action
 import dev.jsinco.hoarder.manager.Settings
+import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -19,6 +20,7 @@ class CommandManager(val plugin: Hoarder) : CommandExecutor, TabCompleter {
         subCommands["reload"] = ReloadCommand()
         subCommands["treasure"] = TreasureCommand()
         subCommands["claim"] = ClaimTreasureCommand()
+        subCommands["event"] = EventCommand()
         subCommands["debug"] = DebugCommand()
     }
 

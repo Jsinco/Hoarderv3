@@ -4,6 +4,7 @@ import dev.jsinco.hoarder.commands.CommandManager;
 import dev.jsinco.hoarder.events.Listeners;
 import dev.jsinco.hoarder.manager.FileManager;
 import dev.jsinco.hoarder.manager.Settings;
+import dev.jsinco.hoarder.papi.PAPIManager;
 import dev.jsinco.hoarder.storage.DataManager;
 import dev.jsinco.hoarder.storage.StorageType;
 import org.bukkit.Bukkit;
@@ -19,6 +20,7 @@ public final class Hoarder extends JavaPlugin {
     private static Hoarder plugin;
     private static final String[] fileNames = new String[]{"config.yml", "messages.yml", "info.md", "guis/dynamicitems.yml", "guis/main.yml", "guis/treasure.yml", "guis/stats.yml", "guis/treasure_claim.yml", "guis/example.yml"};
     private DataManager dataManager;
+    //private PAPIManager papiManager;
 
     /*
     TODO: What's left to do 12/6/2023
@@ -28,24 +30,29 @@ public final class Hoarder extends JavaPlugin {
     - Add config updater
     - Debug and test everything
     - Add PAPI support
-    - Add commands
+    - Add commands, CHECK added SellCommand(TDO) and EventCommand
     - Discord integration via DiscordSRV or save for v1.1.0
-     */
+    - Fix duplicate items in treasure
+    */
 
     @Override
     public void onEnable() {
         plugin = this;
+        //this.papiManager = new PAPIManager(this);
+        this.dataManager = Settings.getDataManger();
+
         generateFiles();
-        HoarderEvent hoarderEvent = new HoarderEvent(this);
-        hoarderEvent.reloadHoarderEvent();
+        //papiManager.register();
+        HoarderEvent.INSTANCE.reloadHoarderEvent();
 
         getCommand("hoarder").setExecutor(new CommandManager(this));
         registerCommandAliases();
 
         getServer().getPluginManager().registerEvents(new Listeners(this), this);
 
+        // first time setup?
+        //if ()
 
-        this.dataManager = Settings.getDataManger();
     }
 
     @Override
@@ -53,6 +60,7 @@ public final class Hoarder extends JavaPlugin {
         if (Settings.getStorageType() == StorageType.MYSQL || Settings.getStorageType() == StorageType.SQLITE) {
             dataManager.closeConnection();
         }
+        //papiManager.unregister();
     }
 
     public static Hoarder getInstance() {

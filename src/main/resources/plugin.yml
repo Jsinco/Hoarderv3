@@ -8,6 +8,7 @@ softdepend:
   - Vault
   - PlayerPoints
   - PlaceholderAPI
+  - DiscordSRV
 permissions:
   hoarder.command.treasure:
     description: 'Allows usage of /hoarder treasure. Used for adding, editing, and deleting treasures from storage'
@@ -17,6 +18,9 @@ permissions:
     default: op
   hoarder.command.gui:
     description: 'Allows usage of /hoarder gui. Used for opening Hoarder GUIs'
+    default: op
+  hoarder.command.event:
+    description: 'Allows usage of /hoarder event. Used for etc with Hoarder events'
     default: op
 commands:
   hoarder:

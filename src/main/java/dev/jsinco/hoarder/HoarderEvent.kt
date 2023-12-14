@@ -12,18 +12,17 @@ import java.util.*
 import kotlin.random.Random
 
 /**
- * Class for the Hoarder's event
+ * Static Class for the Hoarder's event
  * Handles the event's runnable, start, and end
  * Resets the Hoarder's active material, active sell price if enabled, and end time
  */
-class HoarderEvent(val plugin: Hoarder) {
+object HoarderEvent {
+    private val plugin = Hoarder.getInstance()
 
-    companion object {
-        lateinit var activeMaterial: Material
-        var activeSellPrice: Double = 0.0
-        var endTime: Long = 0
-        var runnable: Int = -1
-    }
+    lateinit var activeMaterial: Material
+    var activeSellPrice: Double = 0.0
+    var endTime: Long = 0
+    var runnable: Int = -1
 
     private val dataManager = Settings.getDataManger()
 
