@@ -5,7 +5,7 @@ prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
 actions:
   empty-position: 'ここには誰もいないようです...'
 
-  sell: '%s のアイテムを %s で販売しました!'
+  sell: '%s のアイテムを ¥%s で販売しました!'
   sell-none: '売るものは何もありません!'
 
   treasure-claim:
@@ -32,6 +32,9 @@ notifications:
 
 
 commands:
+  no-permission: 'このコマンドに対する権限がありません!'
+  player-only-command: 'このコマンドはプレイヤーのみが実行できます!'
+
   # /hoarder event
   event:
     restart: 'ホーダーイベントを再開しました!'
@@ -48,7 +51,7 @@ commands:
       missing-args: '引数がありません! 使用法: /hoarder treasure edit <identifier!> <new-weight!> <new-identifier?>'
       success: '%s を %s の重みを持つ %s に正常に変更しました'
     delete:
-      missing-args: '引数がありません! 使用法: /hoarder Treasure delete <identifier!>'
+      missing-args: '引数がありません! 使用法: /hoarder treasure delete <identifier!>'
       success: '%s がストレージから正常に削除されました'
   # /hoarder reload
   reload: 'リロードしました！ 受信: %sms'

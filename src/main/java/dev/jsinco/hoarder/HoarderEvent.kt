@@ -101,9 +101,11 @@ object HoarderEvent {
 
 
         val eventPlayersMap = Util.getEventPlayersByTop()
+
         val msg = LangMsg("notifications.hoarder-event-end").getMsgListSendSound(Bukkit.getOnlinePlayers().toList()).map{
-            Util.replaceTopPlayerPlaceholders(it, eventPlayersMap) ?: LangMsg("actions.empty-position").message
+            Util.replaceTopPlayerPlaceholders(it, eventPlayersMap) ?: (LangMsg.prefix + LangMsg("actions.empty-position").message)
         }
+
         for (player in Bukkit.getOnlinePlayers()) {
             for (message in msg) {
                 player.sendMessage(message)

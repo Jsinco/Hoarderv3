@@ -7,6 +7,9 @@ import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import java.util.*
 
+/**
+ * PlayerPointsHook, playerpoints string format "%,d"
+ */
 class PlayerPointsHook : EconomyHandler {
 
     private val playerPoints: PlayerPointsAPI? = if (Bukkit.getPluginManager().getPlugin("PlayerPoints") != null) {

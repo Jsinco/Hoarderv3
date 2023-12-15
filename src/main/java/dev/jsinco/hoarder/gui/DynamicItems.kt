@@ -28,7 +28,7 @@ class DynamicItems(val guiCreator: GUICreator) {
     private val gui = guiCreator.gui
     private val dItemsFile = FileManager("guis/dynamicitems.yml").generateYamlFile()
 
-    // FIXME: probably redo/edit this
+    // TODO: probably redo/edit this
     fun setGuiSpecifics(player: Player) {
 
         when (guiCreator.guiType) {
@@ -175,7 +175,7 @@ class DynamicItems(val guiCreator: GUICreator) {
         return Util.fullColor(
             string.replace("%material%", material.toString())
                 .replace("%material_formatted%", Util.formatMaterialName(material))
-                .replace("%sell_price%", sellPrice.toString())
+                .replace("%sell_price%", Util.formatEconAmt(sellPrice))
         )
     }
 
@@ -184,7 +184,7 @@ class DynamicItems(val guiCreator: GUICreator) {
             list.map {
                 it.replace("%material%", material.toString())
                     .replace("%material_formatted%", Util.formatMaterialName(material))
-                    .replace("%sell_price%", sellPrice.toString())
+                    .replace("%sell_price%", Util.formatEconAmt(sellPrice))
             }
         )
     }

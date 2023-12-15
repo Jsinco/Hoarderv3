@@ -16,7 +16,7 @@ items:
     action: '[SELL]'
     name: '<GRADIENT:fb7f4a>&lSell: %material_formatted%</GRADIENT:642ffd>'
     material: '%material%'
-    lore: [ '<GRADIENT:fb7f4a>Click to sell for 1 point and %sell_price%!</GRADIENT:642ffd>' ]
+    lore: [ '<GRADIENT:fb7f4a>Click to sell for 1 point and $%sell_price%!</GRADIENT:642ffd>' ]
     enchanted: true # TODO
   
   # Shows the remaining time of the Hoarder event. Linked to MAIN gui type

@@ -128,29 +128,13 @@ object Util {
             .replace("%top_${num}_uuid%", uuid)
     }
 
-
-    fun getMsTimeFromNow(minutes: Long): Long {
-        return System.currentTimeMillis() + (minutes * 60000)
-    }
-
-
-    fun getHumanReadableEndTime(): String {
-        val remainingTime: Long = HoarderEvent.endTime - System.currentTimeMillis()
-
-        val calendar = Calendar.getInstance()
-        calendar.setTimeInMillis(remainingTime)
-
-        val hours = remainingTime / 3600000
-        val mins = calendar[Calendar.MINUTE]
-        val secs = calendar[Calendar.SECOND]
-        return String.format("%02d:%02d:%02d", hours, mins, secs)
-    }
-
-
     fun getEventPlayersByTop(): Map<String, Int> {
         val eventPlayers = Settings.getDataManger().getEventPlayers()
         return eventPlayers.toList().sortedByDescending { (_, value) -> value }.toMap()
     }
 
-
+    fun formatEconAmt(amount: Double): String {
+        if (amount % 1 == 0.0) return String.format("%,d", amount.toInt())
+        return String.format("%,.2f", amount)
+    }
 }

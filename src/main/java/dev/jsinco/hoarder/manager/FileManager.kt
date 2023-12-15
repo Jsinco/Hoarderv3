@@ -26,6 +26,7 @@ class FileManager(val fileName: String) {
                 plugin.dataFolder.mkdir()
             }
             generateFolder("guis")
+            generateFolder("lang")
             for (fileName in defaultFiles) {
                 FileManager(fileName).generateFile()
             }

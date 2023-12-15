@@ -19,11 +19,16 @@ permissions:
   hoarder.command.gui:
     description: 'Allows usage of /hoarder gui. Used for opening Hoarder GUIs'
     default: op
+  hoarder.command.claim:
+    description: 'Allows usage of /hoarder claim. Used for claiming treasures from Hoarder'
+    default: op
   hoarder.command.event:
     description: 'Allows usage of /hoarder event. Used for etc with Hoarder events'
+    default: op
+  hoarder.command.sell:
+    description: 'Allows usage of /hoarder sell. Used for selling items to Hoarder'
     default: op
 commands:
   hoarder:
     usage: '/hoarder <subcommand>?'
     description: 'Hoarder command'
-

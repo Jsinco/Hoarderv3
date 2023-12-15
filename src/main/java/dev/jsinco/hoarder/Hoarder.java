@@ -5,7 +5,6 @@ import dev.jsinco.hoarder.events.Listeners;
 import dev.jsinco.hoarder.manager.FileManager;
 import dev.jsinco.hoarder.manager.Settings;
 import dev.jsinco.hoarder.papi.PAPIManager;
-import dev.jsinco.hoarder.storage.DataManager;
 import dev.jsinco.hoarder.storage.StorageType;
 import dev.jsinco.hoarder.utilities.configupdater.ConfigUpdater;
 import org.bukkit.Bukkit;
@@ -14,7 +13,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -23,17 +21,15 @@ import java.util.logging.Level;
 public final class Hoarder extends JavaPlugin {
 
     private static Hoarder plugin;
-    private PAPIManager papiManager;
-    boolean usePapi = false;
+    private PAPIManager papiManager; private boolean usePapi = false;
 
     /*
     TODO: What's left to do 12/6/2023
-    - Add config updater, CHECK
     - Debug and test everything
     - Add PAPI support
-    - Add commands, CHECK added SellCommand(TDO) and EventCommand
     - Discord integration via DiscordSRV or save for v1.1.0
-    - add multiple languages
+    - SMALL: add replaceTopPlaceholders for LangMsgs
+    - make all database calls async
     */
 
     @Override
@@ -61,9 +57,10 @@ public final class Hoarder extends JavaPlugin {
         YamlConfiguration config = configFile.getFileYaml();
         if (config.get("config-version") == null || !config.getString("config-version").equals(getDescription().getVersion())) {
             try {
-                ConfigUpdater.update(this, "config.yml", configFile.getFile(), Collections.emptyList());
                 config.set("config-version", getDescription().getVersion());
                 configFile.saveFileYaml();
+
+                ConfigUpdater.update(this, "config.yml", configFile.getFile(), Collections.emptyList());
                 getLogger().info("Successfully updated config.yml to v" + getDescription().getVersion() + "!");
             } catch (IOException e) {
                 getLogger().log(Level.SEVERE, "Failed to update config.yml!", e);
@@ -88,23 +85,22 @@ public final class Hoarder extends JavaPlugin {
     }
 
 
-    public static void registerCommandAliases() {
+    private void registerCommandAliases() {
         try {
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             bukkitCommandMap.setAccessible(true);
 
             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-            PluginCommand pluginCommand = plugin.getCommand("hoarder");
+            PluginCommand pluginCommand = getCommand("hoarder");
 
+            short total = 0;
             for (String alias : Settings.commandAliases()) {
                 commandMap.register(alias.toLowerCase(), "hoarder", pluginCommand);
+                total++;
             }
+            if (total > 0) getLogger().info("Successfully registered " + total + " command aliases");
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to register command aliases!", e);
+            getLogger().log(Level.SEVERE, "Failed to register command aliases!", e);
         }
-    }
-
-    public static void unregisterCommandAliases() {
-
     }
 }

@@ -12,6 +12,6 @@ class Time {
     }
 
     val hours = remainingTime / 3600000
-    val mins = calendar[Calendar.MINUTE]
-    val secs = calendar[Calendar.SECOND]
+    val mins = if (remainingTime > 0) calendar[Calendar.MINUTE] else 0
+    val secs = if (remainingTime > 0) calendar[Calendar.SECOND] else 0
 }

@@ -1,7 +1,7 @@
 # Used for updating config on new releases. Don't change this
 config-version: 1.0.0
 
-# Language file
+# Language to use
 lang: en_US
 
 # Specify your preferred storage type
@@ -28,7 +28,7 @@ economy:
 commands:
   # The default command action for /hoarder (See 'info.md' line: <LINE>)
   default-command-action: '[OPEN] guis/main.yml'
-  # Aliases for the /hoarder command
+  # Aliases for the /hoarder command. Requires a restart to take effect
   command-aliases:
     - hoard
 

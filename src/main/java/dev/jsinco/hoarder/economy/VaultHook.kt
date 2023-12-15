@@ -5,6 +5,9 @@ import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 
+/**
+ * VaultHook, vault string format "%,.2f"
+ */
 class VaultHook : EconomyHandler {
 
     private val economy: Economy? = if (Bukkit.getPluginManager().getPlugin("Vault") != null) {

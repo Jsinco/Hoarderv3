@@ -4,7 +4,7 @@ import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.commands.subcommands.*
 import dev.jsinco.hoarder.gui.enums.Action
 import dev.jsinco.hoarder.manager.Settings
-import org.bukkit.Bukkit
+import dev.jsinco.hoarder.objects.LangMsg
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -21,6 +21,7 @@ class CommandManager(val plugin: Hoarder) : CommandExecutor, TabCompleter {
         subCommands["treasure"] = TreasureCommand()
         subCommands["claim"] = ClaimTreasureCommand()
         subCommands["event"] = EventCommand()
+        subCommands["sell"] = SellCommand()
         subCommands["debug"] = DebugCommand()
     }
 
@@ -36,8 +37,14 @@ class CommandManager(val plugin: Hoarder) : CommandExecutor, TabCompleter {
         }
         val subCommand = subCommands[args[0]] ?: return true
 
-        if (subCommand.permission() != null && !sender.hasPermission(subCommand.permission()!!)) return true
-        else if (subCommand.playerOnly() && sender !is Player) return true
+        if (subCommand.permission() != null && !sender.hasPermission(subCommand.permission()!!)) {
+            LangMsg("commands.no-permission").sendMessage(sender as Player)
+            return true
+        }
+        else if (subCommand.playerOnly() && sender !is Player) {
+            sender.sendMessage(LangMsg("commands.player-only-command").getMsgSendSound(null))
+            return true
+        }
 
         subCommand.execute(plugin, sender, args)
         return true

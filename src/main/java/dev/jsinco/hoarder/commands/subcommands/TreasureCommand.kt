@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 
 class TreasureCommand : SubCommand {
 
-    val allIdentifiers = Settings.getDataManger().getAllTreasureItems()?.map { it.identifier }?.toMutableList()
+    private val allIdentifiers = Settings.getDataManger().getAllTreasureItems()?.map { it.identifier }?.toMutableList()
 
     override fun execute(plugin: Hoarder, sender: CommandSender, args: Array<out String>) {
         val dataManager = Settings.getDataManger()

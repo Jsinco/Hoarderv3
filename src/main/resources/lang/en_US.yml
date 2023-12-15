@@ -5,7 +5,7 @@ prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
 actions:
   empty-position: 'Looks like no one''s here...'
 
-  sell: 'You sold %s item(s) for %s!'
+  sell: 'You sold %s item(s) for $%s!'
   sell-none: 'You have nothing to sell!'
 
   treasure-claim:
@@ -32,6 +32,9 @@ notifications:
 
 
 commands:
+  no-permission: 'You don''t have permission for this command!'
+  player-only-command: 'This command can only be ran by a player!'
+
   # /hoarder event
   event:
     restart: 'Restarted the Hoarder event!'

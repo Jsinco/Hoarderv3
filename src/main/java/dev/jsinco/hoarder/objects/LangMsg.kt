@@ -7,20 +7,21 @@ import org.bukkit.Sound
 import org.bukkit.entity.Player
 
 class LangMsg(val path: String) {
-    // private val file = FileManager("messages.yml").generateYamlFile()
+
     companion object {
         var file = FileManager(Settings.langFileName()).generateYamlFile()
+        var prefix = Util.fullColor(file.getString("prefix") ?: "")
 
         fun reloadLangFile() {
             file = FileManager(Settings.langFileName()).generateYamlFile()
+            prefix = Util.fullColor(file.getString("prefix") ?: "")
         }
     }
 
-    val prefix = file.getString("prefix") ?: ""
     val message = if (file.getString("$path.message") == null) file.getString(path) else file.getString("$path.message")
 
     val sound = if (file.getString("$path.sound") != null) file.getString("$path.sound") else null
-    val volume: Float = if (file.get("$path.volume") != null) file.getDouble("$path.volume").toFloat() else 0.0f
+    val volume: Float = if (file.get("$path.volume") != null) file.getDouble("$path.volume").toFloat() else 1.0f
     val pitch: Float = if (file.get("$path.pitch") != null) file.getDouble("$path.pitch").toFloat() else 0.0f
 
     fun sendMessage(player: Player) {
@@ -45,6 +46,7 @@ class LangMsg(val path: String) {
         return Util.fullColor(prefix + message)
     }
 
+    // FIXME
     fun getMsgListSendSound(player: Player?): List<String> {
         if (sound != null && player != null) {
             player.playSound(player.location, Sound.valueOf(sound), volume, pitch)
@@ -59,7 +61,9 @@ class LangMsg(val path: String) {
                 player.playSound(player.location, Sound.valueOf(sound), volume, pitch)
             }
         }
-
-        return file.getStringList(path).map { Util.fullColor(prefix + it) }
+        if (file.getStringList(path).isNotEmpty()) {
+            return file.getStringList(path).map { Util.fullColor(prefix + it) }
+        }
+        return file.getStringList("$path.message").map { Util.fullColor(prefix + it) }
     }
 }

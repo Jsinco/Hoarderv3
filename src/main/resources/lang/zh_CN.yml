@@ -5,7 +5,7 @@ prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
 actions:
   empty-position: '看起来没人”在这里...'
 
-  sell: '您以 %s 的价格出售了 %s 件商品!'
+  sell: '您以 %s 的价格出售了 ¥%s 件商品!'
   sell-none: '你没有什么可卖的!'
 
   treasure-claim:
@@ -32,6 +32,9 @@ notifications:
 
 
 commands:
+  no-permission: '您没有执行此命令的权限!'
+  player-only-command: '该命令只能由玩家运行!'
+
   # /hoarder event
   event:
     restart: '重新开始囤积者活动!'

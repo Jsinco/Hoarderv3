@@ -7,6 +7,7 @@ import dev.jsinco.hoarder.economy.PlayerPointsHook
 import dev.jsinco.hoarder.economy.ProviderType
 import dev.jsinco.hoarder.economy.VaultHook
 import dev.jsinco.hoarder.objects.LangMsg
+import dev.jsinco.hoarder.utilities.Util
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -40,7 +41,7 @@ class SellingManager(val player: Player, val inventory: Inventory) {
                 ProviderType.PLAYERPOINTS -> PlayerPointsHook()
             }
 
-            payoutString = econHandler.addBalance(payoutAmount, player).toString()
+            payoutString = Util.formatEconAmt(econHandler.addBalance(payoutAmount, player) as Double)
         }
 
 
