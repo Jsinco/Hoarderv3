@@ -6,7 +6,7 @@ import dev.jsinco.hoarder.economy.EconomyHandler
 import dev.jsinco.hoarder.economy.PlayerPointsHook
 import dev.jsinco.hoarder.economy.ProviderType
 import dev.jsinco.hoarder.economy.VaultHook
-import dev.jsinco.hoarder.objects.Msg
+import dev.jsinco.hoarder.objects.LangMsg
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -47,10 +47,7 @@ class SellingManager(val player: Player, val inventory: Inventory) {
         Bukkit.getPluginManager().callEvent(HoarderSellEvent(player, amountSold, sellPrice))
 
 
-        var msg = if (amountSold > 0) Msg("actions.sell").getMsgSendSound(player) else Msg("actions.sell-none").getMsgSendSound(player)
-        msg = msg.replace("%amount%", amountSold.toString())
-            .replace("%payout%", payoutString)
-
+        val msg = if (amountSold > 0) LangMsg("actions.sell").getMsgSendSound(player).format(amountSold.toString(), payoutString) else LangMsg("actions.sell-none").getMsgSendSound(player)
         player.sendMessage(msg)
     }
 }

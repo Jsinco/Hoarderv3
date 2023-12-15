@@ -1,3 +1,9 @@
+# Used for updating config on new releases. Don't change this
+config-version: 1.0.0
+
+# Language file
+lang: en_US
+
 # Specify your preferred storage type
 # Types of storage available: MySQL, SQLite, FlatFile
 # When using SQLite or FlatFile, "database" will be the name of the file that the data is stored in
@@ -20,7 +26,9 @@ economy:
     max: 3.70
 
 commands:
+  # The default command action for /hoarder (See 'info.md' line: <LINE>)
   default-command-action: '[OPEN] guis/main.yml'
+  # Aliases for the /hoarder command
   command-aliases:
     - hoard
 
@@ -62,6 +70,14 @@ treasure-items:
   # Example: I want to scale my weights to be 0 - 1000 instead of 0 - 100
   bound-int: 100
 
+gui-options:
+  # Prevents items with the '[BACK_PAGE]' or '[NEXT_PAGE]' action from being placed in gui if the next/previous page does not exist
+  hide-if-page-not-available: true
+
+
+# Whether the materials list should act as a blacklist
+# If using blacklist, Hoarder will randomly pick a material that is not in the blacklist
+# If this setting is enabled, the 'random-pricing' setting will also automatically be enabled too
 use-material-list-as-blacklist: false
 
 # Materials that the Hoarder can pick from and the price that they will pay for them

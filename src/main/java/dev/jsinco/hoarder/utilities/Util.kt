@@ -114,10 +114,11 @@ object Util {
     }
 
 
-    // General event stuff?
+    // General event stuff
 
 
-    fun replaceTopPlaceholders(string: String, eventPlayers: Map<String, Int>): String? {
+    fun replaceTopPlayerPlaceholders(string: String?, eventPlayers: Map<String, Int>): String? {
+        if (string == null) return null
         val num = string.substring(string.indexOf("%top_") + 5, string.indexOf("%top_") + 6).toIntOrNull() ?: return string
         if (eventPlayers.size < num) return null
         val uuid = eventPlayers.keys.toList()[num - 1]

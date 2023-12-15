@@ -404,14 +404,18 @@ public abstract class Database implements DataManager {
     }
 
     @Override
-    public void addTreasureItem(String identifier, int weight, ItemStack itemStack) {
+    public void addTreasureItem(@NotNull String identifier, int weight, ItemStack itemStack) {
         Gson gson = new Gson();
         Type gsonType = new TypeToken<HashMap>(){}.getType();
         String gsonString = gson.toJson(itemStack.serialize(),gsonType);
 
         try {
-            PreparedStatement statement = getConnection()
-                    .prepareStatement("INSERT INTO " + prefix +"treasure_items(identifier, weight, itemstack) VALUES (?, ?, ?);");
+            PreparedStatement statement;
+            if (usingSQLite) {
+                statement = getConnection().prepareStatement("INSERT OR IGNORE INTO " + prefix +"treasure_items(identifier, weight, itemstack) VALUES (?, ?, ?);");
+            } else {
+                statement = getConnection().prepareStatement("INSERT IGNORE INTO " + prefix +"treasure_items(identifier, weight, itemstack) VALUES (?, ?, ?);");
+            }
             statement.setString(1, identifier);
             statement.setInt(2, weight);
             statement.setString(3, gsonString);

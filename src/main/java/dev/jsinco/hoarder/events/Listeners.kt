@@ -4,7 +4,7 @@ import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.gui.GUICreator
 import dev.jsinco.hoarder.gui.enums.Action
 import dev.jsinco.hoarder.manager.Settings
-import dev.jsinco.hoarder.objects.Msg
+import dev.jsinco.hoarder.objects.LangMsg
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
@@ -59,7 +59,7 @@ class Listeners(private val plugin: Hoarder) : Listener {
         if (dataManager.isMsgQueuedPlayer(player.uniqueId.toString())) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, {
                 if (!player.isOnline) return@scheduleSyncDelayedTask
-                player.sendMessage(Msg("notifications.win").getMsgSendSound(player).replace("%position%", dataManager.getMsgQueuedPlayerPosition(player.uniqueId.toString()).toString()))
+                player.sendMessage(LangMsg("notifications.hoarder-event-won").getMsgSendSound(player).format(dataManager.getMsgQueuedPlayerPosition(player.uniqueId.toString()).toString()))
                 dataManager.removeMsgQueuedPlayer(player.uniqueId.toString())
             }, 25)
             return
@@ -69,7 +69,7 @@ class Listeners(private val plugin: Hoarder) : Listener {
         if (claimableTreasures > 0) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, {
                 if (!player.isOnline) return@scheduleSyncDelayedTask
-                player.sendMessage(Msg("notifications.claimable-treasures").getMsgSendSound(player).replace("%amount%", claimableTreasures.toString()))
+                player.sendMessage(LangMsg("notifications.claimable-treasures").getMsgSendSound(player).format(claimableTreasures.toString()))
             }, 25)
         }
      }

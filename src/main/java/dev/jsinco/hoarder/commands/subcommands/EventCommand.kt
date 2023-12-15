@@ -4,7 +4,7 @@ import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.HoarderEvent
 import dev.jsinco.hoarder.commands.SubCommand
 import dev.jsinco.hoarder.manager.Settings
-import dev.jsinco.hoarder.objects.Msg
+import dev.jsinco.hoarder.objects.LangMsg
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -41,7 +41,7 @@ class EventCommand : SubCommand {
             else -> ""
         }
         //sender.sendMessage(Msg("commands.event.${args[1]}").getMsgSendSound(sender as? Player))
-        sender.sendMessage(Msg("commands.event.${args[1]}").getMsgSendSound(sender as? Player).format(string))
+        sender.sendMessage(LangMsg("commands.event.${args[1]}").getMsgSendSound(sender as? Player).format(string))
     }
 
     override fun tabComplete(plugin: Hoarder, sender: CommandSender, args: Array<out String>): MutableList<String>? {

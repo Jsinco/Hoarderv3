@@ -3,7 +3,7 @@ package dev.jsinco.hoarder.commands.subcommands
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.commands.SubCommand
 import dev.jsinco.hoarder.manager.Settings
-import dev.jsinco.hoarder.objects.Msg
+import dev.jsinco.hoarder.objects.LangMsg
 import dev.jsinco.hoarder.utilities.Util
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -21,7 +21,7 @@ class TreasureCommand : SubCommand {
                 val itemStack = player.inventory.itemInMainHand
 
                 if (args.size < 3) {
-                    Msg("commands.treasure.add.missing-args").sendMessage(player)
+                    LangMsg("commands.treasure.add.missing-args").sendMessage(player)
                     return
                 }
                 val weight = args[2].toIntOrNull() ?: return
@@ -31,18 +31,18 @@ class TreasureCommand : SubCommand {
                 } else if (args.size >= 4) {
                     args[3].lowercase()
                 } else {
-                    Msg("commands.treasure.add.missing-args-no-auto-identifier").sendMessage(player)
+                    LangMsg("commands.treasure.add.missing-args-no-auto-identifier").sendMessage(player)
                     return
                 }
 
                 allIdentifiers?.add(identifier)
                 dataManager.addTreasureItem(identifier, weight, itemStack)
-                player.sendMessage(Msg("commands.treasure.add.success").getMsgSendSound(player).format(identifier, args[2]))
+                player.sendMessage(LangMsg("commands.treasure.add.success").getMsgSendSound(player).format(identifier, args[2]))
             }
 
             "edit" -> {
                 if (args.size < 3) {
-                    Msg("commands.treasure.edit.missing-args").sendMessage(player)
+                    LangMsg("commands.treasure.edit.missing-args").sendMessage(player)
                     return
                 }
 
@@ -53,19 +53,19 @@ class TreasureCommand : SubCommand {
                 allIdentifiers?.remove(identifier)
                 allIdentifiers?.add(newIdentifier)
                 dataManager.modifyTreasureItem(identifier, newWeight, newIdentifier)
-                player.sendMessage(Msg("commands.treasure.edit.success").getMsgSendSound(player).format(identifier, newIdentifier, newWeight))
+                player.sendMessage(LangMsg("commands.treasure.edit.success").getMsgSendSound(player).format(identifier, newIdentifier, newWeight))
             }
 
             "delete" -> {
                 if (args.size < 3) {
-                    Msg("commands.treasure.delete.missing-args").sendMessage(player)
+                    LangMsg("commands.treasure.delete.missing-args").sendMessage(player)
                     return
                 }
 
                 val identifier = args[2]
                 allIdentifiers?.remove(identifier)
                 dataManager.removeTreasureItem(identifier)
-                player.sendMessage(Msg("treasure.delete.success").getMsgSendSound(player).format(identifier))
+                player.sendMessage(LangMsg("treasure.delete.success").getMsgSendSound(player).format(identifier))
             }
         }
     }

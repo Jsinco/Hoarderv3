@@ -1,0 +1,54 @@
+# 中文（中国）语言文件
+# Lang消息使用“%s”来填充参数前
+prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
+
+actions:
+  empty-position: '看起来没人”在这里...'
+
+  sell: '您以 %s 的价格出售了 %s 件商品!'
+  sell-none: '你没有什么可卖的!'
+
+  treasure-claim:
+    message: '你获得了宝藏!'
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
+  treasure-claim-multiple:
+    message: '你领取了 %s 件宝藏!'
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
+  treasure-claim-none: '你没有可索赔的宝藏!'
+
+
+notifications:
+  hoarder-event-end:
+    message:
+      - '囤积者已经收集了藏品，并向获胜者颁发了奖品!'
+      - '#1 %top_1_name% - %top_1_points%'
+      - '#2 %top_2_name% - %top_2_points%'
+      - '#3 %top_3_name% - %top_3_points%'
+      - '#4 %top_4_name% - %top_4_points%'
+    sound: ENTITY_EVOKER_PREPARE_WOLOLO
+    pitch: 4.2
+  hoarder-event-won: '你完成了 #%s 最后的 Hoarder 活动!'
+  claimable-treasures: '你有 %s 个可索赔的宝藏!'
+
+
+commands:
+  # /hoarder event
+  event:
+    restart: '重新开始囤积者活动!'
+    material: '将活性材料更改为%s'
+    price: '将有效售价更改为 ¥%s'
+    time: '活跃的囤积者活动现在将在 %s 分钟后结束!'
+  # /hoarder treasure
+  treasure:
+    add:
+      missing-args: '缺少参数！ 用法：/hoarder treasure add <重量!> <标识符?>'
+      missing-args-no-auto-identifier: '缺少参数！ 您的配置中禁用了自动标识符，因此您必须指定一个标识符！ 用法：/hoarder treasure add <重量!> <标识符!>'
+      success: '添加了 %s，权重为 %s'
+    edit:
+      missing-args: '缺少参数！ 用法：/hoarder treasure edit <标识符!> <新重量!> <新标识符?>'
+      success: '成功将 %s 更改为 %s，权重为 %s'
+    delete:
+      missing-args: '缺少参数！ 用法：/hoarder treasure delete <标识符!>'
+      success: '已成功从存储中删除 %s'
+  # /hoarder reload
+  reload: '重新加载！ 已收到：%sms'

@@ -1,12 +1,20 @@
 package dev.jsinco.hoarder.objects
 
 import dev.jsinco.hoarder.manager.FileManager
+import dev.jsinco.hoarder.manager.Settings
 import dev.jsinco.hoarder.utilities.Util
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 
-class Msg(val path: String) {
-    private val file = FileManager("messages.yml").generateYamlFile()
+class LangMsg(val path: String) {
+    // private val file = FileManager("messages.yml").generateYamlFile()
+    companion object {
+        var file = FileManager(Settings.langFileName()).generateYamlFile()
+
+        fun reloadLangFile() {
+            file = FileManager(Settings.langFileName()).generateYamlFile()
+        }
+    }
 
     val prefix = file.getString("prefix") ?: ""
     val message = if (file.getString("$path.message") == null) file.getString(path) else file.getString("$path.message")
@@ -35,5 +43,23 @@ class Msg(val path: String) {
             player.playSound(player.location, Sound.valueOf(sound), volume, pitch)
         }
         return Util.fullColor(prefix + message)
+    }
+
+    fun getMsgListSendSound(player: Player?): List<String> {
+        if (sound != null && player != null) {
+            player.playSound(player.location, Sound.valueOf(sound), volume, pitch)
+        }
+
+        return file.getStringList(path).map { Util.fullColor(prefix + it) }
+    }
+
+    fun getMsgListSendSound(players: List<Player>): List<String> {
+        if (sound != null) {
+            for (player in players) {
+                player.playSound(player.location, Sound.valueOf(sound), volume, pitch)
+            }
+        }
+
+        return file.getStringList(path).map { Util.fullColor(prefix + it) }
     }
 }

@@ -1,0 +1,54 @@
+# Archivo de idioma español (España)
+# Los mensajes Lang usan "%s" para completar los argumentos
+prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
+
+actions:
+  empty-position: 'Parece que no hay nadie aquí...'
+
+  sell: '¡Vendiste %s artículo(s) por %s!'
+  sell-none: '¡No tienes nada que vender!'
+
+  treasure-claim:
+    message: '¡Has reclamado un tesoro!'
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
+  treasure-claim-multiple:
+    message: '¡Has reclamado %s tesoros!'
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
+  treasure-claim-none: '¡No tienes tesoros reclamables!'
+
+
+notifications:
+  hoarder-event-end:
+    message:
+      - '¡El Acaparador ha recogido el alijo y ha entregado premios a los ganadores!'
+      - '#1 %top_1_name% - %top_1_points%'
+      - '#2 %top_2_name% - %top_2_points%'
+      - '#3 %top_3_name% - %top_3_points%'
+      - '#4 %top_4_name% - %top_4_points%'
+    sound: ENTITY_EVOKER_PREPARE_WOLOLO
+    pitch: 4.2
+  hoarder-event-won: '¡Has colocado #%s en el último evento de Hoarder!'
+  claimable-treasures: '¡Tienes %s tesoros reclamables!'
+
+
+commands:
+  # /hoarder event
+  event:
+    restart: '¡Reinició el evento Hoarder!'
+    material: 'Cambió el material activo a %s'
+    price: 'Cambió el precio de venta activo a €%s'
+    time: '¡El evento Hoarder activo ahora terminará en %s minutos!'
+  # /hoarder treasure
+  treasure:
+    add:
+      missing-args: '¡Faltan argumentos! Uso: /hoarder treasure add <peso!> <identificador?>'
+      missing-args-no-auto-identifier: '¡Faltan argumentos! Tienes el identificador automático deshabilitado en tu configuración, por lo que debes especificar un identificador. Uso: /hoarder treasure add <peso!> <identificador!>'
+      success: 'Se agregó %s con un peso de %s'
+    edit:
+      missing-args: '¡Faltan argumentos! Uso: /hoarder treasure edit <identificador!> <¡nuevo-peso!> <¿nuevo-identificador?>'
+      success: 'Se cambió %s exitosamente a %s con un peso de %s'
+    delete:
+      missing-args: '¡Faltan argumentos! Uso: /hoarder treasure delete <identificador!>'
+      success: '%s eliminado del almacenamiento con éxito'
+  # /hoarder reload
+  reload: '¡Recargado! Tomó: %sms'

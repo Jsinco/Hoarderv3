@@ -1,10 +1,9 @@
 package dev.jsinco.hoarder
 
-import dev.jsinco.hoarder.utilities.Messages.getMsg
 import dev.jsinco.hoarder.api.HoarderEndEvent
 import dev.jsinco.hoarder.api.HoarderStartEvent
 import dev.jsinco.hoarder.manager.Settings
-import dev.jsinco.hoarder.utilities.Messages
+import dev.jsinco.hoarder.objects.LangMsg
 import dev.jsinco.hoarder.utilities.Util
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -102,12 +101,14 @@ object HoarderEvent {
 
 
         val eventPlayersMap = Util.getEventPlayersByTop()
-        for (msg in Messages.getMsgList("notifications.end")) {
-            val setMsg: String = Util.replaceTopPlaceholders(msg, eventPlayersMap) ?: getMsg("empty-position")
-            Bukkit.broadcastMessage(setMsg)
+        val msg = LangMsg("notifications.hoarder-event-end").getMsgListSendSound(Bukkit.getOnlinePlayers().toList()).map{
+            Util.replaceTopPlayerPlaceholders(it, eventPlayersMap) ?: LangMsg("actions.empty-position").message
         }
-
-
+        for (player in Bukkit.getOnlinePlayers()) {
+            for (message in msg) {
+                player.sendMessage(message)
+            }
+        }
         dataManager.resetAllPoints()
     }
 

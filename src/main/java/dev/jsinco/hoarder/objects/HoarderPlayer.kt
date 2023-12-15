@@ -86,5 +86,11 @@ class HoarderPlayer (val uuid: String) {
             }
             Util.giveItem(player, item)
         }
+
+        if (amount == 1) {
+            LangMsg("actions.treasure-claim").sendMessage(player)
+        } else {
+            player.sendMessage(LangMsg("actions.treasure-claim-multiple").getMsgSendSound(player).format(amount.toString()))
+        }
     }
 }

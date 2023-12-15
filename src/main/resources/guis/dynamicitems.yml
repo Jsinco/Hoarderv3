@@ -46,17 +46,17 @@ items:
   stats:
     material: PLAYER_HEAD
     name: '<GRADIENT:fb7f4a>&l#%position% %name%</GRADIENT:642ffd>'
-    lore: ['%name% has %points% points!']
+    lore: ['<GRADIENT:fb7f4a>%name% is #%position% with %points% points!</GRADIENT:642ffd>']
     enchanted: false # TODO
 
   treasure_claim:
     string-matched-materials: 'CONCRETE_POWDER'
     action: '[CLAIM]'
-    name: 'Claim Prize'
-    lore: ['Click to claim your prize!']
+    name: '<GRADIENT:fb7f4a>&lClick me!</GRADIENT:642ffd>'
+    lore: []
     enchanted: true
   
   empty_position:
     material: WITHER_SKELETON_SKULL
-    name: '&cEmpty'
-    lore: [ '&7Looks like no one is here' ]
+    name: '&#FB2B2B&lEmpty'
+    lore: [ '&7Looks like no one''s here...' ]

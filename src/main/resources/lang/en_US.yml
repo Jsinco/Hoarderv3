@@ -1,4 +1,5 @@
-# Messages file for Hoarder
+# English (US) language file
+# Lang messages use "%s" to fill in arguments
 prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
 
 actions:
@@ -26,10 +27,10 @@ notifications:
       - '#4 %top_4_name% - %top_4_points%'
     sound: ENTITY_EVOKER_PREPARE_WOLOLO
     pitch: 4.2
-  hoarder-event-won: 'You placed #%s last Hoarder event! /hoarder claim to claim your treasures!'
-  claimable-treasures: 'You have %s claimable treasures! /hoarder claim to claim them!'
+  hoarder-event-won: 'You placed #%s last Hoarder event!'
+  claimable-treasures: 'You have %s claimable treasures!'
 
-# Commands use the fill placeholder "%s" to fill in arguments
+
 commands:
   # /hoarder event
   event:

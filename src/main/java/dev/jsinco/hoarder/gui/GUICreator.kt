@@ -3,6 +3,7 @@ package dev.jsinco.hoarder.gui
 import dev.jsinco.hoarder.utilities.Util
 import dev.jsinco.hoarder.gui.enums.GUIType
 import dev.jsinco.hoarder.manager.FileManager
+import dev.jsinco.hoarder.manager.Settings
 import org.bukkit.Bukkit
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
@@ -28,6 +29,10 @@ class GUICreator (path: String) : InventoryHolder {
         }
 
         for (guiItem in itemsList) {
+            if (Settings.hideIfPageNotAvailable() && (guiItem.getAction() == "[BACK_PAGE]" || guiItem.getAction() == "[NEXT_PAGE]")) {
+                continue // Don't set items with this action. Let GUIUpdate Class handle it, so we can check paginatedGUI params
+            }
+
             if (guiItem.multiSlotted) {
                 for (slot in guiItem.getSlots()) {
                     gui.setItem(slot, guiItem.getItemStack())

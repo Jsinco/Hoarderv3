@@ -5,6 +5,7 @@ import dev.jsinco.hoarder.utilities.Util
 import dev.jsinco.hoarder.commands.SubCommand
 import dev.jsinco.hoarder.gui.DynamicItems
 import dev.jsinco.hoarder.gui.GUICreator
+import dev.jsinco.hoarder.gui.GUIUpdater
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.io.File
@@ -19,6 +20,7 @@ class OpenGUICommand : SubCommand {
         DynamicItems(guiCreator).setGuiSpecifics(sender)
         val paginated = guiCreator.paginatedGUI
         if (paginated != null) {
+            GUIUpdater(guiCreator)
             sender.openInventory(paginated.getPage(0))
         } else {
             sender.openInventory(guiCreator.inventory)

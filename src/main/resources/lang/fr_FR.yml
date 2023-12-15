@@ -1,0 +1,54 @@
+# Fichier de langue français (France)
+# Les messages Lang utilisent "%s" pour remplir les arguments
+prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
+
+actions:
+  empty-position: 'On dirait que personne n''est ici..'
+
+  sell: 'Vous avez vendu %s article(s) pour %s !'
+  sell-none: 'Vous n’avez rien à vendre !'
+
+  treasure-claim:
+    message: 'Vous avez réclamé un trésor !'
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
+  treasure-claim-multiple:
+    message: 'Vous avez réclamé %s trésors !'
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
+  treasure-claim-none: 'Vous n''avez aucun trésor récupérable!'
+
+
+notifications:
+  hoarder-event-end:
+    message:
+      - 'The Hoarder a récupéré la cachette et a remis des prix aux gagnants !'
+      - '#1 %top_1_name% - %top_1_points%'
+      - '#2 %top_2_name% - %top_2_points%'
+      - '#3 %top_3_name% - %top_3_points%'
+      - '#4 %top_4_name% - %top_4_points%'
+    sound: ENTITY_EVOKER_PREPARE_WOLOLO
+    pitch: 4.2
+  hoarder-event-won: 'Vous avez placé #%s dernier événement Hoarder !'
+  claimable-treasures: 'Vous possédez %s trésors récupérables !'
+
+
+commands:
+  # /hoarder event
+  event:
+    restart: 'Redémarrage de l''événement Hoarder !'
+    material: 'Le matériau actif a été remplacé par %s'
+    price: 'Le prix de vente actif a été modifié à €%s'
+    time: 'L''événement Hoarder actif se terminera désormais dans %s minutes !'
+  # /hoarder treasure
+  treasure:
+    add:
+      missing-args: 'Arguments manquants ! Utilisation: /hoarder treasure add <poids!> <identifiant?>'
+      missing-args-no-auto-identifier: 'Arguments manquants ! Vous avez l''auto-identifiant désactivé dans votre config vous devez donc préciser un identifiant ! Utilisation: /hoarder treasure add <poids!> <identifiant!>'
+      success: 'Ajout de %s avec un poids de %s'
+    edit:
+      missing-args: 'Arguments manquants ! Utilisation: /hoarder treasure edit <identifiant!> <nouveau-poids!> <nouvel-identifiant?>'
+      success: 'Changement réussi de %s en %s avec un poids de %s'
+    delete:
+      missing-args: 'Arguments manquants! Utilisation: /hoarder treasure delete <identifiant!>'
+      success: '%s supprimé avec succès du stockage'
+  # /hoarder reload
+  reload: 'Rechargé ! Pris: %sms'

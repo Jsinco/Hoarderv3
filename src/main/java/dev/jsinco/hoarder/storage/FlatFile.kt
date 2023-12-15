@@ -110,9 +110,7 @@ class FlatFile (val plugin: Hoarder) : DataManager {
     // Treasure Items
 
     override fun addTreasureItem(treasureItem: TreasureItem) {
-        file.set("treasure_items.${treasureItem.identifier}.weight", treasureItem.weight)
-        file.set("treasure_items.${treasureItem.identifier}.itemstack", treasureItem.itemStack)
-        fileManager.saveFileYaml()
+        addTreasureItem(treasureItem.identifier, treasureItem.weight, treasureItem.itemStack)
     }
 
     override fun modifyTreasureItem(identifier: String, newWeight: Int, newIdentifier: String) {
@@ -124,6 +122,8 @@ class FlatFile (val plugin: Hoarder) : DataManager {
     }
 
     override fun addTreasureItem(identifier: String, weight: Int, itemStack: ItemStack) {
+        if (file.get("treasure_items.$identifier") != null) return
+
         file.set("treasure_items.$identifier.weight", weight)
         file.set("treasure_items.$identifier.itemstack", itemStack)
         fileManager.saveFileYaml()

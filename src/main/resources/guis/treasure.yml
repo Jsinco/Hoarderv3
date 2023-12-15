@@ -12,8 +12,8 @@ gui-type: TREASURE
 
 items:
   border:
-    slot: [45, 46, 47, 51, 52, 53]
-    material: LIGHT_GRAY_STAINED_GLASS_PANE
+    slot: [45, 46, 47, 48, 50, 51, 52, 53]
+    material: GRAY_STAINED_GLASS_PANE
     name: ' '
     lore: []
     enchanted: false

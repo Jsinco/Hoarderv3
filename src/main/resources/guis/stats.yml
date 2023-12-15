@@ -2,10 +2,13 @@ title: '<GRADIENT:fb7f4a>&lStats</GRADIENT:642ffd>'
 size: 36
 gui-type: STATS
 
+# Stats GUI
+# Inherits the "stats" dynamic item.
+
 items:
   border:
-    slot: [27, 28, 29, 33, 34, 35]
-    material: LIGHT_GRAY_STAINED_GLASS_PANE
+    slot: [27, 28, 29, 30, 32, 33, 34, 35]
+    material: GRAY_STAINED_GLASS_PANE
     name: ' '
     lore: []
     enchanted: false

@@ -10,11 +10,24 @@ import java.nio.file.Files
 class FileManager(val fileName: String) {
 
     companion object {
-        val plugin: Hoarder = Hoarder.getInstance()
-        @JvmStatic
-        fun generateFolder(folder: String) {
+        private val plugin: Hoarder = Hoarder.getInstance()
+        private val defaultFiles: List<String> = listOf("config.yml", "info.md",
+            "guis/dynamicitems.yml", "guis/main.yml", "guis/treasure.yml", "guis/stats.yml", "guis/treasure_claim.yml", "guis/example.yml",
+            "lang/en_US.yml", "lang/es_ES.yml", "lang/fr_FR.yml", "lang/ja_JP.yml", "lang/zh_CN.yml")
+
+        @JvmStatic fun generateFolder(folder: String) {
             if (!File(plugin.dataFolder, folder).exists()) {
                 File(plugin.dataFolder, folder).mkdir()
+            }
+        }
+
+        @JvmStatic fun generateDefaultFiles() {
+            if (!plugin.dataFolder.exists()) {
+                plugin.dataFolder.mkdir()
+            }
+            generateFolder("guis")
+            for (fileName in defaultFiles) {
+                FileManager(fileName).generateFile()
             }
         }
     }

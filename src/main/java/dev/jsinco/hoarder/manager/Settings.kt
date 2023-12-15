@@ -54,7 +54,7 @@ object Settings {
     }
 
     fun useRandomPricing(): Boolean {
-        return plugin.config.getBoolean("economy.random-pricing.enabled")
+        return plugin.config.getBoolean("economy.random-pricing.enabled") || useWhiteListAsBlackList()
     }
 
     fun randomPricingBounds(): Pair<Double, Double> {
@@ -102,6 +102,13 @@ object Settings {
         return plugin.config.getString("commands.default-command-action") ?: "NONE"
     }
 
+    fun hideIfPageNotAvailable(): Boolean {
+        return plugin.config.getBoolean("gui-options.hide-if-page-not-available")
+    }
+
+    fun langFileName(): String {
+        return "lang/${plugin.config.getString("lang")}.yml"
+    }
 
     // STORAGE
 

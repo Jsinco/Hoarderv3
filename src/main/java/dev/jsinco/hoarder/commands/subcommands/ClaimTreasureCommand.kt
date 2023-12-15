@@ -11,7 +11,6 @@ class ClaimTreasureCommand : SubCommand {
         sender as Player
 
         val hoarderPlayer = HoarderPlayer(sender.uniqueId.toString())
-
         hoarderPlayer.claimTreasure(1)
     }
 

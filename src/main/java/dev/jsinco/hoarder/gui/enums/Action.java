@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
 public enum Action {
@@ -32,6 +33,7 @@ public enum Action {
                 new DynamicItems(guiCreator).setGuiSpecifics(player);
 
                 if (guiCreator.getPaginatedGUI() != null) {
+                    new GUIUpdater(guiCreator); // Pagination arrows
                     player.openInventory(guiCreator.getPaginatedGUI().getPage(0));
                 } else {
                     player.openInventory(guiCreator.getInventory());
@@ -52,21 +54,23 @@ public enum Action {
             case MESSAGE -> player.sendMessage(Util.fullColor(string));
 
             case BACK_PAGE -> {
-                GUICreator guiCreator = (GUICreator) player.getOpenInventory().getTopInventory().getHolder();
+                Inventory inv = player.getOpenInventory().getTopInventory();
+                GUICreator guiCreator = (GUICreator) inv.getHolder();
                 PaginatedGUI paginatedGUI = guiCreator.getPaginatedGUI();
 
-                if (paginatedGUI == null) return false;
+                if (paginatedGUI == null || paginatedGUI.indexOf(inv) == 0) return false;
 
-                player.openInventory(paginatedGUI.getPage(paginatedGUI.indexOf(player.getOpenInventory().getTopInventory()) - 1));
+                player.openInventory(paginatedGUI.getPage(paginatedGUI.indexOf(inv) - 1));
             }
 
             case NEXT_PAGE -> {
-                GUICreator guiCreator = (GUICreator) player.getOpenInventory().getTopInventory().getHolder();
+                Inventory inv = player.getOpenInventory().getTopInventory();
+                GUICreator guiCreator = (GUICreator) inv.getHolder();
                 PaginatedGUI paginatedGUI = guiCreator.getPaginatedGUI();
 
-                if (paginatedGUI == null) return false;
+                if (paginatedGUI == null || paginatedGUI.indexOf(inv) == paginatedGUI.getSize() -1) return false;
 
-                player.openInventory(paginatedGUI.getPage(paginatedGUI.indexOf(player.getOpenInventory().getTopInventory()) + 1));
+                player.openInventory(paginatedGUI.getPage(paginatedGUI.indexOf(inv) + 1));
             }
 
             case SELL -> {

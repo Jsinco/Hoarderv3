@@ -2,10 +2,10 @@ package dev.jsinco.hoarder.commands.subcommands
 
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.HoarderEvent
-import dev.jsinco.hoarder.utilities.Messages.getMsgConsoleSender
 import dev.jsinco.hoarder.commands.SubCommand
+import dev.jsinco.hoarder.manager.FileManager
 import dev.jsinco.hoarder.manager.Settings
-import dev.jsinco.hoarder.objects.Msg
+import dev.jsinco.hoarder.objects.LangMsg
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -16,12 +16,13 @@ class ReloadCommand : SubCommand {
 
         plugin.reloadConfig()
         Settings.reloadDataManager()
-        Hoarder.generateFiles()
+        FileManager.generateDefaultFiles()
         HoarderEvent.reloadHoarderEvent()
+        LangMsg.reloadLangFile()
         // TODO: reload etc
 
         plugin.logger.info("Reload complete")
-        sender.sendMessage(Msg("commands.reload").getMsgSendSound(sender as? Player).format((System.currentTimeMillis() - startTime).toString()))
+        sender.sendMessage(LangMsg("commands.reload").getMsgSendSound(sender as? Player).format((System.currentTimeMillis() - startTime).toString()))
     }
 
     override fun tabComplete(plugin: Hoarder, sender: CommandSender, args: Array<out String>): MutableList<String>? {

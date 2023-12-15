@@ -1,0 +1,54 @@
+# 日本語（日本）言語ファイル
+# Lang メッセージは引数を埋めるために「%s」を使用します
+prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
+
+actions:
+  empty-position: 'ここには誰もいないようです...'
+
+  sell: '%s のアイテムを %s で販売しました!'
+  sell-none: '売るものは何もありません!'
+
+  treasure-claim:
+    message: '宝物を手に入れました!'
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
+  treasure-claim-multiple:
+    message: '%s の宝物を要求しました!'
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
+  treasure-claim-none: '要求できる宝物がありません!'
+
+
+notifications:
+  hoarder-event-end:
+    message:
+      - '買いだめ者が隠し場所を集めて、勝者に賞品を与えました!'
+      - '#1 %top_1_name% - %top_1_points%'
+      - '#2 %top_2_name% - %top_2_points%'
+      - '#3 %top_3_name% - %top_3_points%'
+      - '#4 %top_4_name% - %top_4_points%'
+    sound: ENTITY_EVOKER_PREPARE_WOLOLO
+    pitch: 4.2
+  hoarder-event-won: '#%s 最後の Hoarder イベントを配置しました!'
+  claimable-treasures: '取得可能な宝物は %s 個あります!'
+
+
+commands:
+  # /hoarder event
+  event:
+    restart: 'ホーダーイベントを再開しました!'
+    material: 'アクティブなマテリアルを %s に変更しました'
+    price: 'アクティブな販売価格を ¥%s に変更しました'
+    time: 'アクティブな Hoarder イベントは %s 分で終了します!'
+  # /hoarder treasure
+  treasure:
+    add:
+      missing-args: '引数がありません! 使用法: /hoarder treasure add <weight!> <identifier?>'
+      missing-args-no-auto-identifier: '引数がありません! 設定で自動識別子が無効になっているため、識別子を指定する必要があります。 使用法: /hoarder treasure add <weight!> <identifier!>'
+      success: '%s の重みを持つ %s を追加しました'
+    edit:
+      missing-args: '引数がありません! 使用法: /hoarder treasure edit <identifier!> <new-weight!> <new-identifier?>'
+      success: '%s を %s の重みを持つ %s に正常に変更しました'
+    delete:
+      missing-args: '引数がありません! 使用法: /hoarder Treasure delete <identifier!>'
+      success: '%s がストレージから正常に削除されました'
+  # /hoarder reload
+  reload: 'リロードしました！ 受信: %sms'

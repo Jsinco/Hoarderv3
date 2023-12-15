@@ -2,9 +2,10 @@ package dev.jsinco.hoarder.gui
 
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.utilities.Util
-import dev.jsinco.hoarder.utilities.Util.replaceTopPlaceholders
+import dev.jsinco.hoarder.utilities.Util.replaceTopPlayerPlaceholders
 import dev.jsinco.hoarder.manager.FileManager
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.YamlConfiguration
@@ -19,6 +20,10 @@ class GUIItem (val file: YamlConfiguration, val key: String) {
 
     private val plugin: Hoarder = Hoarder.getInstance()
     val multiSlotted: Boolean = file.getIntegerList("items.$key.slot").isNotEmpty()
+
+    private val name = file.getString("items.$key.name") ?: ""
+    private val lore = file.getStringList("items.$key.lore")
+    private val data: Comparable<*>? = if (file.get("items.$key.data") is Int) file.getInt("items.$key.data") else file.getString("items.$key.data")
 
     fun getSlots(): List<Int> {
         return file.getIntegerList("items.$key.slot")
@@ -36,12 +41,7 @@ class GUIItem (val file: YamlConfiguration, val key: String) {
         val item = ItemStack(Material.valueOf(file.getString("items.$key.material")!!.uppercase()))
         val meta = item.itemMeta!!
 
-        val name = file.getString("items.$key.name")!!
-        val lore = file.getStringList("items.$key.lore")
-        val data: Comparable<*>? = if (file.get("items.$key.data") is Int) file.getInt("items.$key.data") else file.getString("items.$key.data")
-
-
-        if (file.get("items.$key.name") != null) meta.setDisplayName(Util.fullColor(name))
+        meta.setDisplayName(Util.fullColor(name))
         if (file.get("items.$key.lore") != null) meta.lore = Util.fullColor(lore)
         if (file.getBoolean("items.$key.enchanted")) meta.addEnchant(Enchantment.DURABILITY, 1, true)
         if (data != null && data is Int) meta.setCustomModelData(data)
@@ -53,8 +53,8 @@ class GUIItem (val file: YamlConfiguration, val key: String) {
 
         item.itemMeta = meta
 
-        if (name.contains("%top_") || lore.toString().contains("%top_") || (data != null && data is String && data.contains("%top_"))) {
-            return setTopPlayerItemPlaceholders(item, data as String)
+        if (data != null && (data as String).contains("%top_")) {
+            return setTopPlayerItemPlaceholders(item, data)
         }
         return item
     }
@@ -66,12 +66,12 @@ class GUIItem (val file: YamlConfiguration, val key: String) {
         val eventPlayers = Util.getEventPlayersByTop()
         val dmFile = FileManager("guis/dynamicitems.yml").getFileYaml()
 
-        meta.setDisplayName(Util.fullColor(replaceTopPlaceholders(meta.displayName, eventPlayers) ?: dmFile.getString("items.empty_position.name")!!))
+        meta.setDisplayName(Util.fullColor(replaceTopPlayerPlaceholders(name, eventPlayers) ?: dmFile.getString("items.empty_position.name")!!))
         var wasNull = false
-        meta.lore = meta.lore!!.map { Util.fullColor(replaceTopPlaceholders(it, eventPlayers) ?:  run { wasNull = true; "" }) }
+        meta.lore = lore.map { Util.fullColor(replaceTopPlayerPlaceholders(it, eventPlayers) ?:  run { wasNull = true; "" }) }
         if (wasNull) meta.lore = Util.fullColor(dmFile.getStringList("items.empty_position.lore"))
 
-        val uuid = replaceTopPlaceholders(data, eventPlayers) ?: run { item.type = Material.valueOf(dmFile.getString("items.empty_position.material")!!); "" }
+        val uuid = replaceTopPlayerPlaceholders(data, eventPlayers) ?: run { item.type = Material.valueOf(dmFile.getString("items.empty_position.material")!!); "" }
         item.itemMeta = meta
         item = setPlayerHead(itemStack, uuid)
         return item
