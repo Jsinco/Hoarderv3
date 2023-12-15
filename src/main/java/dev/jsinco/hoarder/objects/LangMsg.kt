@@ -46,6 +46,10 @@ class LangMsg(val path: String) {
         return Util.fullColor(prefix + message)
     }
 
+    fun getRawMsg(): String {
+        return message ?: ""
+    }
+
     // FIXME
     fun getMsgListSendSound(player: Player?): List<String> {
         if (sound != null && player != null) {
