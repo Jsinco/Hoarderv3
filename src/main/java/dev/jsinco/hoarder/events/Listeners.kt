@@ -55,6 +55,8 @@ class Listeners(private val plugin: Hoarder) : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
+        if (!player.hasPermission("hoarder.notify")) return
+
         val dataManager = Settings.getDataManger()
         if (dataManager.isMsgQueuedPlayer(player.uniqueId.toString())) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, {

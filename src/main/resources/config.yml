@@ -1,4 +1,4 @@
-# Used for updating config on new releases. Don't change this
+# Used for updating config on new releases. No need to change this
 config-version: 1.0.0
 
 # Language to use
@@ -15,7 +15,19 @@ storage:
   username: ''
   password: ''
 
-# If Hoarder should pay players for selling to it
+update-checking:
+  enabled: true
+  # If Hoarder should notify players with the 'hoarder.update' permission when an update is available
+  notify-on-join: true
+
+commands:
+  # The default command action for /hoarder
+  default-command-action: '[OPEN] guis/main.yml'
+  # Aliases for the /hoarder command. Requires a restart to take effect
+  command-aliases: []
+
+
+# If Hoarder should pay players when selling items
 # Economy providers: Vault, PlayerPoints
 economy:
   enabled: true
@@ -25,12 +37,6 @@ economy:
     min: 1.20
     max: 3.70
 
-commands:
-  # The default command action for /hoarder (See 'info.md' line: <LINE>)
-  default-command-action: '[OPEN] guis/main.yml'
-  # Aliases for the /hoarder command. Requires a restart to take effect
-  command-aliases:
-    - hoard
 
 event:
   # The amount of time, in minutes, the Hoarder event should last for, set to 0 or lower to have Hoarder events only be started manually
@@ -39,7 +45,7 @@ event:
   # 20 ticks = 1 second. Changing this shouldn't be necessary. Recommended to leave at above at least 20 ticks (1 second)
   timer-check-interval: 600
 
-  # Notify players if they won a
+  # Notify players if they won a Hoarder event or if they have prizes to claim upon joining the server
   notify-on-join: true
   # The amount of winners and the amount of treasures given to them upon the Hoarder event ending.
   # Want to add more winners? Just add the spot that should win and the amount of treasures that should be given to them upon winning
@@ -70,6 +76,7 @@ treasure-items:
   # Example: I want to scale my weights to be 0 - 1000 instead of 0 - 100
   bound-int: 100
 
+
 gui-options:
   # Prevents items with the '[BACK_PAGE]' or '[NEXT_PAGE]' action from being placed in gui if the next/previous page does not exist
   hide-if-page-not-available: true
@@ -85,6 +92,8 @@ use-material-list-as-blacklist: false
 materials:
   diamond: 5
   white_wool: 4.72
-  iron_ingot: 3.5
-
-
+  iron_ingot: 3.51
+  grass_block: 4.70
+  oak_log: 3
+  amethyst_shard: 2.50
+  emerald: 7.30

@@ -65,6 +65,33 @@ class FileManager(val fileName: String) {
         }
     }
 
+    fun overrideFile() {
+        try {
+            if (!file.exists()) return
+
+            val inputStream = plugin.getResource(fileName)
+            if (inputStream != null) {
+                val outputStream = Files.newOutputStream(file.toPath())
+                val buffer = ByteArray(1024)
+                var bytesRead: Int
+                while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                    outputStream.write(buffer, 0, bytesRead)
+                }
+                inputStream.close()
+                outputStream.flush()
+                outputStream.close()
+            }
+        } catch (ex: IOException) {
+            plugin.logger.warning("Could not override file: ${file.name} \n $ex")
+        }
+    }
+
+    fun deleteFile() {
+        if (file.exists()) {
+            file.delete()
+        }
+    }
+
     fun getFileYaml(): YamlConfiguration {
         yamlConfiguration = YamlConfiguration.loadConfiguration(file)
         return yamlConfiguration!!

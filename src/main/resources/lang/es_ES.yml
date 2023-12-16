@@ -7,6 +7,7 @@ actions:
 
   sell: '¡Vendiste %s artículo(s) por €%s!'
   sell-none: '¡No tienes nada que vender!'
+  sell-locked: 'T¡El Acaparador está actualmente bloqueado por un administrador! No puedes vender artículos en este momento'
 
   treasure-claim:
     message: '¡Has reclamado un tesoro!'
@@ -26,7 +27,7 @@ notifications:
       - '#3 %top_3_name% - %top_3_points%'
       - '#4 %top_4_name% - %top_4_points%'
     sound: ENTITY_EVOKER_PREPARE_WOLOLO
-    pitch: 4.2
+    pitch: 0.75
   hoarder-event-won: '¡Has colocado #%s en el último evento de Hoarder!'
   claimable-treasures: '¡Tienes %s tesoros reclamables!'
 
@@ -41,6 +42,7 @@ commands:
     material: 'Cambió el material activo a %s'
     price: 'Cambió el precio de venta activo a €%s'
     time: '¡El evento Hoarder activo ahora terminará en %s minutos!'
+    lock: '¡El evento acaparador ahora es %s! El bloqueo expira al reiniciar o al finalizar el evento actual de Hoarder'
   # /hoarder treasure
   treasure:
     add:
@@ -53,5 +55,15 @@ commands:
     delete:
       missing-args: '¡Faltan argumentos! Uso: /hoarder treasure delete <identificador!>'
       success: '%s eliminado del almacenamiento con éxito'
+    # /hoarder help
+    help: |
+      <GRADIENT:fb7f4a>Menú de ayuda</GRADIENT:642ffd>
+      &d/hoarder help &8» &rMuestra este menú de ayuda
+      &d/hoarder gui &8» &rAbre la GUI de Hoarder
+      &d/hoarder claim &8» &rReclama tesoros del Acaparador
+      &d/hoarder sell &8» &rVende artículos a Hoarder
+      &d/hoarder event &8» &rSe utiliza para etc. con eventos de acaparador
+      &d/hoarder reload &8» &rRecarga la configuración y el almacenamiento del complemento
+      &d/hoarder treasure &8» &rSe utiliza para agregar, editar y eliminar tesoros del almacenamiento
   # /hoarder reload
   reload: '¡Recargado! Tomó: %sms'

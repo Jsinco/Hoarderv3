@@ -2,14 +2,39 @@ name: Hoarder
 version: '${version}'
 main: dev.jsinco.hoarder.Hoarder
 api-version: '1.20'
+load: STARTUP
 author: 'Jsinco'
 description: 'Allows players to compete in Hoarding competitions and earn rewards!'
 softdepend:
   - Vault
   - PlayerPoints
   - PlaceholderAPI
-  - DiscordSRV
+commands:
+  hoarder:
+    usage: '/hoarder <subcommand?>'
+    description: 'Hoarder main command'
 permissions:
+  hoarder.*:
+    description: 'Give access to all Hoarder permissions'
+    children:
+      hoarder.update: true
+      hoarder.command: true
+      hoarder.command.treasure: true
+      hoarder.command.reload: true
+      hoarder.command.gui: true
+      hoarder.command.claim: true
+      hoarder.command.event: true
+      hoarder.command.sell: true
+      hoarder.command.help: true
+  hoarder.notify:
+    description: 'Allows players to be notified in chat when a Hoarder event ends or notifications upon joining the server'
+    default: true
+  hoarder.update:
+    description: 'Allows a player to be notified when an update is available'
+    default: op
+  hoarder.command:
+    description: 'Allows usage of standalone /hoarder command'
+    default: true
   hoarder.command.treasure:
     description: 'Allows usage of /hoarder treasure. Used for adding, editing, and deleting treasures from storage'
     default: op
@@ -28,7 +53,6 @@ permissions:
   hoarder.command.sell:
     description: 'Allows usage of /hoarder sell. Used for selling items to Hoarder'
     default: op
-commands:
-  hoarder:
-    usage: '/hoarder <subcommand>?'
-    description: 'Hoarder command'
+  hoarder.command.help:
+    description: 'Allows usage of /hoarder help. Used for displaying the help menu'
+    default: op

@@ -3,6 +3,7 @@ package dev.jsinco.hoarder.commands.subcommands
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.HoarderEvent
 import dev.jsinco.hoarder.commands.SubCommand
+import dev.jsinco.hoarder.manager.SellingManager
 import dev.jsinco.hoarder.manager.Settings
 import dev.jsinco.hoarder.objects.LangMsg
 import org.bukkit.Material
@@ -38,6 +39,15 @@ class EventCommand : SubCommand {
                 HoarderEvent.activeSellPrice = price
                 args[2]
             }
+            "lock" -> {
+                if (SellingManager.locked) {
+                    SellingManager.locked = false
+                    "unlocked"
+                } else {
+                    SellingManager.locked = true
+                    "locked"
+                }
+            }
             else -> ""
         }
         //sender.sendMessage(Msg("commands.event.${args[1]}").getMsgSendSound(sender as? Player))
@@ -46,7 +56,7 @@ class EventCommand : SubCommand {
 
     override fun tabComplete(plugin: Hoarder, sender: CommandSender, args: Array<out String>): MutableList<String>? {
         if (args.size == 2) {
-            val list = mutableListOf("restart", "material", "time")
+            val list = mutableListOf("restart", "material", "time", "lock")
             if (Settings.usingEconomy()) list.add("price")
             return list
         }

@@ -18,7 +18,7 @@ class LangMsg(val path: String) {
         }
     }
 
-    val message = if (file.getString("$path.message") == null) file.getString(path) else file.getString("$path.message")
+    var message = if (file.getString("$path.message") == null) file.getString(path) else file.getString("$path.message")
 
     val sound = if (file.getString("$path.sound") != null) file.getString("$path.sound") else null
     val volume: Float = if (file.get("$path.volume") != null) file.getDouble("$path.volume").toFloat() else 1.0f
@@ -36,6 +36,10 @@ class LangMsg(val path: String) {
             return
         }
 
+        if (message?.contains("%top_") == true) {
+            message = Util.replaceTopPlayerPlaceholders(message, Util.getEventPlayersByTop())
+        }
+
         player.sendMessage(Util.fullColor(prefix + message))
     }
 
@@ -43,6 +47,11 @@ class LangMsg(val path: String) {
         if (sound != null && player != null) {
             player.playSound(player.location, Sound.valueOf(sound), volume, pitch)
         }
+
+        if (message?.contains("%top_") == true) {
+            message = Util.replaceTopPlayerPlaceholders(message, Util.getEventPlayersByTop())
+        }
+
         return Util.fullColor(prefix + message)
     }
 
@@ -59,6 +68,7 @@ class LangMsg(val path: String) {
         return file.getStringList(path).map { Util.fullColor(prefix + it) }
     }
 
+    // FIXME
     fun getMsgListSendSound(players: List<Player>): List<String> {
         if (sound != null) {
             for (player in players) {

@@ -3,7 +3,6 @@ package dev.jsinco.hoarder.papi
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.papi.placeholders.ActivesPlaceholder
 import dev.jsinco.hoarder.papi.placeholders.MePlaceholder
-import dev.jsinco.hoarder.papi.placeholders.TimePlaceholder
 import dev.jsinco.hoarder.papi.placeholders.TopPlaceholder
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
@@ -18,10 +17,9 @@ class PAPIManager(val plugin: Hoarder) : PlaceholderExpansion() {
     init {
         placeHolders["top"] = TopPlaceholder()
         placeHolders["me"] = MePlaceholder()
-        placeHolders["time"] = TimePlaceholder()
         placeHolders["active"] = ActivesPlaceholder()
 
-        plugin.logger.info("Successfully hooked into PlaceholderAPI! Registered: ${placeHolders.size} placeholders")
+        plugin.logger.info("Successfully hooked into PlaceholderAPI!")
     }
 
 

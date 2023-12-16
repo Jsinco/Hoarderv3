@@ -7,6 +7,7 @@ actions:
 
   sell: '%s のアイテムを ¥%s で販売しました!'
   sell-none: '売るものは何もありません!'
+  sell-locked: 'Hoarder は現在管理者によってロックされています。 現在アイテムを販売できません'
 
   treasure-claim:
     message: '宝物を手に入れました!'
@@ -26,7 +27,7 @@ notifications:
       - '#3 %top_3_name% - %top_3_points%'
       - '#4 %top_4_name% - %top_4_points%'
     sound: ENTITY_EVOKER_PREPARE_WOLOLO
-    pitch: 4.2
+    pitch: 0.75
   hoarder-event-won: '#%s 最後の Hoarder イベントを配置しました!'
   claimable-treasures: '取得可能な宝物は %s 個あります!'
 
@@ -41,6 +42,7 @@ commands:
     material: 'アクティブなマテリアルを %s に変更しました'
     price: 'アクティブな販売価格を ¥%s に変更しました'
     time: 'アクティブな Hoarder イベントは %s 分で終了します!'
+    lock: 'ホーダー イベントは %s になりました! ロックは再起動または現在の Hoarder イベントの終了時に期限切れになります。'
   # /hoarder treasure
   treasure:
     add:
@@ -53,5 +55,15 @@ commands:
     delete:
       missing-args: '引数がありません! 使用法: /hoarder treasure delete <identifier!>'
       success: '%s がストレージから正常に削除されました'
+    # /hoarder help
+    help: |
+      <GRADIENT:fb7f4a>ヘルプ メニュー</GRADIENT:642ffd>
+      &d/hoarder help &8» &rこのヘルプ メニューを表示します
+      &d/hoarder gui &8» &rHoarder GUI を開きます
+      &d/hoarder claim &8» &rhoarder から宝物を請求します
+      &d/hoarder sell &8» &rHoarderにアイテムを販売します
+      &d/hoarder event &8» &rhoarder イベントなどで使用されます
+      &d/hoarder reload &8» &rプラグインの設定とストレージを再ロードします
+      &d/hoarder Treasure &8» &rストレージからの宝物の追加、編集、削除に使用されます。
   # /hoarder reload
   reload: 'リロードしました！ 受信: %sms'

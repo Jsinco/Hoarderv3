@@ -26,24 +26,22 @@ public final class Hoarder extends JavaPlugin {
     /*
     TODO: What's left to do 12/6/2023
     - Debug and test everything
-    - Add PAPI support
-    - Discord integration via DiscordSRV or save for v1.1.0
-    - SMALL: add replaceTopPlaceholders for LangMsgs
-    - make all database calls async
+    - add update checker
+    - expand api
+    - add placeholderapi to gui items and lang messages
     */
 
     @Override
     public void onEnable() {
         plugin = this;
-        usePapi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+        FileManager.generateDefaultFiles(); // Generate default files, and Hoarder data folder
+        usePapi = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
 
         // Register commands and events
         getCommand("hoarder").setExecutor(new CommandManager(this));
         getServer().getPluginManager().registerEvents(new Listeners(this), this);
 
-
-        // Generate default files, reload Hoarder event/Start one if not running, register command aliases, register PlaceholderAPI
-        FileManager.generateDefaultFiles();
+        // Reload Hoarder event/Start one if not running, register command aliases, register PlaceholderAPI
         HoarderEvent.INSTANCE.reloadHoarderEvent();
         registerCommandAliases();
 
@@ -65,6 +63,9 @@ public final class Hoarder extends JavaPlugin {
             } catch (IOException e) {
                 getLogger().log(Level.SEVERE, "Failed to update config.yml!", e);
             }
+            // Update info.md
+            FileManager infoFile = new FileManager("info.md");
+            infoFile.overrideFile();
         }
 
         // TODO: first time setup stuff?

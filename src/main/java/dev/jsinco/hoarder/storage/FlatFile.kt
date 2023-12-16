@@ -9,76 +9,75 @@ import org.bukkit.inventory.ItemStack
 import java.sql.Connection
 
 class FlatFile (val plugin: Hoarder) : DataManager {
-    val fileManager = FileManager("${plugin.config.getString("storage.database") ?: "data"}.yml")
-    val file = fileManager.generateYamlFile()
-
-
+    private val prefix = plugin.config.getString("storage.table_prefix")
+    private val fileManager = FileManager("${plugin.config.getString("storage.database") ?: "data"}.yml")
+    private val file = fileManager.generateYamlFile()
 
     // Event data
 
     override fun setEventEndTime(time: Long) {
-        file.set("data.main.endtime", time)
+        file.set("${prefix}data.main.endtime", time)
         fileManager.saveFileYaml()
     }
 
     override fun getEventEndTime(): Long {
-        return file.getLong("data.main.endtime")
+        return file.getLong("${prefix}data.main.endtime")
     }
 
 
     override fun setEventMaterial(material: Material) {
-        file.set("data.main.material", material.name)
+        file.set("${prefix}data.main.material", material.name)
         fileManager.saveFileYaml()
     }
 
     override fun getEventMaterial(): Material {
-        return Material.valueOf(file.getString("data.main.material") ?: "AIR")
+        return Material.valueOf(file.getString("${prefix}data.main.material") ?: "AIR")
     }
 
     override fun setEventSellPrice(price: Double) {
-        file.set("data.main.sellprice", price)
+        file.set("${prefix}data.main.sellprice", price)
         fileManager.saveFileYaml()
     }
 
     override fun getEventSellPrice(): Double {
-        return file.getDouble("data.main.sellprice")
+        return file.getDouble("${prefix}data.main.sellprice")
     }
 
     // Hoarder Players
 
     override fun addPoints(uuid: String, amount: Int) {
-        file.set("players.$uuid.points", file.getInt("players.$uuid.points") + amount)
+        file.set("${prefix}players.$uuid.points", file.getInt("${prefix}players.$uuid.points") + amount)
         fileManager.saveFileYaml()
     }
 
     override fun removePoints(uuid: String, amount: Int) {
-        file.set("players.$uuid.points", file.getInt("players.$uuid.points") - amount)
+        file.set("${prefix}players.$uuid.points", file.getInt("${prefix}players.$uuid.points") - amount)
         fileManager.saveFileYaml()
     }
 
     override fun getPoints(uuid: String): Int {
-        return file.getInt("players.$uuid.points")
+        return file.getInt("${prefix}players.$uuid.points")
     }
 
     override fun addClaimableTreasures(uuid: String, amount: Int) {
-        file.set("players.$uuid.claimabletreasures", file.getInt("players.$uuid.claimabletreasures") + amount)
+        file.set("${prefix}players.$uuid.claimabletreasures", file.getInt("${prefix}players.$uuid.claimabletreasures") + amount)
         fileManager.saveFileYaml()
     }
 
     override fun removeClaimableTreasures(uuid: String, amount: Int) {
-        file.set("players.$uuid.claimabletreasures", file.getInt("players.$uuid.claimabletreasures") - amount)
+        file.set("${prefix}players.$uuid.claimabletreasures", file.getInt("${prefix}players.$uuid.claimabletreasures") - amount)
         fileManager.saveFileYaml()
     }
 
     override fun getClaimableTreasures(uuid: String): Int {
-        return file.getInt("players.$uuid.claimabletreasures")
+        return file.getInt("${prefix}players.$uuid.claimabletreasures")
     }
 
     // Event necessities
 
     override fun resetAllPoints() {
         for (uuid in getAllHoarderPlayersUUIDS()) {
-            file.set("players.$uuid.points", 0)
+            file.set("${prefix}players.$uuid.points", 0)
         }
         fileManager.saveFileYaml()
     }
@@ -86,7 +85,7 @@ class FlatFile (val plugin: Hoarder) : DataManager {
     override fun getEventPlayers(): Map<String, Int> {
         val eventPlayers: MutableMap<String, Int> = mutableMapOf()
         for (uuid in getAllHoarderPlayersUUIDS()) {
-            val points = file.getInt("players.$uuid.points")
+            val points = file.getInt("${prefix}players.$uuid.points")
             if (points != 0) {
                 eventPlayers[uuid] = points
             }
@@ -96,7 +95,7 @@ class FlatFile (val plugin: Hoarder) : DataManager {
 
 
     override fun getAllHoarderPlayersUUIDS(): List<String> {
-        return file.getConfigurationSection("players")?.getKeys(false)?.toList() ?: emptyList()
+        return file.getConfigurationSection("${prefix}players")?.getKeys(false)?.toList() ?: emptyList()
     }
 
     override fun getAllHoarderPlayers(): List<HoarderPlayer> {
@@ -114,58 +113,58 @@ class FlatFile (val plugin: Hoarder) : DataManager {
     }
 
     override fun modifyTreasureItem(identifier: String, newWeight: Int, newIdentifier: String) {
-        val itemStack = file.getItemStack("treasure_items.$identifier.itemstack") ?: return
-        file.set("treasure_items.$identifier", null)
-        file.set("treasure_items.$newIdentifier.weight", newWeight)
-        file.set("treasure_items.$newIdentifier.itemstack", itemStack)
+        val itemStack = file.getItemStack("${prefix}treasure_items.$identifier.itemstack") ?: return
+        file.set("${prefix}treasure_items.$identifier", null)
+        file.set("${prefix}treasure_items.$newIdentifier.weight", newWeight)
+        file.set("${prefix}treasure_items.$newIdentifier.itemstack", itemStack)
         fileManager.saveFileYaml()
     }
 
     override fun addTreasureItem(identifier: String, weight: Int, itemStack: ItemStack) {
-        if (file.get("treasure_items.$identifier") != null) return
+        if (file.get("${prefix}treasure_items.$identifier") != null) return
 
-        file.set("treasure_items.$identifier.weight", weight)
-        file.set("treasure_items.$identifier.itemstack", itemStack)
+        file.set("${prefix}treasure_items.$identifier.weight", weight)
+        file.set("${prefix}treasure_items.$identifier.itemstack", itemStack)
         fileManager.saveFileYaml()
     }
 
     override fun removeTreasureItem(identifier: String) {
-        file.set("treasure_items.$identifier", null)
+        file.set("${prefix}treasure_items.$identifier", null)
         fileManager.saveFileYaml()
     }
 
     override fun getTreasureItem(identifier: String): TreasureItem {
-        return TreasureItem(identifier, file.getInt("treasure_items.$identifier.weight"), file.getItemStack("treasure_items.$identifier.itemstack")!!)
+        return TreasureItem(identifier, file.getInt("${prefix}treasure_items.$identifier.weight"), file.getItemStack("${prefix}treasure_items.$identifier.itemstack")!!)
     }
 
 
     override fun getAllTreasureItems(): List<TreasureItem> {
         val treasureItems: MutableList<TreasureItem> = mutableListOf()
 
-        for (key in file.getConfigurationSection("treasure_items")?.getKeys(false) ?: return emptyList()) {
+        for (key in file.getConfigurationSection("${prefix}treasure_items")?.getKeys(false) ?: return emptyList()) {
             treasureItems.add(
-                TreasureItem(key, file.getInt("treasure_items.$key.weight"), file.getItemStack("treasure_items.$key.itemstack")!!)
+                TreasureItem(key, file.getInt("${prefix}treasure_items.$key.weight"), file.getItemStack("${prefix}treasure_items.$key.itemstack")!!)
             )
         }
         return treasureItems
     }
 
     override fun addMsgQueuedPlayer(uuid: String, position: Int) {
-        file.set("cache.$uuid.position", position)
+        file.set("${prefix}cache.$uuid.position", position)
         fileManager.saveFileYaml()
     }
 
     override fun removeMsgQueuedPlayer(uuid: String) {
-        file.set("cache.$uuid", null)
+        file.set("${prefix}cache.$uuid", null)
         fileManager.saveFileYaml()
     }
 
     override fun isMsgQueuedPlayer(uuid: String): Boolean {
-        return file.getConfigurationSection("cache")?.getKeys(false)?.contains(uuid) ?: false
+        return file.getConfigurationSection("${prefix}cache")?.getKeys(false)?.contains(uuid) ?: false
     }
 
     override fun getMsgQueuedPlayerPosition(uuid: String): Int {
-        return file.getInt("cache.$uuid.position")
+        return file.getInt("${prefix}cache.$uuid.position")
     }
 
     // SQL / File

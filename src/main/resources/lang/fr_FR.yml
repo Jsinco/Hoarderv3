@@ -7,6 +7,7 @@ actions:
 
   sell: 'Vous avez vendu %s article(s) pour €%s !'
   sell-none: 'Vous n’avez rien à vendre !'
+  sell-locked: 'Le Hoarder est actuellement verrouillé par un administrateur ! Vous ne pouvez pas vendre d''articles pour le moment'
 
   treasure-claim:
     message: 'Vous avez réclamé un trésor !'
@@ -26,7 +27,7 @@ notifications:
       - '#3 %top_3_name% - %top_3_points%'
       - '#4 %top_4_name% - %top_4_points%'
     sound: ENTITY_EVOKER_PREPARE_WOLOLO
-    pitch: 4.2
+    pitch: 0.75
   hoarder-event-won: 'Vous avez placé #%s dernier événement Hoarder !'
   claimable-treasures: 'Vous possédez %s trésors récupérables !'
 
@@ -41,6 +42,7 @@ commands:
     material: 'Le matériau actif a été remplacé par %s'
     price: 'Le prix de vente actif a été modifié à €%s'
     time: 'L''événement Hoarder actif se terminera désormais dans %s minutes !'
+    lock: 'L''événement Hoarder est maintenant %s! Le verrouillage expire lors d''un redémarrage ou de la fin de l''événement Hoarder en cours'
   # /hoarder treasure
   treasure:
     add:
@@ -53,5 +55,15 @@ commands:
     delete:
       missing-args: 'Arguments manquants! Utilisation: /hoarder treasure delete <identifiant!>'
       success: '%s supprimé avec succès du stockage'
+    # /hoarder help
+    help: |
+      <GRADIENT:fb7f4a>Menu Aide</GRADIENT:642ffd>
+      &d/hoarder help &8» &rAffiche ce menu d'aide
+      &d/hoarder gui &8» &rOuvre l'interface graphique de Hoarder
+      &d/hoarder claim &8» &rRécupère les trésors du collectionneur
+      &d/hoarder sell &8» &rVend des objets au collectionneur
+      &d/hoarder event &8» &rUtilisé pour etc avec les événements Hoarder
+      &d/hoarder reload &8» &rRecharge la configuration et le stockage du plugin
+      &d/hoarder treasure &8» &rUtilisé pour ajouter, modifier et supprimer des trésors du stockage
   # /hoarder reload
   reload: 'Rechargé ! Pris: %sms'

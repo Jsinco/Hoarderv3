@@ -2,6 +2,7 @@ package dev.jsinco.hoarder
 
 import dev.jsinco.hoarder.api.HoarderEndEvent
 import dev.jsinco.hoarder.api.HoarderStartEvent
+import dev.jsinco.hoarder.manager.SellingManager
 import dev.jsinco.hoarder.manager.Settings
 import dev.jsinco.hoarder.objects.LangMsg
 import dev.jsinco.hoarder.utilities.Util
@@ -86,6 +87,8 @@ object HoarderEvent {
      * End the event
      */
     fun endHoarderEvent() {
+        if (SellingManager.locked) SellingManager.locked = false
+
         val winnerPositions = Settings.getWinners()
         val eventPlayers = Util.getEventPlayersByTop().keys.toList()
 
@@ -107,6 +110,7 @@ object HoarderEvent {
         }
 
         for (player in Bukkit.getOnlinePlayers()) {
+            if (!player.hasPermission("hoarder.notify")) continue
             for (message in msg) {
                 player.sendMessage(message)
             }

@@ -1,6 +1,7 @@
 package dev.jsinco.hoarder.papi.placeholders
 
 import dev.jsinco.hoarder.Hoarder
+import dev.jsinco.hoarder.manager.Settings
 import dev.jsinco.hoarder.objects.LangMsg
 import dev.jsinco.hoarder.papi.Placeholder
 import dev.jsinco.hoarder.utilities.Util
@@ -38,6 +39,11 @@ class TopPlaceholder : Placeholder {
             "uuid" -> {
                 if (uuids.size < num) return emptyPos
                 uuids[num - 1]
+            }
+
+            "claimable" -> {
+                if (uuids.size < num) return emptyPos
+                Settings.getDataManger().getClaimableTreasures(uuids[num - 1]).toString()
             }
 
             else -> {

@@ -14,11 +14,19 @@ import org.bukkit.inventory.Inventory
 
 class SellingManager(val player: Player, val inventory: Inventory) {
 
-    var amountSold = 0
-    var payoutAmount = 0.0
-    var payoutString = "No Econ"
+    companion object {
+        var locked: Boolean = false
+    }
+
+    private var amountSold = 0
+    private var payoutAmount = 0.0
+    private var payoutString = "No Econ"
 
     fun sellActiveItem() {
+        if (locked) {
+            LangMsg("actions.sell-locked").sendMessage(player)
+            return
+        }
         val activeMaterial = HoarderEvent.activeMaterial
 
         for (item in inventory.contents) {
@@ -29,7 +37,7 @@ class SellingManager(val player: Player, val inventory: Inventory) {
         }
         Settings.getDataManger().addPoints(player.uniqueId.toString(), amountSold)
 
-        var sellPrice: Double = 0.0
+        var sellPrice = 0.0
 
         if (Settings.usingEconomy() && amountSold > 0) {
             sellPrice = HoarderEvent.activeSellPrice
@@ -41,9 +49,10 @@ class SellingManager(val player: Player, val inventory: Inventory) {
                 ProviderType.PLAYERPOINTS -> PlayerPointsHook()
             }
 
-            payoutString = Util.formatEconAmt(econHandler.addBalance(payoutAmount, player) as Double)
+            var econHandlerResponse = econHandler.addBalance(payoutAmount, player)
+            if (econHandlerResponse is Int) econHandlerResponse = econHandlerResponse.toDouble()
+            payoutString = Util.formatEconAmt(econHandlerResponse as Double)
         }
-
 
         Bukkit.getPluginManager().callEvent(HoarderSellEvent(player, amountSold, sellPrice))
 

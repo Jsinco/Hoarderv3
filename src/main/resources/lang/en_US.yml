@@ -7,6 +7,7 @@ actions:
 
   sell: 'You sold %s item(s) for $%s!'
   sell-none: 'You have nothing to sell!'
+  sell-locked: 'The Hoarder is currently locked by an admin! You can''t sell items right now'
 
   treasure-claim:
     message: 'You claimed a treasure!'
@@ -26,7 +27,7 @@ notifications:
       - '#3 %top_3_name% - %top_3_points%'
       - '#4 %top_4_name% - %top_4_points%'
     sound: ENTITY_EVOKER_PREPARE_WOLOLO
-    pitch: 4.2
+    pitch: 0.75
   hoarder-event-won: 'You placed #%s last Hoarder event!'
   claimable-treasures: 'You have %s claimable treasures!'
 
@@ -41,6 +42,7 @@ commands:
     material: 'Changed the active material to %s'
     price: 'Changed the active sell price to $%s'
     time: 'The active Hoarder event will now end in %s minutes!'
+    lock: 'Hoarder event is now %s! Lock expires upon a restart or the current Hoarder event ending'
   # /hoarder treasure
   treasure:
     add:
@@ -53,5 +55,15 @@ commands:
     delete:
       missing-args: 'Missing arguments! Usage: /hoarder treasure delete <identifier!>'
       success: 'Successfully deleted %s from storage'
+  # /hoarder help
+  help: |
+    <GRADIENT:fb7f4a>Help Menu</GRADIENT:642ffd>
+    &d/hoarder help &8» &rDisplays this help menu
+    &d/hoarder gui &8» &rOpens the Hoarder GUI
+    &d/hoarder claim &8» &rClaims treasures from Hoarder
+    &d/hoarder sell &8» &rSells items to Hoarder
+    &d/hoarder event &8» &rUsed for etc with Hoarder events
+    &d/hoarder reload &8» &rReloads the plugin''s config and storage
+    &d/hoarder treasure &8» &rUsed for adding, editing, and deleting treasures from storage
   # /hoarder reload
   reload: 'Reloaded! Took: %sms'

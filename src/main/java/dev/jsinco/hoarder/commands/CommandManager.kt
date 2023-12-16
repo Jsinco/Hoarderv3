@@ -22,12 +22,17 @@ class CommandManager(val plugin: Hoarder) : CommandExecutor, TabCompleter {
         subCommands["claim"] = ClaimTreasureCommand()
         subCommands["event"] = EventCommand()
         subCommands["sell"] = SellCommand()
-        subCommands["debug"] = DebugCommand()
+        subCommands["help"] = HelpCommand()
     }
 
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (args.isEmpty()) {
+            if (!sender.hasPermission("hoarder.command")) {
+                (sender as? Player)?.let { LangMsg("commands.no-permission").sendMessage(it) }
+                return true
+            }
+
             val actionString = Settings.defaultCommandAction()
             if (actionString != "NONE" && sender is Player) {
                 val parsedAction = Action.parseStringAction(actionString)

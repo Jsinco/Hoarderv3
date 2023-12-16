@@ -7,6 +7,7 @@ actions:
 
   sell: '您以 %s 的价格出售了 ¥%s 件商品!'
   sell-none: '你没有什么可卖的!'
+  sell-locked: '囤积者目前已被管理员锁定！ 您现在无法出售物品'
 
   treasure-claim:
     message: '你获得了宝藏!'
@@ -26,7 +27,7 @@ notifications:
       - '#3 %top_3_name% - %top_3_points%'
       - '#4 %top_4_name% - %top_4_points%'
     sound: ENTITY_EVOKER_PREPARE_WOLOLO
-    pitch: 4.2
+    pitch: 0.75
   hoarder-event-won: '你完成了 #%s 最后的 Hoarder 活动!'
   claimable-treasures: '你有 %s 个可索赔的宝藏!'
 
@@ -41,6 +42,7 @@ commands:
     material: '将活性材料更改为%s'
     price: '将有效售价更改为 ¥%s'
     time: '活跃的囤积者活动现在将在 %s 分钟后结束!'
+    lock: '囤积者活动现已开始 %s！ 锁定在重新启动或当前 Hoarder 事件结束时过期'
   # /hoarder treasure
   treasure:
     add:
@@ -53,5 +55,15 @@ commands:
     delete:
       missing-args: '缺少参数！ 用法：/hoarder treasure delete <标识符!>'
       success: '已成功从存储中删除 %s'
+    # /hoarder help
+    help: |
+      <GRADIENT:fb7f4a>帮助菜单</GRADIENT:642ffd>
+      &d/hoarder help &8» &r显示此帮助菜单
+      &d/hoarder gui &8» &r打开 Hoarder GUI
+      &d/hoarder claim &8» &r向囤积者索赔宝藏
+      &d/hoarder sell &8» &r向 Hoarder 出售物品
+      &d/hoarder event &8» &r用于 Hoarder 事件等
+      &d/hoarder reload &8» &r重新加载插件的配置和存储
+      &d/hoarder treasure &8» &r用于添加、编辑和删除存储中的宝藏
   # /hoarder reload
   reload: '重新加载！ 已收到：%sms'
