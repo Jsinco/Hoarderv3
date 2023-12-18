@@ -36,7 +36,7 @@ items:
   
   # VALUES FOR TREASURE: %weight% - the weighted chance of the item
   treasure:
-    lore: ['', '<GRADIENT:fb7f4a>• Chance/Weight: %weight%</GRADIENT:642ffd>']
+    lore: ['', '<GRADIENT:fb7f4a>• Chance: %weight%%</GRADIENT:642ffd>']
 
   # Represents each stat item. Linked to STATS gui type
   
@@ -49,6 +49,9 @@ items:
     lore: ['<GRADIENT:fb7f4a>%name% is #%position% with %points% points!</GRADIENT:642ffd>']
     enchanted: false
 
+  # String matched materials are materials that are matched by their name
+  # Example: putting 'CONCRETE_POWDER' will add all concrete powder colors to the lit of
+  # possible materials for this item.
   treasure_claim:
     string-matched-materials: 'CONCRETE_POWDER'
     action: '[CLAIM]'
@@ -58,5 +61,5 @@ items:
   
   empty_position:
     material: WITHER_SKELETON_SKULL
-    name: '&c&lEmpty'
-    lore: [ '&7Looks like no one''s here...' ]
+    name: '<GRADIENT:fb7f4a>&lEmpty</GRADIENT:642ffd>'
+    lore: [ '<GRADIENT:fb7f4a>Looks like no one''s here...</GRADIENT:642ffd>' ]

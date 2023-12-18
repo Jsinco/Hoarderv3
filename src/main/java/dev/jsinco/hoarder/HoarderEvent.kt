@@ -24,7 +24,7 @@ object HoarderEvent {
     var endTime: Long = 0
     var runnable: Int = -1
 
-    private val dataManager = Settings.getDataManger()
+    private var dataManager = Settings.getDataManger()
 
     /**
      * Reload the event
@@ -37,6 +37,8 @@ object HoarderEvent {
         if (runnable != -1) Bukkit.getScheduler().cancelTask(runnable)
         runnable = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, {
             if (System.currentTimeMillis() < endTime) return@scheduleSyncRepeatingTask
+
+            dataManager = Settings.getDataManger() // Ensure dataManager is up-to-date
 
             val hoarderEndEvent = HoarderEndEvent() // API
             val hoarderStartEvent = HoarderStartEvent()

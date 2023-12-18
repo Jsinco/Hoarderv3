@@ -185,7 +185,7 @@ public abstract class Database implements DataManager {
     // Hoarder players
 
 
-    @Override // FIXME
+    @Override
     public void addPoints(@NotNull String uuid, int amount) {
         try {
             PreparedStatement statement;
@@ -254,6 +254,26 @@ public abstract class Database implements DataManager {
     }
 
     @Override
+    public void setPoints(@NotNull String uuid, int amount) {
+        try {
+            PreparedStatement statement;
+            if (usingSQLite) {
+                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points, claimabletreasures) VALUES (?, ?, COALESCE((SELECT claimabletreasures FROM " + prefix + "players WHERE uuid = ?), 0));");
+                statement.setString(3, uuid);
+            } else {
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = VALUES(points);");
+            }
+            statement.setString(1, uuid);
+            statement.setInt(2, amount);
+
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to set points in database", e);
+        }
+    }
+
+    @Override
     public void addClaimableTreasures(@NotNull String uuid, int amount) {
         try {
             PreparedStatement statement;
@@ -315,6 +335,26 @@ public abstract class Database implements DataManager {
         return 0;
     }
 
+
+
+    public void setClaimableTreasures(@NotNull String uuid, int amount) {
+        try {
+            PreparedStatement statement;
+            if (usingSQLite) {
+                statement = getConnection().prepareStatement("INSERT OR REPLACE INTO " + prefix + "players (uuid, points, claimabletreasures) VALUES (?, COALESCE((SELECT points FROM " + prefix + "players WHERE uuid = ?), 0), ?);");
+                statement.setString(2, uuid);
+            } else {
+                statement = getConnection().prepareStatement("INSERT INTO " + prefix + "players (uuid, claimabletreasures) VALUES (?, ?) ON DUPLICATE KEY UPDATE claimabletreasures = VALUES(claimabletreasures);");
+            }
+            statement.setString(1, uuid);
+            statement.setInt(2, amount);
+
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to set claimable treasures in database", e);
+        }
+    }
 
     // Event necessities
     @Override

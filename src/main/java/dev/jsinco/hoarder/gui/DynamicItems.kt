@@ -54,7 +54,7 @@ class DynamicItems(private val guiCreator: GUICreator) {
                 val items: MutableList<ItemStack> = mutableListOf()
 
                 for (treasureItem in treasureItems) {
-                    val item = treasureItem.itemStack
+                    val item = treasureItem.itemStack.clone() // Clone it
                     val meta = item.itemMeta!!
 
                     val lore = meta.lore ?: emptyList<String?>().toMutableList()

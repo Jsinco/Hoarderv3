@@ -21,12 +21,12 @@ import java.util.logging.Level;
 public final class Hoarder extends JavaPlugin {
 
     private static Hoarder plugin;
-    private PAPIManager papiManager; private boolean usePapi = false;
+    private PAPIManager papiManager;
+    private static boolean usePapi = false;
 
     /*
     TODO: What's left to do 12/6/2023
     - Debug and test everything
-    - add update checker
     - expand api
     - add placeholderapi to gui items and lang messages
     */
@@ -68,7 +68,9 @@ public final class Hoarder extends JavaPlugin {
             infoFile.overrideFile();
         }
 
-        // TODO: first time setup stuff?
+        // Update checker
+        //UpdateChecker updateChecker = new UpdateChecker(this, UpdateCheckSource.GITHUB_RELEASE_TAG, )
+        // TODO: When uploaded to SpigotMC
     }
 
     @Override
@@ -83,6 +85,10 @@ public final class Hoarder extends JavaPlugin {
 
     public static Hoarder getInstance() {
         return plugin;
+    }
+
+    public static boolean getPlaceHolderAPIStatus() {
+        return usePapi;
     }
 
 

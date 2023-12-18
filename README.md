@@ -118,6 +118,21 @@ Customize just about anything you'd like. GUIs, messages, items, winners & rewar
 Hoarder comes with 5 different pre-translated languages. These language files are fully customizable and can be found in the /lang/ folder.
 Want to add your own lang file? Just create a new yml file in the lang folder and follow the format of all the other lang files!
 
+Langs also allow you to add sounds to your messages! Message formats:
+
+```yaml
+actions:
+  sell: 'Sold %s item(s) for $%s!'
+
+# OR
+actions:
+  sell:
+    message: 'Sold %s item(s) for $%s!'
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0 # Optional, default sound: 1.0
+    pitch: 1.0 # Optional, default pitch: 0.0
+```
+
 ...
 
 ### Written with ❤️ by Jsinco

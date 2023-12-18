@@ -14,8 +14,7 @@ public class SQLite extends Database {
 
     private Connection connection;
     private final Hoarder plugin;
-
-    private static String path; // TODO: Debug, remove static?
+    private final String path;
 
     public SQLite(Hoarder plugin) {
         this.plugin = plugin;

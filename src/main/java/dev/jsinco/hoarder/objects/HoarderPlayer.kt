@@ -85,7 +85,7 @@ class HoarderPlayer (val uuid: String) {
                 val treasureItem = treasures.random()
 
                 if (treasureItem.weight <= Random.nextInt(Settings.treasureBoundInt())) {
-                    item = treasureItem.itemStack
+                    item = treasureItem.itemStack.clone()
                 }
             }
             Util.giveItem(player, item)

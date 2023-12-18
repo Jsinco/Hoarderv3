@@ -18,7 +18,7 @@ class TreasureCommand : SubCommand {
 
         when (args[1].lowercase()) {
             "add" -> {
-                val itemStack = player.inventory.itemInMainHand
+                val itemStack = player.inventory.itemInMainHand.clone() // Clone it
 
                 if (args.size < 3) {
                     LangMsg("commands.treasure.add.missing-args").sendMessage(player)

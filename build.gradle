@@ -27,15 +27,15 @@ repositories {
     }
     maven {
         name = "playerpoints"
-        url = 'https://repo.rosewooddev.io/repository/public/'
+        url = "https://repo.rosewooddev.io/repository/public/"
     }
     maven {
         name = "placeholderapi"
-        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+        url = "https://repo.extendedclip.com/content/repositories/placeholderapi/"
     }
     maven {
-        name = "discordsrv"
-        url = 'https://nexus.scarsz.me/content/groups/public/'
+        name = "update-checker"
+        url = "https://repo.jeff-media.com/public/"
     }
 }
 
@@ -45,6 +45,7 @@ dependencies {
     compileOnly "org.black_ixx:playerpoints:3.2.5"
     compileOnly "me.clip:placeholderapi:2.11.3"
 
+    implementation "com.jeff_media:SpigotUpdateChecker:3.0.3"
     implementation "org.xerial:sqlite-jdbc:3.42.0.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "com.iridium:IridiumColorAPI:1.0.6"
@@ -80,6 +81,7 @@ shadowJar {
     dependencies {
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
         include(dependency("com.iridium:IridiumColorAPI:1.0.6"))
+        include(dependency("com.jeff_media:SpigotUpdateChecker:3.0.3"))
     }
 }
 build.dependsOn shadowJar

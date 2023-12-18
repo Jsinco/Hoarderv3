@@ -59,6 +59,11 @@ class FlatFile (val plugin: Hoarder) : DataManager {
         return file.getInt("${prefix}players.$uuid.points")
     }
 
+    override fun setPoints(uuid: String, amount: Int) {
+        file.set("${prefix}players.$uuid.points", amount)
+        fileManager.saveFileYaml()
+    }
+
     override fun addClaimableTreasures(uuid: String, amount: Int) {
         file.set("${prefix}players.$uuid.claimabletreasures", file.getInt("${prefix}players.$uuid.claimabletreasures") + amount)
         fileManager.saveFileYaml()
@@ -71,6 +76,11 @@ class FlatFile (val plugin: Hoarder) : DataManager {
 
     override fun getClaimableTreasures(uuid: String): Int {
         return file.getInt("${prefix}players.$uuid.claimabletreasures")
+    }
+
+    fun setClaimableTreasures(uuid: String, amount: Int) {
+        file.set("${prefix}players.$uuid.claimabletreasures", amount)
+        fileManager.saveFileYaml()
     }
 
     // Event necessities

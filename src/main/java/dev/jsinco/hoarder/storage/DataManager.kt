@@ -53,6 +53,7 @@ interface DataManager {
 
     fun getPoints(uuid: String): Int
 
+    fun setPoints(uuid: String, amount: Int)
 
 
     fun addClaimableTreasures(uuid: String, amount: Int)
@@ -60,6 +61,7 @@ interface DataManager {
     fun removeClaimableTreasures(uuid: String, amount: Int)
 
     fun getClaimableTreasures(uuid: String): Int
+
 
     fun resetAllPoints()
 

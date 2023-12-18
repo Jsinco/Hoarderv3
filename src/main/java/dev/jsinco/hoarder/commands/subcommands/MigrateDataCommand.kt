@@ -2,23 +2,23 @@ package dev.jsinco.hoarder.commands.subcommands
 
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.commands.SubCommand
-import dev.jsinco.hoarder.manager.Settings
-import dev.jsinco.hoarder.objects.LangMsg
-import org.bukkit.Bukkit
+import dev.jsinco.hoarder.storage.DataMigrater
+import dev.jsinco.hoarder.storage.StorageType
 import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 
-class HelpCommand : SubCommand {
+class MigrateDataCommand : SubCommand {
     override fun execute(plugin: Hoarder, sender: CommandSender, args: Array<out String>) {
-        sender.sendMessage(LangMsg("commands.help").getMsgSendSound(sender as? Player))
+        val newStorageType: StorageType = StorageType.valueOf(args[1].uppercase())
+        DataMigrater(newStorageType).migrate()
+        sender.sendMessage("debug: ${plugin.config.getString("storage.type")}")
     }
 
     override fun tabComplete(plugin: Hoarder, sender: CommandSender, args: Array<out String>): MutableList<String>? {
-        return null
+        return StorageType.entries.map { it.name.lowercase() }.toMutableList()
     }
 
     override fun permission(): String? {
-        return "hoarder.command.help"
+        return null
     }
 
     override fun playerOnly(): Boolean {
