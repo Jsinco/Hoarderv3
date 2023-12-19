@@ -7,6 +7,8 @@ import dev.jsinco.hoarder.manager.FileManager;
 import dev.jsinco.hoarder.objects.HoarderPlayer;
 import dev.jsinco.hoarder.objects.TreasureItem;
 import dev.jsinco.hoarder.storage.DataManager;
+import dev.jsinco.hoarder.utilities.BukkitSerialization;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -211,7 +213,7 @@ public abstract class Database implements DataManager {
 
     @Override
     public void removePoints(@NotNull String uuid, int amount) {
-        try { // TODO: if we remove points from a player that hasnt been added to DB yet what will happen with this SQL statement?
+        try {
             PreparedStatement statement;
 
             if (usingSQLite) {
@@ -295,7 +297,7 @@ public abstract class Database implements DataManager {
         }
     }
 
-    @Override // FIXME
+    @Override
     public void removeClaimableTreasures(@NotNull String uuid, int amount) {
         try {
             PreparedStatement statement;
@@ -445,9 +447,10 @@ public abstract class Database implements DataManager {
 
     @Override
     public void addTreasureItem(@NotNull String identifier, int weight, ItemStack itemStack) {
-        Gson gson = new Gson();
-        Type gsonType = new TypeToken<HashMap>(){}.getType();
-        String gsonString = gson.toJson(itemStack.serialize(),gsonType);
+        //Gson gson = new Gson();
+        //Type gsonType = new TypeToken<HashMap>(){}.getType();
+        //String gsonString = gson.toJson(itemStack.serialize(),gsonType);
+        String serialized = BukkitSerialization.itemStackToBase64(itemStack);
 
         try {
             PreparedStatement statement;
@@ -458,7 +461,7 @@ public abstract class Database implements DataManager {
             }
             statement.setString(1, identifier);
             statement.setInt(2, weight);
-            statement.setString(3, gsonString);
+            statement.setString(3, serialized);
 
             statement.executeUpdate();
             statement.close();
@@ -503,12 +506,13 @@ public abstract class Database implements DataManager {
             ResultSet resultSet = statement.executeQuery();
 
 
-            Gson gson = new Gson();
+            //Gson gson = new Gson();
             if (!resultSet.next()) return null;
 
             String id = resultSet.getString("identifier");
             int weight = resultSet.getInt("weight");
-            ItemStack itemStack = ItemStack.deserialize(gson.fromJson(resultSet.getString("itemstack"), Map.class));
+            // ItemStack itemStack = ItemStack.deserialize(gson.fromJson(resultSet.getString("itemstack"), Map.class));
+            ItemStack itemStack = BukkitSerialization.itemStackFromBase64(resultSet.getString("itemstack"));
 
             statement.close();
             return new TreasureItem(id, weight, itemStack);
@@ -526,11 +530,12 @@ public abstract class Database implements DataManager {
             ResultSet resultSet = statement.executeQuery();
 
             List<TreasureItem> treasureItems = new ArrayList<>();
-            Gson gson = new Gson();
+            //Gson gson = new Gson();
             while (resultSet.next()) {
                 String identifier = resultSet.getString("identifier");
                 int weight = resultSet.getInt("weight");
-                ItemStack itemStack = ItemStack.deserialize(gson.fromJson(resultSet.getString("itemstack"), Map.class));
+                //ItemStack itemStack = ItemStack.deserialize(gson.fromJson(resultSet.getString("itemstack"), Map.class));
+                ItemStack itemStack = BukkitSerialization.itemStackFromBase64(resultSet.getString("itemstack"));
                 treasureItems.add(new TreasureItem(identifier, weight, itemStack));
             }
             statement.close();

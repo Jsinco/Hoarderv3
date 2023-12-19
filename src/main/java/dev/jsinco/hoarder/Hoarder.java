@@ -21,8 +21,8 @@ import java.util.logging.Level;
 public final class Hoarder extends JavaPlugin {
 
     private static Hoarder plugin;
-    private PAPIManager papiManager;
-    private static boolean usePapi = false;
+    private static PAPIManager papiManager;
+    private static boolean usePapi;
 
     /*
     TODO: What's left to do 12/6/2023
@@ -53,13 +53,14 @@ public final class Hoarder extends JavaPlugin {
         // Update config if needed
         FileManager configFile = new FileManager("config.yml");
         YamlConfiguration config = configFile.getFileYaml();
-        if (config.get("config-version") == null || !config.getString("config-version").equals(getDescription().getVersion())) {
+        String version = getDescription().getVersion();
+        if (config.get("config-version") == null || !config.getString("config-version").equals(version)) {
             try {
-                config.set("config-version", getDescription().getVersion());
+                config.set("config-version", version);
                 configFile.saveFileYaml();
 
                 ConfigUpdater.update(this, "config.yml", configFile.getFile(), Collections.emptyList());
-                getLogger().info("Successfully updated config.yml to v" + getDescription().getVersion() + "!");
+                getLogger().info("Successfully updated config.yml to v" + version + "!");
             } catch (IOException e) {
                 getLogger().log(Level.SEVERE, "Failed to update config.yml!", e);
             }

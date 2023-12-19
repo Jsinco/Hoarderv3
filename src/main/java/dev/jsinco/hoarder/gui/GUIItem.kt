@@ -1,11 +1,10 @@
 package dev.jsinco.hoarder.gui
 
 import dev.jsinco.hoarder.Hoarder
+import dev.jsinco.hoarder.manager.FileManager
 import dev.jsinco.hoarder.utilities.Util
 import dev.jsinco.hoarder.utilities.Util.replaceTopPlayerPlaceholders
-import dev.jsinco.hoarder.manager.FileManager
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.YamlConfiguration
@@ -16,7 +15,7 @@ import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
-class GUIItem (val file: YamlConfiguration, val key: String) {
+class GUIItem (val file: YamlConfiguration, private val key: String) {
 
     private val plugin: Hoarder = Hoarder.getInstance()
     val multiSlotted: Boolean = file.getIntegerList("items.$key.slot").isNotEmpty()

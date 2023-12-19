@@ -5,6 +5,7 @@ import dev.jsinco.hoarder.economy.ProviderType
 import dev.jsinco.hoarder.storage.DataManager
 import dev.jsinco.hoarder.storage.FlatFile
 import dev.jsinco.hoarder.storage.StorageType
+import dev.jsinco.hoarder.storage.sql.Database
 import dev.jsinco.hoarder.storage.sql.MySQL
 import dev.jsinco.hoarder.storage.sql.SQLite
 import org.bukkit.Material
@@ -126,7 +127,7 @@ object Settings {
     }
 
     fun reloadDataManager() {
-        if (dataManager != null && (dataManager is MySQL || dataManager is SQLite)) {
+        if (dataManager != null && dataManager is Database) {
             dataManager?.closeConnection()
         }
 

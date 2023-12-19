@@ -121,9 +121,6 @@ object HoarderEvent {
     }
 
 
-
-    // Helper functions to determine event details TODO: Package and separate class?
-
     private fun determineEventMaterial(): Material {
         val materials: MutableList<Material> = mutableListOf()
         if (Settings.useWhiteListAsBlackList()) {
