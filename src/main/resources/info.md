@@ -3,7 +3,7 @@ This plugin allows your players to sell a specified item for Hoarder points and 
 
 You can specify which items you want the Hoarder to pick from and if you want the Hoarder to give money to the player in exchange for the item.
 
-The top players at the end of each Hoarder event will be rewarded with treasures (items)!
+The top players at the end of each Hoarder event will be rewarded with treasures (items you add to a prizepool)!
 
 # GUIS
 There are 5 types of GUIs
@@ -125,6 +125,7 @@ actions:
   sell: 'Sold %s item(s) for $%s!'
 
 # OR
+
 actions:
   sell:
     message: 'Sold %s item(s) for $%s!'
@@ -132,10 +133,13 @@ actions:
     volume: 1.0 # Optional, default sound: 1.0
     pitch: 1.0 # Optional, default pitch: 0.0
 ```
+
+All sound types can be found here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+
 ...
 
 ### Written with ❤️ by Jsinco
-### Discord:
+### Discord: https://discord.gg/JUFkBY93TG
 ### Spigot page:
 
-Don't store stuff in this file. It is overriden upon each new release of Hoarder
+Don't store stuff in this file. It is overwritten upon each new release of Hoarder

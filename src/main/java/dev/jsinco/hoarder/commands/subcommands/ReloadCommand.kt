@@ -6,6 +6,7 @@ import dev.jsinco.hoarder.commands.SubCommand
 import dev.jsinco.hoarder.manager.FileManager
 import dev.jsinco.hoarder.manager.Settings
 import dev.jsinco.hoarder.objects.LangMsg
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -15,7 +16,9 @@ class ReloadCommand : SubCommand {
         val startTime = System.currentTimeMillis()
 
         plugin.reloadConfig()
-        Settings.reloadDataManager()
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
+            Settings.reloadDataManager()
+        })
         FileManager.generateDefaultFiles()
         HoarderEvent.reloadHoarderEvent()
         LangMsg.reloadLangFile()

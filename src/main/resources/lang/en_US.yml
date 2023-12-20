@@ -5,15 +5,24 @@ prefix: '<GRADIENT:fb7f4a>&lHoarder</GRADIENT:642ffd> &r&8» &r'
 actions:
   empty-position: 'Looks like no one''s here...'
 
-  sell: 'You sold %s item(s) for $%s!'
-  sell-none: 'You have nothing to sell!'
-  sell-locked: 'The Hoarder is currently locked by an admin! You can''t sell items right now'
+  sell:
+    message: 'You sold &d%s&r item(s) for &d$%s&r!'
+    sound: ENTITY_ITEM_PICKUP
+    pitch: 2.0
+  sell-none:
+    message: 'You have nothing to sell!'
+    sound: ENTITY_ITEM_PICKUP
+    pitch: 2.0
+  sell-locked:
+    message: 'The Hoarder is currently locked by an admin! You can''t sell items right now'
+    sound: ENTITY_ITEM_PICKUP
+    pitch: 2.0
 
   treasure-claim:
     message: 'You claimed a treasure!'
     sound: ENTITY_FIREWORK_ROCKET_BLAST
   treasure-claim-multiple:
-    message: 'You claimed %s treasures!'
+    message: 'You claimed &d%s&r treasures!'
     sound: ENTITY_FIREWORK_ROCKET_BLAST
   treasure-claim-none: 'You have no claimable treasures!'
 
@@ -28,8 +37,8 @@ notifications:
       - '#4 %top_4_name% - %top_4_points%'
     sound: ENTITY_EVOKER_PREPARE_WOLOLO
     pitch: 0.75
-  hoarder-event-won: 'You placed #%s last Hoarder event!'
-  claimable-treasures: 'You have %s claimable treasures!'
+  hoarder-event-won: 'You placed &d#%s&r last Hoarder event!'
+  claimable-treasures: 'You have &d%s&r claimable treasures!'
 
 
 commands:
@@ -39,22 +48,22 @@ commands:
   # /hoarder event
   event:
     restart: 'Restarted the Hoarder event!'
-    material: 'Changed the active material to %s'
-    price: 'Changed the active sell price to $%s'
-    time: 'The active Hoarder event will now end in %s minutes!'
-    lock: 'Hoarder event is now %s! Lock expires upon a restart or the current Hoarder event ending'
+    material: 'Changed the active material to &d%s'
+    price: 'Changed the active sell price to &d$%s'
+    time: 'The active Hoarder event will now end in &d%s&d minutes!'
+    lock: 'Hoarder event is now &d%s&r! Lock expires upon a restart or the current Hoarder event ending'
   # /hoarder treasure
   treasure:
     add:
       missing-args: 'Missing arguments! Usage: /hoarder treasure add <weight!> <identifier?>'
       missing-args-no-auto-identifier: 'Missing arguments! You have auto-identifier disabled in your config so you must specify an identifier! Usage: /hoarder treasure add <weight!> <identifier!>'
-      success: 'Added %s with a weight of %s'
+      success: 'Added &d%s&r with a weight of &d%s&r'
     edit:
       missing-args: 'Missing arguments! Usage: /hoarder treasure edit <identifier!> <new-weight!> <new-identifier?>'
-      success: 'Successfully changed %s to %s with a weight of %s'
+      success: 'Successfully changed &d%s&r to %s with a weight of &d%s&r'
     delete:
       missing-args: 'Missing arguments! Usage: /hoarder treasure delete <identifier!>'
-      success: 'Successfully deleted %s from storage'
+      success: 'Successfully deleted &d%s&r from storage'
   # /hoarder help
   help: |
     <GRADIENT:fb7f4a>Help Menu</GRADIENT:642ffd>
@@ -66,4 +75,4 @@ commands:
     &d/hoarder reload &8» &rReloads the plugin''s config and storage
     &d/hoarder treasure &8» &rUsed for adding, editing, and deleting treasures from storage
   # /hoarder reload
-  reload: 'Reloaded! Took: %sms'
+  reload: 'Reloaded! Took: &d%sms'
