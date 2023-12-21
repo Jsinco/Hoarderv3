@@ -30,6 +30,7 @@ notifications:
     pitch: 0.75
   hoarder-event-won: '#%s 最後の Hoarder イベントを配置しました!'
   claimable-treasures: '取得可能な宝物は %s 個あります!'
+  update-available: 'アップデートが利用可能です! ここからダウンロードしてください: &dhttps://www.spigotmc.org/resources/hoarder.114065/ (v%s)'
 
 
 commands:

@@ -39,6 +39,7 @@ notifications:
     pitch: 0.75
   hoarder-event-won: 'You placed &d#%s&r last Hoarder event!'
   claimable-treasures: 'You have &d%s&r claimable treasures!'
+  update-available: 'An update is available! Download it here: &dhttps://www.spigotmc.org/resources/hoarder.114065/ (v%s)'
 
 
 commands:

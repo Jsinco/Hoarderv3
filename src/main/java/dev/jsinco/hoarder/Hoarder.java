@@ -1,13 +1,17 @@
 package dev.jsinco.hoarder;
 
+
 import dev.jsinco.hoarder.commands.CommandManager;
 import dev.jsinco.hoarder.events.Listeners;
 import dev.jsinco.hoarder.manager.FileManager;
 import dev.jsinco.hoarder.manager.Settings;
+import dev.jsinco.hoarder.objects.LangMsg;
 import dev.jsinco.hoarder.papi.PAPIManager;
 import dev.jsinco.hoarder.storage.StorageType;
+import dev.jsinco.hoarder.utilities.UpdateChecker;
 import dev.jsinco.hoarder.utilities.configupdater.ConfigUpdater;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,6 +27,7 @@ public final class Hoarder extends JavaPlugin {
     private static Hoarder plugin;
     private static PAPIManager papiManager;
     private static boolean usePapi;
+    private static String latestVersion;
 
     /*
     TODO: What's left to do 12/6/2023
@@ -37,6 +42,8 @@ public final class Hoarder extends JavaPlugin {
         FileManager.generateDefaultFiles(); // Generate default files, and Hoarder data folder
         usePapi = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
 
+
+        Settings.INSTANCE.reloadDataManager();
         // Register commands and events
         getCommand("hoarder").setExecutor(new CommandManager(this));
         getServer().getPluginManager().registerEvents(new Listeners(this), this);
@@ -50,10 +57,13 @@ public final class Hoarder extends JavaPlugin {
             papiManager.register();
         }
 
+
         // Update config if needed
         FileManager configFile = new FileManager("config.yml");
         YamlConfiguration config = configFile.getFileYaml();
         String version = getDescription().getVersion();
+        latestVersion = version;
+
         if (config.get("config-version") == null || !config.getString("config-version").equals(version)) {
             try {
                 config.set("config-version", version);
@@ -69,9 +79,19 @@ public final class Hoarder extends JavaPlugin {
             infoFile.overrideFile();
         }
 
-        // Update checker
-        //UpdateChecker updateChecker = new UpdateChecker(this, UpdateCheckSource.GITHUB_RELEASE_TAG, )
-        // TODO: When uploaded to SpigotMC
+        if (Settings.checkForUpdates()) {
+            new UpdateChecker(this, 114065).getVersion(latestVersion -> {
+                if (!version.equals(latestVersion)) {
+                    Hoarder.latestVersion = latestVersion;
+                }
+            });
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
+                if (!version.equals(latestVersion)) {
+                    plugin.getLogger().info(String.format(ChatColor.stripColor(new LangMsg("notifications.update-available").getMsgSendSound(null)), latestVersion));
+                }
+            }, 200L);
+        }
     }
 
     @Override
@@ -90,6 +110,10 @@ public final class Hoarder extends JavaPlugin {
 
     public static boolean getPlaceHolderAPIStatus() {
         return usePapi;
+    }
+
+    public static String getLatestVersion() {
+        return latestVersion;
     }
 
 

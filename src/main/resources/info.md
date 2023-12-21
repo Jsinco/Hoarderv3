@@ -140,6 +140,6 @@ All sound types can be found here: https://hub.spigotmc.org/javadocs/bukkit/org/
 
 ### Written with ❤️ by Jsinco
 ### Discord: https://discord.gg/JUFkBY93TG
-### Spigot page:
+### Spigot page: https://www.spigotmc.org/resources/hoarder.114065/
 
 Don't store stuff in this file. It is overwritten upon each new release of Hoarder

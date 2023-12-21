@@ -1,5 +1,5 @@
 # Used for updating config on new releases. No need to change this
-config-version: 1.0.0
+config-version: 1.0.2
 
 # Language to use
 lang: en_US
@@ -14,6 +14,7 @@ storage:
   address: ''
   username: ''
   password: ''
+
 
 update-checking:
   enabled: true

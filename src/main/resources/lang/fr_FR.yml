@@ -7,7 +7,7 @@ actions:
 
   sell: 'Vous avez vendu %s article(s) pour €%s !'
   sell-none: 'Vous n’avez rien à vendre !'
-  sell-locked: 'Le Hoarder est actuellement verrouillé par un administrateur ! Vous ne pouvez pas vendre d''articles pour le moment'
+  sell-locked: 'Le Hoarder est actuellement verrouillé par un administrateur! Vous ne pouvez pas vendre d''articles pour le moment'
 
   treasure-claim:
     message: 'Vous avez réclamé un trésor !'
@@ -15,7 +15,7 @@ actions:
   treasure-claim-multiple:
     message: 'Vous avez réclamé %s trésors !'
     sound: ENTITY_FIREWORK_ROCKET_BLAST
-  treasure-claim-none: 'Vous n''avez aucun trésor récupérable!'
+  treasure-claim-none: 'Vous n''avez aucun trésor récupérable !'
 
 
 notifications:
@@ -30,6 +30,7 @@ notifications:
     pitch: 0.75
   hoarder-event-won: 'Vous avez placé #%s dernier événement Hoarder !'
   claimable-treasures: 'Vous possédez %s trésors récupérables !'
+  update-available: 'Une mise à jour est disponible ! Télécharger les ici: &dhttps://www.spigotmc.org/resources/hoarder.114065/ (v%s)'
 
 
 commands:

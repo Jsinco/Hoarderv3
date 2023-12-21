@@ -112,6 +112,14 @@ object Settings {
         return "lang/${plugin.config.getString("lang")}.yml"
     }
 
+    @JvmStatic fun checkForUpdates(): Boolean {
+        return plugin.config.getBoolean("update-checking.enabled")
+    }
+
+    fun notifyOnAvailableUpdate(): Boolean {
+        return plugin.config.getBoolean("update-checking.notify-on-join")
+    }
+
     // STORAGE
 
     @JvmStatic

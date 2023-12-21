@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'dev.jsinco'
-version = '1.0.0'
+version = '1.0.2'
 
 repositories {
     mavenCentral()
@@ -34,10 +34,6 @@ repositories {
         name = "placeholderapi"
         url = "https://repo.extendedclip.com/content/repositories/placeholderapi/"
     }
-    maven {
-        name = "update-checker"
-        url = "https://repo.jeff-media.com/public/"
-    }
 }
 
 configurations {
@@ -51,7 +47,6 @@ dependencies {
     compileOnly "me.clip:placeholderapi:2.11.3"
     implementation 'com.yworks:yguard:4.1.0'
 
-    implementation "com.jeff_media:SpigotUpdateChecker:3.0.3"
     implementation "org.xerial:sqlite-jdbc:3.42.0.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "com.iridium:IridiumColorAPI:1.0.6"
@@ -87,7 +82,6 @@ shadowJar {
     dependencies {
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
         include(dependency("com.iridium:IridiumColorAPI:1.0.6"))
-        include(dependency("com.jeff_media:SpigotUpdateChecker:3.0.3"))
     }
 }
 /*

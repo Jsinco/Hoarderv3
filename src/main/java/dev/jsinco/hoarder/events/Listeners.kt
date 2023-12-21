@@ -1,5 +1,6 @@
 package dev.jsinco.hoarder.events
 
+import com.jeff_media.updatechecker.UpdateCheckEvent
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.gui.GUICreator
 import dev.jsinco.hoarder.gui.enums.Action
@@ -74,5 +75,12 @@ class Listeners(private val plugin: Hoarder) : Listener {
                 player.sendMessage(LangMsg("notifications.claimable-treasures").getMsgSendSound(player).format(claimableTreasures.toString()))
             }, 25)
         }
-     }
+
+        if (Hoarder.getLatestVersion() != plugin.description.version && Settings.notifyOnAvailableUpdate()) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, {
+                if (!player.isOnline || !player.hasPermission("hoarder.update")) return@scheduleSyncDelayedTask
+                player.sendMessage(LangMsg("notifications.update-available").getMsgSendSound(player).format(Hoarder.getLatestVersion()))
+            }, 25)
+        }
+    }
 }

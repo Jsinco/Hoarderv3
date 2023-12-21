@@ -30,6 +30,7 @@ notifications:
     pitch: 0.75
   hoarder-event-won: '你完成了 #%s 最后的 Hoarder 活动!'
   claimable-treasures: '你有 %s 个可索赔的宝藏!'
+  update-available: '有可用的更新！ 在这里下载： &dhttps://www.spigotmc.org/resources/hoarder.114065/ (v%s)'
 
 
 commands:
