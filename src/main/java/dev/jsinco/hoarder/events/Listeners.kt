@@ -1,6 +1,5 @@
 package dev.jsinco.hoarder.events
 
-import com.jeff_media.updatechecker.UpdateCheckEvent
 import dev.jsinco.hoarder.Hoarder
 import dev.jsinco.hoarder.gui.GUICreator
 import dev.jsinco.hoarder.gui.enums.Action

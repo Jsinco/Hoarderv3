@@ -1,6 +1,5 @@
 package dev.jsinco.hoarder;
 
-
 import dev.jsinco.hoarder.commands.CommandManager;
 import dev.jsinco.hoarder.events.Listeners;
 import dev.jsinco.hoarder.manager.FileManager;
@@ -20,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 
 public final class Hoarder extends JavaPlugin {
@@ -34,6 +34,7 @@ public final class Hoarder extends JavaPlugin {
     - Debug and test everything
     - expand api
     - add placeholderapi to gui items and lang messages
+    - remove config updater
     */
 
     @Override
@@ -69,7 +70,7 @@ public final class Hoarder extends JavaPlugin {
                 config.set("config-version", version);
                 configFile.saveFileYaml();
 
-                ConfigUpdater.update(this, "config.yml", configFile.getFile(), Collections.emptyList());
+                ConfigUpdater.update(this, "config.yml", configFile.getFile(), List.of("event.winners", "materials"));
                 getLogger().info("Successfully updated config.yml to v" + version + "!");
             } catch (IOException e) {
                 getLogger().log(Level.SEVERE, "Failed to update config.yml!", e);

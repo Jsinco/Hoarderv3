@@ -1,5 +1,5 @@
 # Used for updating config on new releases. No need to change this
-config-version: 1.0.2
+config-version: 1.0.4
 
 # Language to use
 lang: en_US

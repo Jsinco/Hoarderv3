@@ -38,6 +38,6 @@ class PAPIManager(val plugin: Hoarder) : PlaceholderExpansion() {
     override fun onRequest(player: OfflinePlayer?, params: String): String? {
         val args: List<String> = params.split("_")
 
-        return placeHolders[args[0]]?.onReceivedRequest(plugin, player, args) ?: return null
+        return placeHolders[args[0]]?.onReceivedRequest(plugin, player, args)
     }
 }

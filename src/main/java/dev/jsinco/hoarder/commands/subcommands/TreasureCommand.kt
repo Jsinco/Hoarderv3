@@ -65,7 +65,7 @@ class TreasureCommand : SubCommand {
                 val identifier = args[2]
                 allIdentifiers?.remove(identifier)
                 dataManager.removeTreasureItem(identifier)
-                player.sendMessage(LangMsg("treasure.delete.success").getMsgSendSound(player).format(identifier))
+                player.sendMessage(LangMsg("commands.treasure.delete.success").getMsgSendSound(player).format(identifier))
             }
         }
     }
