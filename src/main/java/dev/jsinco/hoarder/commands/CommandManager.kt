@@ -23,6 +23,7 @@ class CommandManager(val plugin: Hoarder) : CommandExecutor, TabCompleter {
         subCommands["event"] = EventCommand()
         subCommands["sell"] = SellCommand()
         subCommands["help"] = HelpCommand()
+        subCommands["setpoints"] = SetPointsCommand()
     }
 
 

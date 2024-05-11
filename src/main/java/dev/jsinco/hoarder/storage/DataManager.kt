@@ -6,6 +6,7 @@ import dev.jsinco.hoarder.objects.TreasureItem
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.sql.Connection
+import java.util.UUID
 
 interface DataManager {
 
@@ -54,7 +55,6 @@ interface DataManager {
     fun getPoints(uuid: String): Int
 
     fun setPoints(uuid: String, amount: Int)
-
 
     fun addClaimableTreasures(uuid: String, amount: Int)
 

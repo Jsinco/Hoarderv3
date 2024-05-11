@@ -84,6 +84,8 @@ shadowJar {
         include(dependency("com.iridium:IridiumColorAPI:1.0.6"))
     }
 }
+
+
 /*
 task yguard {
     group 'yGuard'
