@@ -52,7 +52,8 @@ class GUIItem (val file: YamlConfiguration, private val key: String) {
 
         item.itemMeta = meta
 
-        if (data != null && (data as String).contains("%top_")) {
+
+        if (data != null && data is String && data.contains("%top_")) {
             return setTopPlayerItemPlaceholders(item, data)
         }
         return item

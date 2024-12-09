@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'dev.jsinco'
-version = '1.0.4'
+version = '1.0.5'
 
 repositories {
     mavenCentral()
@@ -85,6 +85,9 @@ shadowJar {
     }
 }
 
+build {
+    dependsOn shadowJar
+}
 
 /*
 task yguard {
@@ -109,8 +112,6 @@ task yguard {
         }
     }
 }
-
- */
 
 
 task yguard {
@@ -149,6 +150,4 @@ task yguard {
         }
     }
 }
-
-
-build.dependsOn shadowJar
+ */
