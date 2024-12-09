@@ -136,5 +136,5 @@ actions:
 ...
 
 ### Written with ❤️ by Jsinco
-### Discord:
-### Spigot page:
+### Discord: https://discord.com/invite/bphqg6BFFW
+### Spigot page: https://www.spigotmc.org/resources/hoarder.114065/
