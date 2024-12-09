@@ -85,6 +85,11 @@ shadowJar {
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
         include(dependency("com.iridium:IridiumColorAPI"))
     }
+    archiveClassifier.set('')
+}
+
+jar {
+    enabled = false
 }
 
 build {
